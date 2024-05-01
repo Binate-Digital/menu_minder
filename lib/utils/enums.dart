@@ -1,0 +1,1 @@
+enum States { init, loading, success, failure }

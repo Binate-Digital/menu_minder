@@ -1,0 +1,1 @@
+enum ImageType { TYPE_ASSET, TYPE_FILE, TYPE_NETWORK }

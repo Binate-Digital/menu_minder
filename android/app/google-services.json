@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "366924226852",
+    "project_id": "menu-minder-f9262",
+    "storage_bucket": "menu-minder-f9262.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366924226852:android:3b9c65e5be0cc9b26d13b1",
+        "android_client_info": {
+          "package_name": "com.appsnado.menuminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366924226852-1ahcv1gupg0lnehuth0peugcpr4jrd49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "89cb7b32244854c7c0d61f3cb7d4800736f151f3"
+          }
+        },
+        {
+          "client_id": "366924226852-831tjvgo9cgqhocd760f99nbkrsahd03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "896d1dd70c2550bf1781d169a5569c83c94a71bd"
+          }
+        },
+        {
+          "client_id": "366924226852-mn6382ve71udcnkotuvtp4e6nank0686.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "8422e9fb6c38c6dda79ddcceb17343e27c2da427"
+          }
+        },
+        {
+          "client_id": "366924226852-ur4t9b7fkh79bsknvmcmcu6fd748h686.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "89639a984fb2e873cc8af91bff7f6e3476f3f0c3"
+          }
+        },
+        {
+          "client_id": "366924226852-8118f226mdbbm4ld8c9rkjc8phpeipp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9qBeqAySY6XtGP7qTvUwvYSWqDGOUcOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366924226852-8118f226mdbbm4ld8c9rkjc8phpeipp3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "366924226852-eubhhjbvvprr9tstdr88l4as0g683htq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.test.appsnado.menu.minder"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
