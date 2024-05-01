@@ -605,6 +605,7 @@ class CoreProvider extends ChangeNotifier {
     List<Map<String, dynamic>> ingredeits, {
     bool showLoader = false,
     String? date,
+    Function()? onFailure,
     required String type,
   }) async {
     try {
@@ -630,6 +631,7 @@ class CoreProvider extends ChangeNotifier {
         onSuccess?.call();
 
         Utils.showToast(message: 'Recipie added to profile successfully');
+        // ignore: use_build_context_synchronously
         getReciepiesByUserID(
             context, context.read<AuthProvider>().userdata!.data!.Id!);
 
@@ -638,10 +640,18 @@ class CoreProvider extends ChangeNotifier {
         Utils.showToast(message: NetworkStrings.SOMETHING_WENT_WRONG);
         _changeaddReceipeSate(States.failure);
         initState();
+        if (showLoader) {
+          AppNavigator.pop(context);
+          onFailure?.call();
+        }
       }
     } on DioException catch (_) {
       _changeaddReceipeSate(States.failure);
       initState();
+      if (showLoader) {
+        AppNavigator.pop(context);
+        onFailure?.call();
+      }
     }
   }
 

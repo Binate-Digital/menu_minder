@@ -116,7 +116,9 @@ class UserModelData {
   int? userIsSubscribed;
   String? userPhone;
   String? userCountryCode;
-  List<String?>? foodPeferences;
+  List<String?>? breakfastPrerence;
+  List<String?>? lunchPrerence;
+  List<String?>? dinnerPrerence;
   List<String?>? dietPeferences;
   String? userRole;
   String? userVerificationCode;
@@ -143,7 +145,9 @@ class UserModelData {
     this.userEmail,
     this.userIsSubscribed,
     this.userPhone,
-    this.foodPeferences,
+    this.breakfastPrerence,
+    this.lunchPrerence,
+    this.dinnerPrerence,
     this.dietPeferences,
     this.userCountryCode,
     this.userRole,
@@ -174,14 +178,33 @@ class UserModelData {
     userAlternateEmail = json['user_alternative_email'];
     userIsSubscribed = json['user_is_subscribed'];
     userCountryCode = json['user_country_code'];
-    if (json['food_peferences'] != null) {
-      final v = json['food_peferences'];
+    if (json['breakfast_peferences'] != null) {
+      final v = json['breakfast_peferences'];
       final arr0 = <String>[];
       v.forEach((v) {
         arr0.add(v.toString());
       });
-      foodPeferences = arr0;
+      breakfastPrerence = arr0;
     }
+
+    if (json['lunch_peferences'] != null) {
+      final v = json['lunch_peferences'];
+      final arr0 = <String>[];
+      v.forEach((v) {
+        arr0.add(v.toString());
+      });
+      lunchPrerence = arr0;
+    }
+
+    if (json['dinner_peferences'] != null) {
+      final v = json['dinner_peferences'];
+      final arr0 = <String>[];
+      v.forEach((v) {
+        arr0.add(v.toString());
+      });
+      dinnerPrerence = arr0;
+    }
+
     if (json['diet_peferences'] != null) {
       final v = json['diet_peferences'];
       final arr0 = <String>[];
@@ -219,8 +242,8 @@ class UserModelData {
     data['user_phone'] = userPhone;
     data['user_alternative_email'] = userAlternateEmail;
     data['user_country_code'] = userCountryCode;
-    if (foodPeferences != null) {
-      final v = foodPeferences;
+    if (breakfastPrerence != null) {
+      final v = breakfastPrerence;
       final arr0 = [];
       v!.forEach((v) {
         arr0.add(v);

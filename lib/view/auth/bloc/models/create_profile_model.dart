@@ -35,7 +35,9 @@ class CreateProfileModel {
   String? long;
   String? refrealCode;
   String? lat;
-  List<String?>? foodPeferences;
+  List<String?>? breakFastPrefrences;
+  List<String?>? lunchPrefrences;
+  List<String?>? dinnerPrefrences;
   List<String?>? dietPeferences;
 
   CreateProfileModel({
@@ -52,7 +54,9 @@ class CreateProfileModel {
     this.alternateEmail,
     this.long,
     this.lat,
-    this.foodPeferences,
+    this.breakFastPrefrences,
+    this.lunchPrefrences,
+    this.dinnerPrefrences,
     this.dietPeferences,
   });
   CreateProfileModel.fromJson(Map<String, dynamic> json) {
@@ -68,14 +72,33 @@ class CreateProfileModel {
     userCountryCode = json['user_country_code']?.toString();
     long = json['long']?.toString();
     lat = json['lat']?.toString();
-    if (json['food_peferences'] != null) {
-      final v = json['food_peferences'];
+    if (json['breakfast_peferences'] != null) {
+      final v = json['breakfast_peferences'];
       final arr0 = <String>[];
       v.forEach((v) {
         arr0.add(v.toString());
       });
-      foodPeferences = arr0;
+      breakFastPrefrences = arr0;
     }
+
+    if (json['lunch_peferences'] != null) {
+      final v = json['lunch_peferences'];
+      final arr0 = <String>[];
+      v.forEach((v) {
+        arr0.add(v.toString());
+      });
+      lunchPrefrences = arr0;
+    }
+
+    if (json['dinner_peferences'] != null) {
+      final v = json['dinner_peferences'];
+      final arr0 = <String>[];
+      v.forEach((v) {
+        arr0.add(v.toString());
+      });
+      dinnerPrefrences = arr0;
+    }
+
     if (json['diet_peferences'] != null) {
       final v = json['diet_peferences'];
       final arr0 = <String>[];
@@ -100,14 +123,33 @@ class CreateProfileModel {
     data['long'] = long;
     data['refCode'] = refrealCode;
     data['lat'] = lat;
-    if (foodPeferences != null) {
-      final v = foodPeferences;
+    if (breakFastPrefrences != null) {
+      final v = breakFastPrefrences;
       final arr0 = [];
       v!.forEach((v) {
         arr0.add(v);
       });
-      data['food_peferences'] = arr0;
+      data['breakfast_peferences'] = arr0;
     }
+
+    if (lunchPrefrences != null) {
+      final v = lunchPrefrences;
+      final arr0 = [];
+      v!.forEach((v) {
+        arr0.add(v);
+      });
+      data['lunch_peferences'] = arr0;
+    }
+
+    if (dinnerPrefrences != null) {
+      final v = dinnerPrefrences;
+      final arr0 = [];
+      v!.forEach((v) {
+        arr0.add(v);
+      });
+      data['dinner_peferences'] = arr0;
+    }
+
     if (dietPeferences != null) {
       final v = dietPeferences;
       final arr0 = [];

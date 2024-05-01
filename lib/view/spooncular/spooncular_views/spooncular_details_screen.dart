@@ -25,6 +25,7 @@ import '../../../providers/core_provider.dart';
 import '../../add_recipe/data/create_reciepe_model.dart';
 import '../../auth/bloc/provider/auth_provider.dart';
 import '../../recipe_details/widgets/custom_carosal_indicator.dart';
+import 'select_fiter_dialog.dart';
 
 class SpoonCularRecipieDetailsScreen extends StatefulWidget {
   Widget? bottomNavigationBar;
@@ -145,85 +146,122 @@ class _SpoonCularRecipieDetailsScreenState
                             PrimaryButton(
                                 text: 'Add to Profile',
                                 onTap: () {
-                                  final List<Map<String, String>> ingredients =
-                                      [];
+                                  // AppNavigator
+                                  AppDialog.showDialogs(
+                                    SelectFilterDialog(
+                                      selectedPrefrence: (selectedPref) {
+                                        // AppNavigator.pop(context);
 
-                                  ///ADDING TO MY PROFILE
-                                  ///
-                                  if (widget.mealData?.extendedIngredients !=
-                                          null &&
-                                      widget.mealData!.extendedIngredients!
-                                          .isNotEmpty) {
-                                    for (var e in widget
-                                        .mealData!.extendedIngredients!) {
-                                      final item = e.name.toString();
-                                      final value =
-                                          '${e.measures?.metric?.amount!}  ${e.measures!.metric!.unitLong}';
+                                        final List<Map<String, String>>
+                                            ingredients = [];
 
-                                      final Map<String, String> map = {
-                                        item: value
-                                      };
+                                        ///ADDING TO MY PROFILE
+                                        ///
+                                        if (widget.mealData
+                                                    ?.extendedIngredients !=
+                                                null &&
+                                            widget
+                                                .mealData!
+                                                .extendedIngredients!
+                                                .isNotEmpty) {
+                                          for (var e in widget
+                                              .mealData!.extendedIngredients!) {
+                                            final item = e.name.toString();
+                                            final value =
+                                                '${e.measures?.metric?.amount!}  ${e.measures!.metric!.unitLong}';
 
-                                      ingredients.add(map);
-                                    }
-                                  }
+                                            final Map<String, String> map = {
+                                              item: value
+                                            };
 
-                                  List<String> networkImages = [];
+                                            ingredients.add(map);
+                                          }
+                                        }
 
-                                  if (widget.mealData?.image != null) {
-                                    networkImages.add(widget.mealData!.image!);
-                                  }
+                                        List<String> networkImages = [];
 
-                                  Map<String, String> mergedMap = {};
+                                        if (widget.mealData?.image != null) {
+                                          networkImages
+                                              .add(widget.mealData!.image!);
+                                        }
 
-                                  for (var map in ingredients) {
-                                    mergedMap.addAll(map);
-                                  }
+                                        Map<String, String> mergedMap = {};
 
-                                  StringBuffer instructions = StringBuffer();
+                                        for (var map in ingredients) {
+                                          mergedMap.addAll(map);
+                                        }
 
-                                  if (widget.mealData!.analyzedInstructions !=
-                                          null &&
-                                      widget.mealData!.analyzedInstructions!
-                                          .isNotEmpty) {
-                                    for (var e in widget
-                                        .mealData!.analyzedInstructions!) {
-                                      e.steps
-                                          ?.asMap()
-                                          .forEach((index, element) {
-                                        // Add each step to the StringBuffer with a new line, including the step index
-                                        instructions.writeln(
-                                            "Step ${index + 1}: ${e.name} \n ${element.step}");
-                                      });
-                                    }
-                                  }
+                                        StringBuffer instructions =
+                                            StringBuffer();
 
-                                  print("MODEL TO SEND \n $instructions");
+                                        if (widget.mealData!
+                                                    .analyzedInstructions !=
+                                                null &&
+                                            widget
+                                                .mealData!
+                                                .analyzedInstructions!
+                                                .isNotEmpty) {
+                                          for (var e in widget.mealData!
+                                              .analyzedInstructions!) {
+                                            e.steps
+                                                ?.asMap()
+                                                .forEach((index, element) {
+                                              // Add each step to the StringBuffer with a new line, including the step index
+                                              instructions.writeln(
+                                                  "Step ${index + 1}: ${e.name} \n ${element.step}");
+                                            });
+                                          }
+                                        }
 
-                                  final model = CreateReceipeModel(
-                                      servingSize:
-                                          widget.mealData?.servings != null
-                                              ? widget.mealData!.servings
-                                              : null,
-                                      title: widget.mealData?.title ?? '',
-                                      images: [],
-                                      descriptions: widget.mealData?.summary ??
-                                          'No Description',
-                                      instructions: instructions.toString(),
-                                      networkImages: networkImages.isNotEmpty
-                                          ? jsonEncode(networkImages)
-                                          : jsonEncode(networkImages),
-                                      is_spooncular: 1,
-                                      ingredients: mergedMap,
-                                      type: 'Reciepe');
+                                        print("MODEL TO SEND \n $instructions");
 
-                                  print(networkImages);
-                                  context
-                                      .read<CoreProvider>()
-                                      .addRecipieToProfile(context, () async {
-                                    AppNavigator.pop(context);
-                                  }, model, ingredients,
-                                          type: '', showLoader: true);
+                                        final model = CreateReceipeModel(
+                                            preference: selectedPref,
+                                            servingSize:
+                                                widget.mealData?.servings !=
+                                                        null
+                                                    ? widget.mealData!.servings
+                                                    : null,
+                                            title: widget.mealData?.title ?? '',
+                                            images: [],
+                                            descriptions:
+                                                widget.mealData?.summary ??
+                                                    'No Description',
+                                            instructions:
+                                                instructions.toString(),
+                                            networkImages:
+                                                networkImages.isNotEmpty
+                                                    ? jsonEncode(networkImages)
+                                                    : jsonEncode(networkImages),
+                                            is_spooncular: 1,
+                                            ingredients: mergedMap,
+                                            type: 'Reciepe');
+
+                                        print(networkImages);
+                                        context
+                                            .read<CoreProvider>()
+                                            .addRecipieToProfile(
+                                              context,
+                                              () async {
+                                                AppNavigator.pop(context);
+                                                AppNavigator.pop(context);
+                                              },
+                                              model,
+                                              ingredients,
+                                              onFailure: () {
+                                                AppNavigator.pop(context);
+                                              },
+                                              type: '',
+                                              showLoader: true,
+                                            );
+                                      },
+                                    ),
+                                    'Select Recipe Preference',
+                                    context,
+                                    hasBack: true,
+                                  );
+
+                                  return;
                                 }),
                           ],
                         ),

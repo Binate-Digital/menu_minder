@@ -12,4 +12,6 @@ class AppConfig {
     'qt',
     'gal'
   ];
+
+  static List<String> recipePrefrnces = ['Breakfast', 'Lunch', 'Dinner'];
 }

@@ -8,7 +8,6 @@ import 'package:menu_minder/providers/core_provider.dart';
 import 'package:menu_minder/services/network/firebase_messaging_service.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
-import 'package:menu_minder/utils/dummy.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
@@ -337,6 +336,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                   // ignore: use_build_context_synchronously
                                                                                   context.read<SpoonCularProvider>().recipiesWithDiet(
                                                                                     context,
+                                                                                    prefrenceList: [
+                                                                                      ...(currentUserData?.data?.breakfastPrerence ?? []),
+                                                                                      ...(currentUserData?.data?.lunchPrerence ?? []),
+                                                                                      ...(currentUserData?.data?.dinnerPrerence ?? []),
+                                                                                    ],
                                                                                     showLoader: true,
                                                                                     onSuccess: () {
                                                                                       // AppNavigator.pop(context);

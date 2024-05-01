@@ -8,6 +8,7 @@ class CreateReceipeModel {
   final int? servingSize;
   final List<String> images;
   String? networkImages;
+  String? preference;
   int is_spooncular;
   final Map<String, String> ingredients;
   CreateReceipeModel({
@@ -18,6 +19,7 @@ class CreateReceipeModel {
     this.networkImages,
     required this.images,
     required this.ingredients,
+    this.preference,
     this.is_spooncular = 0,
     required this.type,
   });
@@ -29,6 +31,7 @@ class CreateReceipeModel {
       'instruction': instructions,
       'recipe_images': images,
       'ingredients': ingredients,
+      'preference': preference,
       'serving_size': servingSize,
       'is_spooncular': is_spooncular,
       'previous_paths': networkImages,

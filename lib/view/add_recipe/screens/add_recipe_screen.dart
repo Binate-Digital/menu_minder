@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -21,7 +20,6 @@ import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/app_validator.dart';
 import 'package:menu_minder/utils/asset_paths.dart';
-import 'package:menu_minder/utils/custom_keybaord_action.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
 import 'package:menu_minder/view/add_recipe/data/create_reciepe_model.dart';
@@ -69,6 +67,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   final _key = GlobalKey<FormState>();
   FocusNode servingFocus = FocusNode();
   final List<Map<String, TextEditingController>> ingredientsControllerList = [];
+
+  String? selectedPrefrence;
 
   List<KIngredeint> allIngredients = [];
 
@@ -183,6 +183,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           ? widget.recipeModel!.servingSize.toString()
           : '';
 
+      selectedPrefrence = widget.recipeModel?.prefrence;
+
       widget.recipeModel?.ingredients?.forEach((element) {
         TextEditingController key =
             TextEditingController(text: element.keys.first);
@@ -244,20 +246,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   showRecipiePopup() {
     AppDialog.showBottomPanel(
-        // Column(
-        //   children: [
-        //     ListView.separated(
-        //         physics: NeverScrollableScrollPhysics(),
-        //         itemBuilder: (context, index) {
-        //           return _buildRecipeContainer(recipies![index]);
-        //         },
-        //         separatorBuilder: (context, index) {
-        //           return SizedBox(height: 10);
-        //         },
-        //         itemCount: recipies?.length ?? 0)
-        //   ],
-        // ),
-        // 'Select Recipe',
         context,
         Container(
           height: MediaQuery.of(context).size.height * 0.9,
@@ -381,10 +369,14 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       ? "Save Details"
                       : "Add Recipe",
               onTap: () {
+                if (!widget.isMealPlan && selectedPrefrence == null) {
+                  CustomToast()
+                      .showToast(message: 'Please select recipe preference.');
+                  return;
+                }
+
                 if (_key.currentState!.validate()) {
                   final List<Map<String, String>> ingredients = [];
-
-                  // log("Ingredients Result ${ingredientsControllerList.length}");
 
                   bool notValid = allIngredients.any((element) =>
                       element.valueController.text.isNotEmpty &&
@@ -420,6 +412,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       "Description Yeh Ja rhii hai ${descriptionController.text}");
                   // print("Servcing SIze Yeh Ja rhii hai ${servingSize.text}");
                   final model = CreateReceipeModel(
+                      preference: selectedPrefrence,
                       title: titleController.text.trim(),
                       servingSize: servingSize.text.isNotEmpty
                           ? int.parse(servingSize.text)
@@ -528,49 +521,17 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ],
                   ),
 
-                PrimaryTextField(
-                  hintText: "Add Title",
-                  controller: titleController,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(256),
-                  ],
-                  hasOutlined: false,
-                  borderColor: AppColor.TRANSPARENT_COLOR,
-                  fillColor: Colors.grey.shade100,
-                  validator: (val) => AppValidator.validateField("Title", val!),
-                ),
+                !widget.isMealPlan
+                    ? _foodPrefrenceDropdown()
+                    : const SizedBox.shrink(),
+
+                !widget.isMealPlan
+                    ? AppStyles.height16SizedBox()
+                    : const SizedBox(),
+
+                titleField(),
                 AppStyles.height16SizedBox(),
-                InkWell(
-                  onTap: () {
-                    ImageChooser().pickImage(context, (path) {
-                      imageList.add(path);
-                      setState(() {});
-                    });
-                  },
-                  child: DottedBorder(
-                    color: AppColor.THEME_COLOR_SECONDARY,
-                    radius: const Radius.circular(10),
-                    borderType: BorderType.RRect,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(10)),
-                      height: 150,
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            AssetPath.UPLOAD,
-                            scale: 4,
-                          ),
-                          AppStyles.height8SizedBox(),
-                          AppStyles.contentStyle("Upload Images", fontSize: 14),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                _uploadImagesBox(context),
                 AppStyles.height16SizedBox(),
                 if (imageList.isNotEmpty || networkImages.isNotEmpty)
                   SizedBox(
@@ -657,72 +618,12 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                 if (imageList.isNotEmpty || networkImages.isNotEmpty)
                   AppStyles.height16SizedBox(),
-                PrimaryTextField(
-                  hintText: "Description",
-                  controller: descriptionController,
-                  hasOutlined: false,
-                  inputType: TextInputType.text,
-                  maxLines: 6,
-                  borderColor: AppColor.TRANSPARENT_COLOR,
-                  // validator: (val) =>
-                  //     AppValidator.validateField("Description", val!),
-                  fillColor: Colors.grey.shade100,
-                ),
+                descriptionField(),
                 AppStyles.height16SizedBox(),
-                PrimaryTextField(
-                  focusNode: servingFocus,
-                  hintText: "Serving Size",
-                  controller: servingSize,
-                  inputType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(6),
-                  ],
-                  textInputAction: TextInputAction.done,
-                  // controller: titleController,
-                  hasOutlined: false,
-                  //  inputFormatters: [],
-                  borderColor: AppColor.TRANSPARENT_COLOR,
-                  fillColor: Colors.grey.shade100,
-                  // validator: (val) =>
-                  //     AppValidator.validateField("Serving Size", val!),
-                ),
+                _servingSizeField(),
 
                 AppStyles.height16SizedBox(),
-                PrimaryTextField(
-                  hintText: "Ingredients",
-                  controller: ingredientsController,
-                  hasOutlined: false,
-                  borderColor: AppColor.TRANSPARENT_COLOR,
-                  fillColor: Colors.grey.shade100,
-                  hasTrailingWidget: true,
-                  validator: (val) {
-                    if (allIngredients.isEmpty) {
-                      return "Please enter atleast 1 ingredient";
-                    }
-                    return null;
-                  },
-                  isReadOnly: true,
-                  trailingWidget: AssetPath.ADD,
-                  onTrailingTap: () {
-                    // final model = {
-                    //   'item': TextEditingController(),
-                    //   'value': TextEditingController()
-                    // };
-                    // ingredientsControllerList.add(model);
-
-                    allIngredients.add(KIngredeint(
-                        itemController: TextEditingController(),
-                        valueController: TextEditingController()));
-                    setState(() {});
-
-                    // if (ingredientsController.text.trim().isNotEmpty) {
-                    //   ingredientsList.add(ingredientsController.text);
-                    //   ingredientsController.text = "";
-                    //   setState(() {});
-                    // }
-                  },
-                ),
+                _ingredientsField(),
                 // if (ingredientsControllerList.isNotEmpty)
                 //   ...List.generate(
                 //       ingredientsControllerList.length,
@@ -753,16 +654,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 //         ),
                 //       )),
                 AppStyles.height16SizedBox(),
-                PrimaryTextField(
-                  hintText: "Instructions",
-                  controller: instructionsController,
-                  hasOutlined: false,
-                  validator: (val) =>
-                      AppValidator.validateField("Instructions", val!),
-                  maxLines: 6,
-                  borderColor: AppColor.TRANSPARENT_COLOR,
-                  fillColor: Colors.grey.shade100,
-                ),
+                _instructionField(),
 
                 const SizedBox(
                   height: 100,
@@ -772,6 +664,141 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  PrimaryTextField _instructionField() {
+    return PrimaryTextField(
+      hintText: "Instructions",
+      controller: instructionsController,
+      hasOutlined: false,
+      validator: (val) => AppValidator.validateField("Instructions", val!),
+      maxLines: 6,
+      borderColor: AppColor.TRANSPARENT_COLOR,
+      fillColor: Colors.grey.shade100,
+    );
+  }
+
+  PrimaryTextField _ingredientsField() {
+    return PrimaryTextField(
+      hintText: "Ingredients",
+      controller: ingredientsController,
+      hasOutlined: false,
+      borderColor: AppColor.TRANSPARENT_COLOR,
+      fillColor: Colors.grey.shade100,
+      hasTrailingWidget: true,
+      validator: (val) {
+        if (allIngredients.isEmpty) {
+          return "Please enter atleast 1 ingredient";
+        }
+        return null;
+      },
+      isReadOnly: true,
+      trailingWidget: AssetPath.ADD,
+      onTrailingTap: () {
+        allIngredients.add(KIngredeint(
+            itemController: TextEditingController(),
+            valueController: TextEditingController()));
+        setState(() {});
+      },
+    );
+  }
+
+  PrimaryTextField _servingSizeField() {
+    return PrimaryTextField(
+      focusNode: servingFocus,
+      hintText: "Serving Size",
+      controller: servingSize,
+      inputType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(6),
+      ],
+      textInputAction: TextInputAction.done,
+      // controller: titleController,
+      hasOutlined: false,
+      //  inputFormatters: [],
+      borderColor: AppColor.TRANSPARENT_COLOR,
+      fillColor: Colors.grey.shade100,
+      // validator: (val) =>
+      //     AppValidator.validateField("Serving Size", val!),
+    );
+  }
+
+  PrimaryTextField descriptionField() {
+    return PrimaryTextField(
+      hintText: "Description",
+      controller: descriptionController,
+      hasOutlined: false,
+      inputType: TextInputType.text,
+      maxLines: 6,
+      borderColor: AppColor.TRANSPARENT_COLOR,
+      // validator: (val) =>
+      //     AppValidator.validateField("Description", val!),
+      fillColor: Colors.grey.shade100,
+    );
+  }
+
+  InkWell _uploadImagesBox(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        ImageChooser().pickImage(context, (path) {
+          imageList.add(path);
+          setState(() {});
+        });
+      },
+      child: DottedBorder(
+        color: AppColor.THEME_COLOR_SECONDARY,
+        radius: const Radius.circular(10),
+        borderType: BorderType.RRect,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(10)),
+          height: 150,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                AssetPath.UPLOAD,
+                scale: 4,
+              ),
+              AppStyles.height8SizedBox(),
+              AppStyles.contentStyle("Upload Images", fontSize: 14),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  PrimaryTextField titleField() {
+    return PrimaryTextField(
+      hintText: "Add Title",
+      controller: titleController,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(256),
+      ],
+      hasOutlined: false,
+      borderColor: AppColor.TRANSPARENT_COLOR,
+      fillColor: Colors.grey.shade100,
+      validator: (val) => AppValidator.validateField("Title", val!),
+    );
+  }
+
+  Widget _foodPrefrenceDropdown() {
+    return DropDownField(
+      backgroundColor: Colors.grey.shade100,
+      hint: 'Recipe Preference',
+      iconSize: 24,
+      selected_value: selectedPrefrence,
+      items: AppConfig.recipePrefrnces,
+      onValueChanged: (t) {
+        setState(() {
+          selectedPrefrence = t;
+        });
+      },
     );
   }
 }

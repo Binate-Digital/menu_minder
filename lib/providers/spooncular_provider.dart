@@ -97,7 +97,10 @@ class SpoonCularProvider extends ChangeNotifier {
 
   ///POLLS
   recipiesWithDiet(BuildContext context,
-      {int index = 0, Function()? onSuccess, bool showLoader = false}) async {
+      {int index = 0,
+      Function()? onSuccess,
+      bool showLoader = false,
+      required List<String?>? prefrenceList}) async {
     try {
       // if (index == 0) {
 
@@ -107,8 +110,7 @@ class SpoonCularProvider extends ChangeNotifier {
       _changeRecipiesWithDietState(States.loading);
       // }
 
-      final foodPref = List<String>.from(
-          context.read<AuthProvider>().userdata?.data?.foodPeferences ?? []);
+      final foodPref = List<String>.from(prefrenceList ?? []);
 
       final dietPrefs = List<String>.from(
           context.read<AuthProvider>().userdata?.data?.dietPeferences ?? []);
@@ -117,7 +119,7 @@ class SpoonCularProvider extends ChangeNotifier {
                   .read<AuthProvider>()
                   .userdata
                   ?.data
-                  ?.foodPeferences
+                  ?.breakfastPrerence
                   ?.isNotEmpty ==
               true &&
           context

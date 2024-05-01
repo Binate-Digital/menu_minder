@@ -7,12 +7,15 @@ import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
+import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/spooncular/spooncular_views/spooncular_details_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/dropdown_widget.dart';
 import '../../../common/primary_button.dart';
 import '../../../common/primary_textfield.dart';
 import '../../../utils/asset_paths.dart';
+import '../../../utils/config.dart';
 import '../../nearby_restraunt/screens/nearby_screen.dart';
 
 class SpecificRecipesWithDiet extends StatefulWidget {
@@ -27,9 +30,12 @@ class SpecificRecipesWithDiet extends StatefulWidget {
 class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
   @override
   void initState() {
+    selectedPrefrence = AppConfig.recipePrefrnces.first;
     context.read<SpoonCularProvider>().initSearching();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<SpoonCularProvider>().recipiesWithDiet(context);
+      context.read<SpoonCularProvider>().recipiesWithDiet(context,
+          prefrenceList:
+              context.read<AuthProvider>().userdata?.data?.breakfastPrerence);
     });
 
     searchController.addListener(() {
@@ -40,10 +46,52 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
     super.initState();
   }
 
+  String? selectedPrefrence;
+
+  Widget _foodPrefrenceDropdown() {
+    return DropDownField(
+      backgroundColor: Colors.grey.shade100,
+      hint: 'Recipe Preference',
+      iconSize: 24,
+      selected_value: selectedPrefrence,
+      items: AppConfig.recipePrefrnces,
+      onValueChanged: (type) {
+        setState(() {
+          selectedPrefrence = type;
+        });
+
+        searchController.clear();
+        if (type != null) {
+          _loadRecipeType(type.toLowerCase());
+        }
+      },
+    );
+  }
+
+  _loadRecipeType(String type) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (type == "breakfast") {
+        _spoonCularProvider?.recipiesWithDiet(context,
+            prefrenceList: _authProvider!.userdata?.data?.breakfastPrerence);
+      } else if (type == "lunch") {
+        _spoonCularProvider?.recipiesWithDiet(context,
+            prefrenceList: _authProvider!.userdata?.data?.lunchPrerence);
+      } else {
+        _spoonCularProvider?.recipiesWithDiet(context,
+            prefrenceList: _authProvider?.userdata?.data?.dinnerPrerence);
+      }
+    });
+  }
+
+  SpoonCularProvider? _spoonCularProvider;
+  AuthProvider? _authProvider;
+
   final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _spoonCularProvider = context.read<SpoonCularProvider>();
+    _authProvider = context.read<AuthProvider>();
     return Scaffold(
       // extendBody: true,
       bottomNavigationBar: widget.hideButton
@@ -70,12 +118,17 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                 height: constraints.maxHeight,
                 child: val.getSpooncularRecipesWithDiet?.results != null &&
                         val.getSpooncularRecipesWithDiet!.results!.isEmpty
-                    ? const Center(
-                        child: CustomText(
-                          text:
-                              'No Data Found \n Please Change Food Prefrences\n from my profile.',
-                          lineSpacing: 2,
-                        ),
+                    ? Column(
+                        children: [
+                          _foodPrefrenceDropdown(),
+                          const Center(
+                            child: CustomText(
+                              text:
+                                  'No Data Found \n Please Change Food Prefrences\n from my profile.',
+                              lineSpacing: 2,
+                            ),
+                          ),
+                        ],
                       )
                     : Column(
                         children: [
@@ -96,6 +149,8 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                                 hintColor: Colors.grey.shade600,
                                 controller: searchController),
                           ),
+                          AppStyles.height12SizedBox(),
+                          _foodPrefrenceDropdown(),
                           AppStyles.height12SizedBox(),
                           val.isSearching
                               ? val.isSearching &&

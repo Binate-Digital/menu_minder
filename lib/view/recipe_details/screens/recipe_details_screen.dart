@@ -15,6 +15,7 @@ import 'package:menu_minder/view/user_profile/screens/friends_profile_screen.dar
 import '../../../common/custom_tabbar.dart';
 import '../widgets/custom_carosal_indicator.dart';
 import '../widgets/ingredients_tab_widget.dart';
+import 'package:menu_minder/utils/uppercase_string_extension.dart';
 
 class RecipeDetailsScreen extends StatefulWidget {
   Widget? bottomNavigationBar;
@@ -175,32 +176,24 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
                                   : 'Description',
                               fontWeight: FontWeight.normal),
                           AppStyles.height4SizedBox(),
-
                           widget.mealData?.is_spooncular == 1
                               ? HtmlWidget(widget.mealData?.discription ??
                                   'No Description')
                               : AppStyles.contentStyle(
                                   widget.mealData?.discription ?? ''),
-
                           const SizedBox(
                             height: 10,
                           ),
-
                           widget.mealData?.servingSize != null
                               ? AppStyles.contentStyle(
                                   'Serving Size: ${widget.mealData?.servingSize} Persons',
                                   fontSize: 15)
-                              : SizedBox()
-                          // : ExpandableText(
-                          //     widget.mealData?.discription ?? '',
-                          //     expandText: 'show more',
-                          //     collapseText: 'show less',
-                          //     maxLines: 2,
-                          //     linkColor: AppColor.THEME_COLOR_PRIMARY1,
-                          //     style: const TextStyle(fontSize: 13),
-                          //   ),
-                          // AppStyles.contentStyle(
-                          //     widget.mealData?.discription ?? ''),
+                              : const SizedBox(),
+                          widget.mealData?.prefrence != null
+                              ? AppStyles.contentStyle(
+                                  'Recipe Prefrence: ${widget.mealData?.prefrence?.capitalizeFirstLetter()}',
+                                  fontSize: 15)
+                              : const SizedBox()
                         ],
                       ),
                     ),

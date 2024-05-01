@@ -111,6 +111,7 @@ class RecipeModel {
   int? is_spooncular;
   int? iV;
   int? servingSize;
+  String? prefrence;
   int? myRecipe;
   UserModelData? userData;
   List<String>? sharedMembers;
@@ -125,6 +126,7 @@ class RecipeModel {
       this.servingSize,
       this.ingredients,
       this.instruction,
+      this.prefrence,
       this.isDelete,
       this.sharedMembers,
       this.createdAt,
@@ -146,6 +148,7 @@ class RecipeModel {
     }
     discription = json['discription'];
     type = json['type'];
+    prefrence = json['preference'];
     // ingredients = json['ingredients'];
 
     if (json['ingredients'] != null) {
@@ -186,6 +189,7 @@ class RecipeModel {
 
     data['instruction'] = instruction;
     data['is_delete'] = isDelete;
+    data['prefrence'] = prefrence;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['is_spooncular'] = is_spooncular;
