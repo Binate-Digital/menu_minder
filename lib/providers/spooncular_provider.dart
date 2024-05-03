@@ -110,18 +110,14 @@ class SpoonCularProvider extends ChangeNotifier {
       _changeRecipiesWithDietState(States.loading);
       // }
 
-      final foodPref = List<String>.from(prefrenceList ?? []);
+      final foodPref = List<String>.from(prefrenceList ?? [])
+          .map((e) => e.toLowerCase().toString())
+          .toList();
 
       final dietPrefs = List<String>.from(
           context.read<AuthProvider>().userdata?.data?.dietPeferences ?? []);
 
-      if (context
-                  .read<AuthProvider>()
-                  .userdata
-                  ?.data
-                  ?.breakfastPrerence
-                  ?.isNotEmpty ==
-              true &&
+      if (prefrenceList!.isNotEmpty &&
           context
                   .read<AuthProvider>()
                   .userdata
@@ -139,6 +135,8 @@ class SpoonCularProvider extends ChangeNotifier {
 
         final randomFoodPref = foodPref[randomIndex];
         final randomDiet = dietPrefs[randomDietIndex];
+
+        print("RANDOM INDEX $randomIndex");
 
         final params = {
           'apiKey': dotenv.get('SPOONCULAR_API_KEY'),

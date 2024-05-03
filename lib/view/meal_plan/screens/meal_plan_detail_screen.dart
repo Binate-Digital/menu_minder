@@ -13,6 +13,7 @@ import 'package:menu_minder/view/user_profile/screens/friends_profile_screen.dar
 import '../../../common/custom_tabbar.dart';
 import '../../recipe_details/widgets/custom_carosal_indicator.dart';
 import '../../recipe_details/widgets/ingredients_tab_widget.dart';
+import 'package:menu_minder/utils/uppercase_string_extension.dart';
 
 class MealPlanDetailScreen extends StatefulWidget {
   Widget? bottomNavigationBar;
@@ -162,6 +163,18 @@ class _MealPlanDetailScreenState extends State<MealPlanDetailScreen>
                           linkColor: AppColor.THEME_COLOR_PRIMARY1,
                           style: const TextStyle(fontSize: 13),
                         ),
+                        AppStyles.height12SizedBox(),
+
+                        widget.mealData?.reciepieData?.servingSize != null
+                            ? AppStyles.contentStyle(
+                                'Serving Size: ${widget.mealData?.reciepieData?.servingSize} Persons',
+                                fontSize: 14)
+                            : const SizedBox(),
+                        widget.mealData?.reciepieData?.prefrence != null
+                            ? AppStyles.contentStyle(
+                                'Recipe Prefrence: ${widget.mealData?.type}',
+                                fontSize: 14)
+                            : const SizedBox()
                       ],
                     ),
                   ),

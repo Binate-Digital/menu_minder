@@ -28,21 +28,29 @@ class SuggesstionListScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              return mealPlanModel.familyMembers![index].userId == currentUserID
-                  ? const SizedBox()
-                  : AskSuggestionWidget(
-                      mealPlanID: mealPlanModel.mealPlanID!,
-                      familyMembers: mealPlanModel.familyMembers![index],
-                    );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                height: 20,
-              );
-            },
-            itemCount: mealPlanModel.familyMembers?.length ?? 0),
+        child: mealPlanModel.familyMembers != null &&
+                mealPlanModel.familyMembers!.isNotEmpty
+            ? ListView.separated(
+                itemBuilder: (context, index) {
+                  return mealPlanModel.familyMembers![index].userId ==
+                          currentUserID
+                      ? const SizedBox()
+                      : AskSuggestionWidget(
+                          mealPlanID: mealPlanModel.mealPlanID!,
+                          familyMembers: mealPlanModel.familyMembers![index],
+                        );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 20,
+                  );
+                },
+                itemCount: mealPlanModel.familyMembers?.length ?? 0)
+            : const Center(
+                child: CustomText(
+                  text: 'No Family Members found.',
+                ),
+              ),
       ),
     );
   }
@@ -81,6 +89,9 @@ class _AskSuggestionWidgetState extends State<AskSuggestionWidget> {
             children: [
               Visibility(
                 visible: widget.familyMembers != null,
+                // replacement: CustomText(
+                //   text: 'No Members Found',
+                // ),
                 child: InkWell(
                   onTap: () {
                     final currentUserID =

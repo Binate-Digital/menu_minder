@@ -4,6 +4,7 @@ import 'package:menu_minder/common/meal_plan_container.dart';
 import 'package:menu_minder/common/primary_button.dart';
 import 'package:menu_minder/common/primary_textfield.dart';
 import 'package:menu_minder/providers/core_provider.dart';
+import 'package:menu_minder/services/network/firebase_messaging_service.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/asset_paths.dart';
@@ -239,7 +240,8 @@ class MealPlansGridWidget extends StatelessWidget {
                                   child: InkWell(
                                     onTap: () {
                                       AppDialog.modalBottomSheet(
-                                          context: context,
+                                          context: StaticData
+                                              .navigatorKey.currentContext!,
                                           child: Column(
                                             children: [
                                               // BottomSheetOptions(

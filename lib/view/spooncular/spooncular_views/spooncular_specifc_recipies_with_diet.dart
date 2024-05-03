@@ -113,227 +113,237 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
           return LayoutBuilder(builder: (context, constraints) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: SingleChildScrollView(
-                  child: SizedBox(
-                height: constraints.maxHeight,
-                child: val.getSpooncularRecipesWithDiet?.results != null &&
-                        val.getSpooncularRecipesWithDiet!.results!.isEmpty
-                    ? Column(
-                        children: [
-                          _foodPrefrenceDropdown(),
-                          const Center(
-                            child: CustomText(
-                              text:
-                                  'No Data Found \n Please Change Food Prefrences\n from my profile.',
-                              lineSpacing: 2,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _loadRecipeType(selectedPrefrence!.toLowerCase());
+                  print(selectedPrefrence!.toLowerCase());
+                },
+                child: SingleChildScrollView(
+                    child: SizedBox(
+                  height: constraints.maxHeight,
+                  child: val.getSpooncularRecipesWithDiet?.results != null &&
+                          val.getSpooncularRecipesWithDiet!.results!.isEmpty
+                      ? Column(
+                          children: [
+                            _foodPrefrenceDropdown(),
+                            const Center(
+                              child: CustomText(
+                                text:
+                                    'No Data Found \n Please Change Food Prefrences\n from my profile.',
+                                lineSpacing: 2,
+                              ),
                             ),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: AppColor.THEME_COLOR_PRIMARY1
-                                      .withOpacity(0.2),
-                                  offset: const Offset(1, 2),
-                                  blurRadius: 10)
-                            ]),
-                            child: PrimaryTextField(
-                                borderColor: Colors.grey.shade300,
-                                hintText: "Search here...",
-                                hasPrefix: true,
-                                prefixIconPath: AssetPath.SEARCH,
-                                prefixColor: Colors.grey.shade600,
-                                hintColor: Colors.grey.shade600,
-                                controller: searchController),
-                          ),
-                          AppStyles.height12SizedBox(),
-                          _foodPrefrenceDropdown(),
-                          AppStyles.height12SizedBox(),
-                          val.isSearching
-                              ? val.isSearching &&
-                                      val.filteredRecipiesPref.isEmpty
-                                  ? const Expanded(
-                                      child: Center(
-                                        child: CustomText(
-                                          text: 'No Results Found',
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                    color: AppColor.THEME_COLOR_PRIMARY1
+                                        .withOpacity(0.2),
+                                    offset: const Offset(1, 2),
+                                    blurRadius: 10)
+                              ]),
+                              child: PrimaryTextField(
+                                  borderColor: Colors.grey.shade300,
+                                  hintText: "Search here...",
+                                  hasPrefix: true,
+                                  prefixIconPath: AssetPath.SEARCH,
+                                  prefixColor: Colors.grey.shade600,
+                                  hintColor: Colors.grey.shade600,
+                                  controller: searchController),
+                            ),
+                            AppStyles.height12SizedBox(),
+                            _foodPrefrenceDropdown(),
+                            AppStyles.height12SizedBox(),
+                            val.isSearching
+                                ? val.isSearching &&
+                                        val.filteredRecipiesPref.isEmpty
+                                    ? const Expanded(
+                                        child: Center(
+                                          child: CustomText(
+                                            text: 'No Results Found',
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : Expanded(
-                                      child: GridView.builder(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 50),
-                                          itemCount:
-                                              val.filteredRecipiesPref.length,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio: 2.2,
-                                                  crossAxisCount: 2,
-                                                  mainAxisExtent: 200,
-                                                  mainAxisSpacing: 10,
-                                                  crossAxisSpacing: 20),
-                                          itemBuilder: (context, index) {
-                                            final recipie =
-                                                val.filteredRecipiesPref[index];
-                                            return GestureDetector(
-                                              onTap: () {
-                                                AppNavigator.push(
-                                                    context,
-                                                    SpoonCularRecipieDetailsScreen(
-                                                      recipieByID: recipie?.id
-                                                          .toString(),
-                                                    ));
-                                              },
-                                              child: Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 2,
-                                                        vertical: 2),
-                                                padding:
-                                                    const EdgeInsets.all(12),
-                                                decoration: BoxDecoration(
-                                                    color: AppColor.COLOR_WHITE,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        offset:
-                                                            const Offset(2, 2),
-                                                        color: AppColor
-                                                            .COLOR_GREEN1
-                                                            .withOpacity(.2),
-                                                      )
-                                                    ]),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Expanded(
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              image: recipie?.image != null
-                                                                  ? DecorationImage(
-                                                                      fit: BoxFit.cover,
-                                                                      image: ExtendedNetworkImageProvider(
-                                                                        recipie!
-                                                                            .image!,
-                                                                      ))
-                                                                  : null),
+                                      )
+                                    : Expanded(
+                                        child: GridView.builder(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 50),
+                                            itemCount:
+                                                val.filteredRecipiesPref.length,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    childAspectRatio: 2.2,
+                                                    crossAxisCount: 2,
+                                                    mainAxisExtent: 210,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 10),
+                                            itemBuilder: (context, index) {
+                                              final recipie = val
+                                                  .filteredRecipiesPref[index];
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  AppNavigator.push(
+                                                      context,
+                                                      SpoonCularRecipieDetailsScreen(
+                                                        recipieByID: recipie?.id
+                                                            .toString(),
+                                                      ));
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 2,
+                                                      vertical: 2),
+                                                  padding:
+                                                      const EdgeInsets.all(12),
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          AppColor.COLOR_WHITE,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          offset: const Offset(
+                                                              2, 2),
+                                                          color: AppColor
+                                                              .COLOR_GREEN1
+                                                              .withOpacity(.2),
+                                                        )
+                                                      ]),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Expanded(
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                image: recipie?.image != null
+                                                                    ? DecorationImage(
+                                                                        fit: BoxFit.cover,
+                                                                        image: ExtendedNetworkImageProvider(
+                                                                          recipie!
+                                                                              .image!,
+                                                                        ))
+                                                                    : null),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 12,
-                                                    ),
-                                                    CustomText(
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      text: recipie?.title,
-                                                      weight: FontWeight.bold,
-                                                      maxLines: 1,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }),
-                                    )
-                              : Expanded(
-                                  child: GridView.builder(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 50),
-                                      itemCount: val
-                                              .getSpooncularRecipesWithDiet
-                                              ?.results
-                                              ?.length ??
-                                          0,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              childAspectRatio: 2.2,
-                                              crossAxisCount: 2,
-                                              mainAxisExtent: 200,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 20),
-                                      itemBuilder: (context, index) {
-                                        final recipie = val
-                                            .getSpooncularRecipesWithDiet
-                                            ?.results?[index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            AppNavigator.push(
-                                                context,
-                                                SpoonCularRecipieDetailsScreen(
-                                                  recipieByID:
-                                                      recipie?.id.toString(),
-                                                ));
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 2, vertical: 2),
-                                            padding: const EdgeInsets.all(12),
-                                            decoration: BoxDecoration(
-                                                color: AppColor.COLOR_WHITE,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    offset: const Offset(2, 2),
-                                                    color: AppColor.COLOR_GREEN1
-                                                        .withOpacity(.2),
-                                                  )
-                                                ]),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                          image: recipie
-                                                                      ?.image !=
-                                                                  null
-                                                              ? DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  image:
-                                                                      ExtendedNetworkImageProvider(
-                                                                    recipie!
-                                                                        .image!,
-                                                                  ))
-                                                              : null),
-                                                    ),
+                                                      const SizedBox(
+                                                        height: 12,
+                                                      ),
+                                                      CustomText(
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        text: recipie?.title,
+                                                        weight: FontWeight.bold,
+                                                        lineSpacing: 1.2,
+                                                        maxLines: 2,
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 12,
-                                                ),
-                                                CustomText(
-                                                  textAlign: TextAlign.start,
-                                                  text: recipie?.title,
-                                                  weight: FontWeight.bold,
-                                                  maxLines: 1,
-                                                )
-                                              ],
+                                              );
+                                            }),
+                                      )
+                                : Expanded(
+                                    child: GridView.builder(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 50),
+                                        itemCount: val
+                                                .getSpooncularRecipesWithDiet
+                                                ?.results
+                                                ?.length ??
+                                            0,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                childAspectRatio: 2.2,
+                                                crossAxisCount: 2,
+                                                mainAxisExtent: 210,
+                                                mainAxisSpacing: 10,
+                                                crossAxisSpacing: 10),
+                                        itemBuilder: (context, index) {
+                                          final recipie = val
+                                              .getSpooncularRecipesWithDiet
+                                              ?.results?[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              AppNavigator.push(
+                                                  context,
+                                                  SpoonCularRecipieDetailsScreen(
+                                                    recipieByID:
+                                                        recipie?.id.toString(),
+                                                  ));
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 2,
+                                                      vertical: 2),
+                                              padding: const EdgeInsets.all(12),
+                                              decoration: BoxDecoration(
+                                                  color: AppColor.COLOR_WHITE,
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      offset:
+                                                          const Offset(2, 2),
+                                                      color: AppColor
+                                                          .COLOR_GREEN1
+                                                          .withOpacity(.2),
+                                                    )
+                                                  ]),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Expanded(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            image: recipie?.image != null
+                                                                ? DecorationImage(
+                                                                    fit: BoxFit.cover,
+                                                                    image: ExtendedNetworkImageProvider(
+                                                                      recipie!
+                                                                          .image!,
+                                                                    ))
+                                                                : null),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 12,
+                                                  ),
+                                                  CustomText(
+                                                    textAlign: TextAlign.start,
+                                                    text: recipie?.title,
+                                                    weight: FontWeight.bold,
+                                                    lineSpacing: 1.2,
+                                                    maxLines: 2,
+                                                  )
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      }),
-                                ),
-                        ],
-                      ),
-              )),
+                                          );
+                                        }),
+                                  ),
+                          ],
+                        ),
+                )),
+              ),
             );
           });
         } else if (val.recipesWithDietState == States.loading) {
