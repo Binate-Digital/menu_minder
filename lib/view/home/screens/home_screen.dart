@@ -150,10 +150,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       AppStyles.height8SizedBox(),
                       AppStyles.horizontalDivider(),
-                      AppStyles.height8SizedBox(),
-                      val.isSearching
-                          ? const SizedBox()
-                          : const LocationWidget(),
+                      // AppStyles.height8SizedBox(),
+                      // val.isSearching
+                      //     ? const SizedBox()
+                      //     : const LocationWidget(),
                       AppStyles.height16SizedBox(),
                       val.isSearching ? const SizedBox() : const HomeBanner(),
                       AppStyles.height16SizedBox(),

@@ -4,12 +4,8 @@ import 'package:menu_minder/utils/app_constants.dart';
 import 'package:provider/provider.dart';
 import '../../../services/network/firebase_messaging_service.dart';
 import '../../../services/network/shared_preference.dart';
-import '../../../utils/actions.dart';
 import '../../../utils/asset_paths.dart';
-import '../../../utils/bottom_bar.dart';
 import '../../auth/bloc/provider/auth_provider.dart';
-import '../../auth/screens/social_login_screen.dart';
-import '../../create_profile/screens/create_profile_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

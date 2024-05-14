@@ -4,6 +4,7 @@ import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/profile_banner_widget.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/strings.dart';
+import 'package:menu_minder/utils/uppercase_string_extension.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/spooncular/data/spooncular_random_reciepies_model.dart';
 import 'package:menu_minder/view/user_profile/screens/friends_profile_screen.dart';
@@ -168,7 +169,19 @@ class FoodContainer extends StatelessWidget {
                         shape: BoxShape.circle),
                     child: const Icon(Icons.check)),
               )
-            : const SizedBox()
+            : const SizedBox(),
+        Positioned(
+          top: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+                color: AppColor.THEME_COLOR_SECONDARY,
+                borderRadius: BorderRadius.circular(8)),
+            child: CustomText(
+              text: recipeModel?.prefrence.toString().capitalizeFirstLetter(),
+            ),
+          ),
+        )
       ],
     );
   }

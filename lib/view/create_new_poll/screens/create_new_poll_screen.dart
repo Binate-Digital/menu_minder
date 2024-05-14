@@ -14,6 +14,7 @@ import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/dummy.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
+import 'package:menu_minder/utils/uppercase_string_extension.dart';
 import 'package:menu_minder/utils/utils.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/family_suggestion/data/famliy_list_res.dart';
@@ -848,6 +849,18 @@ class PollRecipieDisplayWidget extends StatelessWidget {
               ],
             ),
           ),
+          Positioned(
+            top: 0,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                  color: AppColor.THEME_COLOR_SECONDARY,
+                  borderRadius: BorderRadius.circular(8)),
+              child: CustomText(
+                text: recipe.prefrence.toString().capitalizeFirstLetter(),
+              ),
+            ),
+          ),
           isSelected != null && isSelected == true
               ? Positioned(
                   top: 10,
@@ -859,7 +872,7 @@ class PollRecipieDisplayWidget extends StatelessWidget {
                           shape: BoxShape.circle),
                       child: const Icon(Icons.check)),
                 )
-              : const SizedBox()
+              : const SizedBox(),
         ],
       ),
     );
