@@ -10,7 +10,6 @@ import 'package:menu_minder/utils/styles.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/spooncular/spooncular_views/spooncular_details_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common/dropdown_widget.dart';
 import '../../../common/primary_button.dart';
 import '../../../common/primary_textfield.dart';
@@ -31,18 +30,23 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
   @override
   void initState() {
     selectedPrefrence = AppConfig.recipePrefrnces.first;
+
     context.read<SpoonCularProvider>().initSearching();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<SpoonCularProvider>().recipiesWithDiet(context,
-          prefrenceList:
-              context.read<AuthProvider>().userdata?.data?.breakfastPrerence);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    // context.read<SpoonCularProvider>().recipiesWithDiet(
+    //     StaticData.navigatorKey.currentContext!,
+    //     prefrenceList:
+    //         context.read<AuthProvider>().userdata?.data?.breakfastPrerence);
+
+    _loadRecipeType("breakfast");
+    // });
 
     searchController.addListener(() {
       context
           .read<SpoonCularProvider>()
           .updateSearchPrefRecipies(searchController.text);
     });
+
     super.initState();
   }
 
@@ -72,7 +76,8 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (type == "breakfast") {
         _spoonCularProvider?.recipiesWithDiet(context,
-            prefrenceList: _authProvider!.userdata?.data?.breakfastPrerence);
+            prefrenceList: _authProvider!.userdata?.data?.breakfastPrerence,
+            showLoader: false);
       } else if (type == "lunch") {
         _spoonCularProvider?.recipiesWithDiet(context,
             prefrenceList: _authProvider!.userdata?.data?.lunchPrerence);
@@ -91,7 +96,7 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
   @override
   Widget build(BuildContext context) {
     _spoonCularProvider = context.read<SpoonCularProvider>();
-    _authProvider = context.read<AuthProvider>();
+    _authProvider = context.watch<AuthProvider>();
     return Scaffold(
       // extendBody: true,
       bottomNavigationBar: widget.hideButton
@@ -129,7 +134,7 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                             const Center(
                               child: CustomText(
                                 text:
-                                    'No Data Found \n Please Change Food Prefrences\n from my profile.',
+                                    'No Data Found \n Please check Food Prefrences\n from my profile.',
                                 lineSpacing: 2,
                               ),
                             ),
@@ -349,10 +354,26 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
         } else if (val.recipesWithDietState == States.loading) {
           return const CustomLoadingBarWidget();
         } else if (val.recipesWithDietState == States.failure) {
-          return const Center(
-            child: CustomText(
-              text: 'No Data Found',
-              fontColor: AppColor.COLOR_BLACK,
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                _foodPrefrenceDropdown(),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Center(
+                  child: CustomText(
+                    text:
+                        'No Data Found \n Please check Food Prefrences\n from my profile. ',
+                    fontColor: AppColor.COLOR_BLACK,
+                    lineSpacing: 2,
+                  ),
+                ),
+              ],
             ),
           );
         }

@@ -114,6 +114,8 @@ class SpoonCularProvider extends ChangeNotifier {
           .map((e) => e.toLowerCase().toString())
           .toList();
 
+      print("FOOF $foodPref");
+
       final dietPrefs = List<String>.from(
           context.read<AuthProvider>().userdata?.data?.dietPeferences ?? []);
 
@@ -158,7 +160,7 @@ class SpoonCularProvider extends ChangeNotifier {
       } else {
         _changeRecipiesWithDietState(States.failure);
       }
-    } on DioException catch (_) {
+    } on DioException catch (e) {
       _changeRecipiesWithDietState(States.failure);
       if (showLoader) {
         AppNavigator.pop(context);
