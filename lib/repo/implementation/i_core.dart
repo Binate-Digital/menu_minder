@@ -54,6 +54,7 @@ abstract class ICoreModule {
 
   Future<Response?> getFamilyPolls();
   Future<Response?> getSpoonCularRecipies();
+  // Future<Response?> getAdminRecipies();
   Future<Response?> getRecipeDetailsSpooncular(String id);
   Future<Response?> spoonCularSearch(Map<String, dynamic> queryParams);
 }

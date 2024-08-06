@@ -21,6 +21,7 @@ class AssetPath {
   static const SUPPORT = "assets/images/support.png";
   static const MSG = "assets/images/messages.png";
   static const PHOTO_PLACE_HOLDER = "assets/images/photo_place_holder.png";
+  static const FILTER_ICON = "assets/images/filter_Icon.png";
 
   static const SETTINGS = "assets/images/settings.png";
   static const TERMS = "assets/images/terms.png";

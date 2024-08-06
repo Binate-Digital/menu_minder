@@ -6,10 +6,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
+import 'package:menu_minder/view/spooncular/data/admin_recipes.dart';
 import 'package:menu_minder/view/spooncular/data/spooncular_search_model.dart';
 import 'package:provider/provider.dart';
 
 import '../repo/implementation/i_core.dart';
+import '../services/network/dio_client.dart';
+import '../services/network/firebase_messaging_service.dart';
 import '../view/spooncular/data/spooncular_random_reciepies_model.dart';
 
 class SpoonCularProvider extends ChangeNotifier {
@@ -18,10 +21,14 @@ class SpoonCularProvider extends ChangeNotifier {
   initState() {
     _randomRecipiesLoadState = States.init;
     _recipiesWithDietState = States.init;
+    _AdminRecipiesLoadState = States.init;
   }
 
   States _randomRecipiesLoadState = States.init;
   States get getRandomRecipiesLoadState => _randomRecipiesLoadState;
+
+  States _AdminRecipiesLoadState = States.init;
+  States get getAdminRecipiesLoadState => _AdminRecipiesLoadState;
 
   States _getRecipeDetailsState = States.init;
   States get getRecipeDetailsState => _getRecipeDetailsState;
@@ -41,10 +48,13 @@ class SpoonCularProvider extends ChangeNotifier {
 
   List<Recipes?> filteredRecipies = [];
   List<RecipeSearchResult?> filteredRecipiesPref = [];
+  List<AdminRecipe> adminRecipes = [];
 
   bool _isSearching = false;
-
   bool get isSearching => _isSearching;
+
+  int recipeType = 0;
+  int get getRecipeType => recipeType;
 
   initSearching() {
     _isSearching = false;
@@ -95,6 +105,47 @@ class SpoonCularProvider extends ChangeNotifier {
     }
   }
 
+  // Get Recipe From Admin
+  getAdminRecipe(BuildContext ctx,
+      {bool showLoader = false, String prefsType = "Breakfast"}) async {
+    try {
+      // if (showLoader) {
+      //   AppDialog.showPorgressBar(ctx);
+      // }
+      _changeAdminRecipiesLoadingState(States.loading);
+      Response? response = await DioClient().getRequest(
+        isHeaderRequire: true,
+        context: StaticData.navigatorKey.currentContext,
+        // queryParameters: {'apiKey': dotenv.get('SPOONCULAR_API_KEY')},
+        endPoint: 'get-admin-recipe',
+      );
+
+      adminRecipes.clear();
+      adminRecipesFromJson(response?.data).data.forEach((adRecipe) {
+        if (adRecipe.preference.toLowerCase() == prefsType.toLowerCase()) {
+          adminRecipes.add(adRecipe);
+        }
+      });
+
+      // adminRecipes = adminRecipesFromJson(response?.data).data;
+
+      _changeAdminRecipiesLoadingState(States.success);
+
+      print("admin recipes:: ${response?.data}");
+      print("admin recipes length :: ${adminRecipes.length}");
+
+      // if (showLoader) {
+      //   AppNavigator.pop(ctx);
+      // }
+    } catch (e) {
+      print("admin recipes exception :: ${e.toString()}");
+      _changeAdminRecipiesLoadingState(States.failure);
+      // if (showLoader) {
+      //   AppNavigator.pop(ctx);
+      // }
+    }
+  }
+
   ///POLLS
   recipiesWithDiet(BuildContext context,
       {int index = 0,
@@ -102,13 +153,10 @@ class SpoonCularProvider extends ChangeNotifier {
       bool showLoader = false,
       required List<String?>? prefrenceList}) async {
     try {
-      // if (index == 0) {
-
       if (showLoader) {
         AppDialog.showPorgressBar(context);
       }
       _changeRecipiesWithDietState(States.loading);
-      // }
 
       final foodPref = List<String>.from(prefrenceList ?? [])
           .map((e) => e.toLowerCase().toString())
@@ -200,6 +248,11 @@ class SpoonCularProvider extends ChangeNotifier {
 
   _changeRandomRecipiesLoadingState(States states) {
     _randomRecipiesLoadState = states;
+    notifyListeners();
+  }
+
+  _changeAdminRecipiesLoadingState(States states) {
+    _AdminRecipiesLoadState = states;
     notifyListeners();
   }
 

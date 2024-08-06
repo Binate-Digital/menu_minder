@@ -411,13 +411,14 @@ class CoreRepo implements ICoreModule {
         queryParameters: {'apiKey': dotenv.get('SPOONCULAR_API_KEY')},
         endPoint: '${dotenv.get('RECIPIE_DETAILS')}$id/information',
       );
+
   // @override
-  // Future<Response?> checkUnCheckGroceryItem(
-  //         {required Map<String, dynamic> data}) async =>
-  //     await DioClient().postRequest(
-  //       isHeaderRequire: true,
-  //       context: StaticData.navigatorKey.currentContext,
-  //       data: data,
-  //       endPoint: dotenv.get('CHECK_UNCHECK_GROCERY'),
-  //     );
+  // Future<Response?> getAdminRecipies() {
+  //   // TODO: implement getAdminRecipies
+  //   return DioClient().getRequest(
+  //     isHeaderRequire: true,
+  //     context: StaticData.navigatorKey.currentContext,
+  //     endPoint: 'get-admin-recipe',
+  //   );
+  // }
 }

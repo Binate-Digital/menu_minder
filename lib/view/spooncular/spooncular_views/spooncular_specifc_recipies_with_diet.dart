@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_minder/common/custom_loading_bar.dart';
 import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/providers/spooncular_provider.dart';
+import 'package:menu_minder/repo/core_repo.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/enums.dart';
+import 'package:menu_minder/utils/strings.dart';
 import 'package:menu_minder/utils/styles.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/spooncular/spooncular_views/spooncular_details_screen.dart';
@@ -27,6 +30,7 @@ class SpecificRecipesWithDiet extends StatefulWidget {
 }
 
 class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
+  // int _groupValue = -1;
   @override
   void initState() {
     selectedPrefrence = AppConfig.recipePrefrnces.first;
@@ -65,8 +69,14 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
         });
 
         searchController.clear();
-        if (type != null) {
-          _loadRecipeType(type.toLowerCase());
+
+        if (_spoonCularProvider!.recipeType == 0) {
+          if (type != null) {
+            _loadRecipeType(type.toLowerCase());
+          }
+        } else {
+          _spoonCularProvider!.getAdminRecipe(context,
+              showLoader: true, prefsType: selectedPrefrence ?? "Breakfast");
         }
       },
     );
@@ -151,13 +161,22 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                                     blurRadius: 10)
                               ]),
                               child: PrimaryTextField(
-                                  borderColor: Colors.grey.shade300,
-                                  hintText: "Search here...",
-                                  hasPrefix: true,
-                                  prefixIconPath: AssetPath.SEARCH,
-                                  prefixColor: Colors.grey.shade600,
-                                  hintColor: Colors.grey.shade600,
-                                  controller: searchController),
+                                borderColor: Colors.grey.shade300,
+                                // fillColor: Colors.amber,
+                                hintText: "Search here...",
+                                hasPrefix: true,
+                                prefixIconPath: AssetPath.SEARCH,
+                                prefixColor: Colors.grey.shade600,
+                                hintColor: Colors.grey.shade600,
+                                controller: searchController,
+                                hasTrailingWidget: true,
+                                onTrailingTap: () async {
+                                  print("tap on trail");
+                                  await _modalBottomSheetMenu();
+                                  // FocusScope.of(context).unfocus();
+                                },
+                                trailingWidget: AssetPath.FILTER_ICON,
+                              ),
                             ),
                             AppStyles.height12SizedBox(),
                             _foodPrefrenceDropdown(),
@@ -259,92 +278,194 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                                               );
                                             }),
                                       )
-                                : Expanded(
-                                    child: GridView.builder(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 50),
-                                        itemCount: val
-                                                .getSpooncularRecipesWithDiet
-                                                ?.results
-                                                ?.length ??
-                                            0,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                childAspectRatio: 2.2,
-                                                crossAxisCount: 2,
-                                                mainAxisExtent: 210,
-                                                mainAxisSpacing: 10,
-                                                crossAxisSpacing: 10),
-                                        itemBuilder: (context, index) {
-                                          final recipie = val
-                                              .getSpooncularRecipesWithDiet
-                                              ?.results?[index];
-                                          return GestureDetector(
-                                            onTap: () {
-                                              AppNavigator.push(
-                                                  context,
-                                                  SpoonCularRecipieDetailsScreen(
-                                                    recipieByID:
-                                                        recipie?.id.toString(),
-                                                  ));
-                                            },
-                                            child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
+                                : _spoonCularProvider!.recipeType == 0
+                                    ? Expanded(
+                                        child: GridView.builder(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 50),
+                                            itemCount:
+                                                val.getSpooncularRecipesWithDiet
+                                                        ?.results?.length ??
+                                                    0,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                    childAspectRatio: 2.2,
+                                                    crossAxisCount: 2,
+                                                    mainAxisExtent: 210,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 10),
+                                            itemBuilder: (context, index) {
+                                              final recipie = val
+                                                  .getSpooncularRecipesWithDiet
+                                                  ?.results?[index];
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  AppNavigator.push(
+                                                      context,
+                                                      SpoonCularRecipieDetailsScreen(
+                                                        recipieByID: recipie?.id
+                                                            .toString(),
+                                                      ));
+                                                },
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
                                                       horizontal: 2,
                                                       vertical: 2),
-                                              padding: const EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                  color: AppColor.COLOR_WHITE,
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      offset:
-                                                          const Offset(2, 2),
-                                                      color: AppColor
-                                                          .COLOR_GREEN1
-                                                          .withOpacity(.2),
-                                                    )
-                                                  ]),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    child: ClipRRect(
+                                                  padding:
+                                                      const EdgeInsets.all(12),
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          AppColor.COLOR_WHITE,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               12),
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            image: recipie?.image != null
-                                                                ? DecorationImage(
-                                                                    fit: BoxFit.cover,
-                                                                    image: ExtendedNetworkImageProvider(
-                                                                      recipie!
-                                                                          .image!,
-                                                                    ))
-                                                                : null),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          offset: const Offset(
+                                                              2, 2),
+                                                          color: AppColor
+                                                              .COLOR_GREEN1
+                                                              .withOpacity(.2),
+                                                        )
+                                                      ]),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Expanded(
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                image: recipie?.image != null
+                                                                    ? DecorationImage(
+                                                                        fit: BoxFit.cover,
+                                                                        image: ExtendedNetworkImageProvider(
+                                                                          recipie!
+                                                                              .image!,
+                                                                        ))
+                                                                    : null),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 12,
+                                                      ),
+                                                      CustomText(
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        text: recipie?.title,
+                                                        weight: FontWeight.bold,
+                                                        lineSpacing: 1.2,
+                                                        maxLines: 2,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      )
+                                    : val.getAdminRecipiesLoadState ==
+                                            States.loading
+                                        ? const CustomLoadingBarWidget()
+                                        : Expanded(
+                                            child: GridView.builder(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 50),
+                                                itemCount: val
+                                                        .adminRecipes.isNotEmpty
+                                                    ? val.adminRecipes.length
+                                                    : 0,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                        childAspectRatio: 2.2,
+                                                        crossAxisCount: 2,
+                                                        mainAxisExtent: 210,
+                                                        mainAxisSpacing: 10,
+                                                        crossAxisSpacing: 10),
+                                                itemBuilder: (context, index) {
+                                                  final recipie =
+                                                      val.adminRecipes[index];
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      AppNavigator.push(
+                                                          context,
+                                                          SpoonCularRecipieDetailsScreen(
+                                                            adminRecipeData:
+                                                                recipie,
+                                                          ));
+                                                    },
+                                                    child: Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 2,
+                                                          vertical: 2),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12),
+                                                      decoration: BoxDecoration(
+                                                          color: AppColor
+                                                              .COLOR_WHITE,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              offset:
+                                                                  const Offset(
+                                                                      2, 2),
+                                                              color: AppColor
+                                                                  .COLOR_GREEN1
+                                                                  .withOpacity(
+                                                                      .2),
+                                                            )
+                                                          ]),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Expanded(
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    image: recipie.recipeImages.isNotEmpty
+                                                                        ? DecorationImage(
+                                                                            fit: BoxFit.cover,
+                                                                            image: ExtendedNetworkImageProvider(
+                                                                              "https://webservices.menuminderusa.com:3000/"
+                                                                              "${recipie.recipeImages.first}",
+                                                                            ))
+                                                                        : null),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 12,
+                                                          ),
+                                                          CustomText(
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            text: recipie.title,
+                                                            weight:
+                                                                FontWeight.bold,
+                                                            lineSpacing: 1.2,
+                                                            maxLines: 2,
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 12,
-                                                  ),
-                                                  CustomText(
-                                                    textAlign: TextAlign.start,
-                                                    text: recipie?.title,
-                                                    weight: FontWeight.bold,
-                                                    lineSpacing: 1.2,
-                                                    maxLines: 2,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
+                                                  );
+                                                }),
+                                          ),
                           ],
                         ),
                 )),
@@ -381,4 +502,123 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
       }),
     );
   }
+
+  Future<void> _modalBottomSheetMenu() async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 150,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0))),
+                child: Column(
+                  children: <Widget>[
+                    radioBtn(0, (val) async {
+                      _spoonCularProvider!.recipeType = val;
+                      // setState(() {
+                      //   _groupValue = val!;
+                      // });
+                      Navigator.pop(context);
+                      _loadRecipeType("breakfast");
+                    }, "Recipe From Spoonacular"),
+                    radioBtn(1, (val) async {
+                      _spoonCularProvider!.recipeType = val;
+                      // setState(() {
+                      //   _groupValue = val!;
+                      // });
+                      Navigator.pop(context);
+                      await context.read<SpoonCularProvider>().getAdminRecipe(
+                          context,
+                          showLoader: true,
+                          prefsType: selectedPrefrence ?? "Breakfast");
+                      print(
+                          "recipe type :: ${_spoonCularProvider!.getRecipeType}");
+                    }, "Recipe From Admin"),
+                  ],
+                )),
+          );
+        });
+  }
+
+  Widget radioBtn(dynamic value, Function(dynamic) onChanged, String title) {
+    return RadioListTile(
+      contentPadding: EdgeInsets.zero,
+      value: value,
+      groupValue: _spoonCularProvider!.getRecipeType,
+      onChanged: onChanged,
+
+      //  (val) async {
+      //   setState(() {
+      //     _groupValue = val!;
+      //     sp!.recipeType = val;
+      //   });
+      //   Navigator.pop(context);
+
+      //   if (widget.value == 1) {
+      //     await context
+      //         .read<SpoonCularProvider>()
+      //         .getAdminRecipe(context, showLoader: true);
+
+      //     // CoreRepo cp = CoreRepo();
+      //     // Response? resp = await cp.getAdminRecipies();
+      //     print("recipe type :: ${sp!.getRecipeType}");
+      //   }else{
+      //     _loadRecipeType("breakfast");
+      //   }
+      // },
+      title: Text(title),
+    );
+  }
 }
+
+// class CustomRadButton extends StatefulWidget {
+//   CustomRadButton(this.title, this.value, this.onChanged, {super.key});
+//   String title;
+//   Function(int?) onChanged;
+//   int value;
+
+//   @override
+//   State<CustomRadButton> createState() => _CustomRadButtonState();
+// }
+
+// class _CustomRadButtonState extends State<CustomRadButton> {
+//   int _groupValue = -1;
+//   SpoonCularProvider? sp;
+//   @override
+//   Widget build(BuildContext context) {
+//     sp = context.read<SpoonCularProvider>();
+//     return RadioListTile(
+//       contentPadding: EdgeInsets.zero,
+//       value: widget.value,
+//       groupValue: _groupValue,
+//       onChanged: widget.onChanged,
+
+//       //  (val) async {
+//       //   setState(() {
+//       //     _groupValue = val!;
+//       //     sp!.recipeType = val;
+//       //   });
+//       //   Navigator.pop(context);
+
+//       //   if (widget.value == 1) {
+//       //     await context
+//       //         .read<SpoonCularProvider>()
+//       //         .getAdminRecipe(context, showLoader: true);
+
+//       //     // CoreRepo cp = CoreRepo();
+//       //     // Response? resp = await cp.getAdminRecipies();
+//       //     print("recipe type :: ${sp!.getRecipeType}");
+//       //   }else{
+//       //     _loadRecipeType("breakfast");
+//       //   }
+//       // },
+//       title: Text(widget.title),
+//     );
+//   }
+// }
