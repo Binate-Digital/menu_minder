@@ -49,6 +49,7 @@ class SpoonCularProvider extends ChangeNotifier {
   List<Recipes?> filteredRecipies = [];
   List<RecipeSearchResult?> filteredRecipiesPref = [];
   List<AdminRecipe> adminRecipes = [];
+  List<AdminRecipe> filteredAdminRecipes = [];
 
   bool _isSearching = false;
   bool get isSearching => _isSearching;
@@ -238,6 +239,25 @@ class SpoonCularProvider extends ChangeNotifier {
           .where((element) =>
               element.title!.toLowerCase().contains(query.toLowerCase()))
           .toList();
+      _isSearching = true;
+      notifyListeners();
+    } else {
+      _isSearching = false;
+      notifyListeners();
+    }
+  }
+
+  updateSearchAdminRecipies(String query) {
+    if (query.isNotEmpty) {
+      filteredAdminRecipes = adminRecipes
+          .where((element) =>
+              element.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      // filteredRecipiesPref = _searchResultsSpooncular!.results!
+      //     .where((element) =>
+      //         element.title!.toLowerCase().contains(query.toLowerCase()))
+      //     .toList();
       _isSearching = true;
       notifyListeners();
     } else {
