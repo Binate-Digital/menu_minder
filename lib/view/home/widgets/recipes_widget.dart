@@ -69,29 +69,30 @@ class RecipesWidget extends StatelessWidget {
                                         context: context,
                                         child: Column(
                                           children: [
-                                            (receipies[index].is_spooncular ??
-                                                        0) ==
-                                                    1
-                                                ? const SizedBox()
-                                                : BottomSheetOptions(
-                                                    heading: "Edit Recipe",
-                                                    imagePath: AssetPath.EDIT,
-                                                    onTap: () {
-                                                      AppNavigator.pop(context);
-                                                      Future.delayed(
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  200));
-                                                      AppNavigator.push(
-                                                          context,
-                                                          AddRecipeScreen(
-                                                            recipeModel:
-                                                                receipies[
-                                                                    index],
-                                                            isEdit: true,
-                                                            mealType: '',
-                                                          ));
-                                                    }),
+                                            // (receipies[index].is_spooncular ??
+                                            //             0) ==
+                                            //         1
+                                            //     ? const SizedBox()
+                                            //     : BottomSheetOptions(
+                                            //         heading: "Edit Recipe",
+                                            //         imagePath: AssetPath.EDIT,
+                                            //         onTap: () {
+                                            //           AppNavigator.pop(context);
+                                            //           Future.delayed(
+                                            //               const Duration(
+                                            //                   milliseconds:
+                                            //                       200));
+                                            //           AppNavigator.push(
+                                            //               context,
+                                            //               AddRecipeScreen(
+                                            //                 recipeModel:
+                                            //                     receipies[
+                                            //                         index],
+                                            //                 isEdit: true,
+                                            //                 mealType: '',
+                                            //               ));
+                                            //         },
+                                            //       ),
                                             BottomSheetOptions(
                                                 heading: "Delete Recipe",
                                                 imagePath: AssetPath.DELETE,

@@ -126,6 +126,7 @@ class SpoonCularProvider extends ChangeNotifier {
         if (adRecipe.preference.toLowerCase() == prefsType.toLowerCase()) {
           adminRecipes.add(adRecipe);
         }
+        print("============> adminRecipes: ${adminRecipes.length}");
       });
 
       // adminRecipes = adminRecipesFromJson(response?.data).data;
@@ -208,6 +209,8 @@ class SpoonCularProvider extends ChangeNotifier {
         // onSuccess?.call();
       } else {
         _changeRecipiesWithDietState(States.failure);
+        //Admin
+        getAdminRecipe(context, showLoader: true, prefsType: "Breakfast");
       }
     } on DioException catch (e) {
       _changeRecipiesWithDietState(States.failure);

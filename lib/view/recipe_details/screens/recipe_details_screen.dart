@@ -51,9 +51,14 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       bottomNavigationBar: widget.bottomNavigationBar,
-      appBar: AppStyles.appBar("Recipe Details", () {
-        AppNavigator.pop(context);
-      }, textSize: 18, action: widget.action),
+      appBar: AppStyles.appBar(
+        "Recipe Details",
+        () {
+          AppNavigator.pop(context);
+        },
+        textSize: 18,
+        action: widget.action,
+      ),
       body: Column(
         children: [
           Stack(

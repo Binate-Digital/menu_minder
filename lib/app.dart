@@ -58,6 +58,7 @@ class BaseWidget extends StatelessWidget {
             const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
           ],
         ),
+        scrollBehavior: CustomScrollBehavior(),
         theme: ThemeData(
             primarySwatch: Colors.deepOrange,
             fontFamily: 'Poppins',
@@ -74,5 +75,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SplashScreen();
+  }
+}
+
+class CustomScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }
