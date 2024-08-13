@@ -238,7 +238,7 @@ class _UserDrawerState extends State<UserDrawer>
                   imgs: AssetPath.CREATE_RECIPE,
                   onpress: () {
                     AppNavigator.pop(context);
-                    Future.delayed(Duration(milliseconds: 100), () {
+                    Future.delayed(const Duration(milliseconds: 100), () {
                       AppNavigator.push(
                           context,
                           const SpecificRecipesWithDiet(
