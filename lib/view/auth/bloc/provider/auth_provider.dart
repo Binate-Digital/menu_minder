@@ -269,7 +269,7 @@ class AuthProvider extends ChangeNotifier {
               token: response.data["data"]["user_authentication"]);
           SharedPreference().setUser(user: response.toString());
           _userdata = UserModel.fromJson(response.data);
-          Utils.showToast(message: "Signed in succefully");
+          Utils.showToast(message: "Signed in successfully");
           _socialChangeState(States.success);
           SocialLoginService().logout();
         } else {
@@ -309,7 +309,7 @@ class AuthProvider extends ChangeNotifier {
             token: response.data["data"]["user_authentication"]);
         SharedPreference().setUser(user: response.toString());
         _userdata = UserModel.fromJson(response.data);
-        Utils.showToast(message: "Signed in succefully");
+        Utils.showToast(message: "Signed in successfully");
         _appleChangeState(States.success);
       } else {
         Utils.showToast(message: "Sign in failed");

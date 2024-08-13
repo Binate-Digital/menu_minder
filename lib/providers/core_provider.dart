@@ -630,7 +630,7 @@ class CoreProvider extends ChangeNotifier {
 
         onSuccess?.call();
 
-        Utils.showToast(message: 'Recipie added to profile successfully');
+        Utils.showToast(message: 'Recipe added to profile successfully');
         // ignore: use_build_context_synchronously
         getReciepiesByUserID(
             context, context.read<AuthProvider>().userdata!.data!.Id!);
