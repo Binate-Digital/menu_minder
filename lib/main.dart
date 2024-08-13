@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'app.dart';
 
-//Last update 13/aug/2024
+//Last update 13/aug/2024 (feedbacks done)
 
 void main() async {
   await dotenv.load(fileName: ".env");
