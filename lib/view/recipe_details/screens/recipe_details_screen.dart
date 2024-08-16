@@ -63,170 +63,214 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
         children: [
           Stack(
             children: [
-              widget.mealData != null &&
-                      widget.mealData!.recipeImages != null &&
-                      widget.mealData!.recipeImages!.isNotEmpty
-                  ? CustomCarouselSlider(
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentImageIndex = index;
-                        });
-                      },
-                      imageUrls: widget.mealData!.recipeImages!,
-                    )
-                  // Center(
-                  //     child: ExtendedImage.network(
-                  //       dotenv.get('IMAGE_URL') +
-                  //           widget.mealData!.recipeImages!.first,
-                  //       height: 280,
-                  //     ),
-                  //   )
+              // widget.mealData != null &&
+              //         widget.mealData!.recipeImages != null &&
+              //         widget.mealData!.recipeImages!.isNotEmpty
+              //     ? CustomCarouselSlider(
+              //         onPageChanged: (index) {
+              //           setState(() {
+              //             currentImageIndex = index;
+              //           });
+              //         },
+              //         imageUrls: widget.mealData!.recipeImages!,
+              //       )
+              //     // Center(
+              //     //     child: ExtendedImage.network(
+              //     //       dotenv.get('IMAGE_URL') +
+              //     //           widget.mealData!.recipeImages!.first,
+              //     //       height: 280,
+              //     //     ),
+              //     //   )
 
-                  : Center(
-                      child: Image.asset(
-                        AssetPath.PHOTO_PLACE_HOLDER,
-                        height: MediaQuery.of(context).size.height / 3.2,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+              //     : Center(
+              //         child: Image.asset(
+              //           AssetPath.PHOTO_PLACE_HOLDER,
+              //           height: MediaQuery.of(context).size.height / 3.2,
+              //           fit: BoxFit.cover,
+              //         ),
+              //       ),
               Container(
                 height: MediaQuery.of(context).size.height * .12,
                 decoration:
                     BoxDecoration(color: AppColor.COLOR_BLACK.withOpacity(.3)),
               ),
-              Positioned(
-                bottom: 20,
-                left: 0,
-                right: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    widget.mealData!.recipeImages?.length ?? 0,
-                    (index) => buildDotIndicator(index),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   bottom: 20,
+              //   left: 0,
+              //   right: 0,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: List.generate(
+              //       widget.mealData!.recipeImages?.length ?? 0,
+              //       (index) => buildDotIndicator(index),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: AppDimen.SCREEN_PADDING,
-                    left: AppDimen.SCREEN_PADDING,
-                    right: AppDimen.SCREEN_PADDING),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppStyles.headingStyle(
-                              widget.mealData?.title ?? '',
-                              fontWeight: FontWeight.bold),
+              child: Column(
+                children: [
+                  widget.mealData != null &&
+                          widget.mealData!.recipeImages != null &&
+                          widget.mealData!.recipeImages!.isNotEmpty
+                      ? CustomCarouselSlider(
+                          onPageChanged: (index) {
+                            setState(() {
+                              currentImageIndex = index;
+                            });
+                          },
+                          imageUrls: widget.mealData!.recipeImages!,
+                        )
+                      // Center(
+                      //     child: ExtendedImage.network(
+                      //       dotenv.get('IMAGE_URL') +
+                      //           widget.mealData!.recipeImages!.first,
+                      //       height: 280,
+                      //     ),
+                      //   )
+
+                      : Center(
+                          child: Image.asset(
+                            AssetPath.PHOTO_PLACE_HOLDER,
+                            height: MediaQuery.of(context).size.height / 3.2,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        widget.mealData?.myRecipe == 1
-                            ? PrimaryButton(
-                                textPadding:
-                                    const EdgeInsets.only(left: 12, right: 12),
-                                height: 35,
-                                buttonTextSize: 12,
-                                text: 'Share',
-                                onTap: () {
+                  SizedBox(height: 10),
+                  Positioned(
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        widget.mealData!.recipeImages?.length ?? 0,
+                        (index) => buildDotIndicator(index),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        // top: AppDimen.SCREEN_PADDING,
+                        left: AppDimen.SCREEN_PADDING,
+                        right: AppDimen.SCREEN_PADDING),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppStyles.headingStyle(
+                                  widget.mealData?.title ?? '',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            widget.mealData?.myRecipe == 1
+                                ? PrimaryButton(
+                                    textPadding: const EdgeInsets.only(
+                                        left: 12, right: 12),
+                                    height: 35,
+                                    buttonTextSize: 12,
+                                    text: 'Share',
+                                    onTap: () {
+                                      AppNavigator.push(
+                                          context,
+                                          ShareFamilyScreen(
+                                            recipeModel: widget.mealData!,
+                                          ));
+                                    })
+                                : const SizedBox()
+                          ],
+                        ),
+                        AppStyles.height20SizedBox(),
+                        InkWell(
+                            onTap: () {
+                              if (widget.mealData?.myRecipe == 0) {
+                                if (widget.isFromProfileDetails) {
+                                  print(
+                                      "object ${widget.isFromProfileDetails}");
+                                  AppNavigator.pop(context);
+                                } else {
                                   AppNavigator.push(
                                       context,
-                                      ShareFamilyScreen(
-                                        recipeModel: widget.mealData!,
+                                      FriendsProfileScreen(
+                                        userID: widget.mealData!.userData!.Id!,
                                       ));
-                                })
-                            : const SizedBox()
+                                }
+                              } else {
+                                AppMessage.showMessage(
+                                    'Please go to my profile to visit your profile');
+                              }
+                            },
+                            child: ProfileBanner(
+                              userModelData: widget.mealData?.userData,
+                            )),
+                        AppStyles.height16SizedBox(),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              color: AppColor.CONTAINER_GREY,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppStyles.subHeadingStyle(
+                                  widget.mealData?.discription != null &&
+                                          widget.mealData?.discription == " "
+                                      ? "No Description"
+                                      : 'Description',
+                                  fontWeight: FontWeight.normal),
+                              AppStyles.height4SizedBox(),
+                              widget.mealData?.is_spooncular == 1
+                                  ? HtmlWidget(widget.mealData?.discription ??
+                                      'No Description')
+                                  : AppStyles.contentStyle(
+                                      widget.mealData?.discription ?? ''),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              widget.mealData?.servingSize != null
+                                  ? AppStyles.contentStyle(
+                                      'Serving Size: ${widget.mealData?.servingSize} Persons',
+                                      fontSize: 15)
+                                  : const SizedBox(),
+                              widget.mealData?.prefrence != null
+                                  ? AppStyles.contentStyle(
+                                      'Recipe Prefrence: ${widget.mealData?.prefrence?.capitalizeFirstLetter()}',
+                                      fontSize: 15)
+                                  : const SizedBox()
+                            ],
+                          ),
+                        ),
+                        AppStyles.height16SizedBox(),
+                        DefaultTabController(
+                          length: 2,
+                          child: CustomTabbar(
+                            tabController: _tabController,
+                            tabNames: const ["Ingredients", "Instructions"],
+                          ),
+                        ),
+                        AppStyles.height8SizedBox(),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.7,
+                          child: TabBarView(
+                              controller: _tabController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                IngredientsTab(
+                                  ingredients: widget.mealData?.ingredients,
+                                ),
+                                InstructionsTab(
+                                  instructions: widget.mealData?.instruction,
+                                )
+                              ]),
+                        )
                       ],
                     ),
-                    AppStyles.height20SizedBox(),
-                    InkWell(
-                        onTap: () {
-                          if (widget.mealData?.myRecipe == 0) {
-                            if (widget.isFromProfileDetails) {
-                              print("object ${widget.isFromProfileDetails}");
-                              AppNavigator.pop(context);
-                            } else {
-                              AppNavigator.push(
-                                  context,
-                                  FriendsProfileScreen(
-                                    userID: widget.mealData!.userData!.Id!,
-                                  ));
-                            }
-                          } else {
-                            AppMessage.showMessage(
-                                'Please go to my profile to visit your profile');
-                          }
-                        },
-                        child: ProfileBanner(
-                          userModelData: widget.mealData?.userData,
-                        )),
-                    AppStyles.height16SizedBox(),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                          color: AppColor.CONTAINER_GREY,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppStyles.subHeadingStyle(
-                              widget.mealData?.discription != null &&
-                                      widget.mealData?.discription == " "
-                                  ? "No Description"
-                                  : 'Description',
-                              fontWeight: FontWeight.normal),
-                          AppStyles.height4SizedBox(),
-                          widget.mealData?.is_spooncular == 1
-                              ? HtmlWidget(widget.mealData?.discription ??
-                                  'No Description')
-                              : AppStyles.contentStyle(
-                                  widget.mealData?.discription ?? ''),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          widget.mealData?.servingSize != null
-                              ? AppStyles.contentStyle(
-                                  'Serving Size: ${widget.mealData?.servingSize} Persons',
-                                  fontSize: 15)
-                              : const SizedBox(),
-                          widget.mealData?.prefrence != null
-                              ? AppStyles.contentStyle(
-                                  'Recipe Prefrence: ${widget.mealData?.prefrence?.capitalizeFirstLetter()}',
-                                  fontSize: 15)
-                              : const SizedBox()
-                        ],
-                      ),
-                    ),
-                    AppStyles.height16SizedBox(),
-                    DefaultTabController(
-                      length: 2,
-                      child: CustomTabbar(
-                        tabController: _tabController,
-                        tabNames: const ["Ingredients", "Instructions"],
-                      ),
-                    ),
-                    AppStyles.height8SizedBox(),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.7,
-                      child: TabBarView(
-                          controller: _tabController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            IngredientsTab(
-                              ingredients: widget.mealData?.ingredients,
-                            ),
-                            InstructionsTab(
-                              instructions: widget.mealData?.instruction,
-                            )
-                          ]),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           )

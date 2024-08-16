@@ -16,7 +16,6 @@ class MyCustomExtendedImage extends StatelessWidget {
       clearMemoryCacheIfFailed: true,
       clearMemoryCacheWhenDispose: false,
       cache: true,
-      
       loadStateChanged: (ExtendedImageState state) {
         if (state.extendedImageLoadState == LoadState.loading) {
           final ImageChunkEvent? loadingProgress = state.loadingProgress;
