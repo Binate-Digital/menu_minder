@@ -363,127 +363,128 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           }
 
           return PrimaryButton(
-              text: widget.buttonText != null
-                  ? widget.buttonText!
-                  : widget.isEdit!
-                      ? "Save Details"
-                      : "Add Recipe",
-              onTap: () {
-                if (!widget.isMealPlan && selectedPrefrence == null) {
-                  CustomToast()
-                      .showToast(message: 'Please select recipe preference.');
+            text: widget.buttonText != null
+                ? widget.buttonText!
+                : widget.isEdit!
+                    ? "Save Details"
+                    : "Add Recipe",
+            onTap: () {
+              if (!widget.isMealPlan && selectedPrefrence == null) {
+                CustomToast()
+                    .showToast(message: 'Please select recipe preference.');
+                return;
+              }
+
+              if (_key.currentState!.validate()) {
+                final List<Map<String, String>> ingredients = [];
+
+                bool notValid = allIngredients.any((element) =>
+                    element.valueController.text.isNotEmpty &&
+                    element.dropdownValue == null);
+
+                if (notValid) {
+                  CustomToast().showToast(message: 'Please Select all units');
                   return;
                 }
 
-                if (_key.currentState!.validate()) {
-                  final List<Map<String, String>> ingredients = [];
+                for (var e in allIngredients) {
+                  final item = e.itemController.text.toString();
+                  String value = e.valueController.text.toString();
 
-                  bool notValid = allIngredients.any((element) =>
-                      element.valueController.text.isNotEmpty &&
-                      element.dropdownValue == null);
-
-                  if (notValid) {
-                    CustomToast().showToast(message: 'Please Select all units');
-                    return;
+                  if (value.isNotEmpty && e.dropdownValue != null) {
+                    value = '$value|${e.dropdownValue}';
                   }
 
-                  for (var e in allIngredients) {
-                    final item = e.itemController.text.toString();
-                    String value = e.valueController.text.toString();
+                  final Map<String, String> map = {item: value};
 
-                    if (value.isNotEmpty && e.dropdownValue != null) {
-                      value = '$value|${e.dropdownValue}';
-                    }
+                  ingredients.add(map);
+                }
 
-                    final Map<String, String> map = {item: value};
+                print(ingredients.toString());
 
-                    ingredients.add(map);
-                  }
+                Map<String, String> mergedMap = {};
 
-                  print(ingredients.toString());
+                for (var map in ingredients) {
+                  mergedMap.addAll(map);
+                }
 
-                  Map<String, String> mergedMap = {};
+                print(
+                    "Description Yeh Ja rhii hai ${descriptionController.text}");
+                // print("Servcing SIze Yeh Ja rhii hai ${servingSize.text}");
+                final model = CreateReceipeModel(
+                    preference: selectedPrefrence,
+                    title: titleController.text.trim(),
+                    servingSize: servingSize.text.isNotEmpty
+                        ? int.parse(servingSize.text)
+                        : null,
+                    descriptions: descriptionController.text == ""
+                        ? " "
+                        : descriptionController.text,
+                    instructions: instructionsController.text,
+                    images: imageList,
+                    ingredients: mergedMap,
+                    type: widget.isMealPlan ? 'Meal Plan' : 'Reciepe');
 
-                  for (var map in ingredients) {
-                    mergedMap.addAll(map);
-                  }
-
+                if (widget.isEdit!) {
                   print(
-                      "Description Yeh Ja rhii hai ${descriptionController.text}");
-                  // print("Servcing SIze Yeh Ja rhii hai ${servingSize.text}");
-                  final model = CreateReceipeModel(
-                      preference: selectedPrefrence,
-                      title: titleController.text.trim(),
-                      servingSize: servingSize.text.isNotEmpty
-                          ? int.parse(servingSize.text)
-                          : null,
-                      descriptions: descriptionController.text == ""
-                          ? " "
-                          : descriptionController.text,
-                      instructions: instructionsController.text,
-                      images: imageList,
-                      ingredients: mergedMap,
-                      type: widget.isMealPlan ? 'Meal Plan' : 'Reciepe');
+                      "////------------Updating Reciepy------------------//////");
+                  context.read<CoreProvider>().editReciepe(
+                      context, model, ingredients, onSuccess: () async {
+                    // val.initState();
+                    // val.initState();
+                    await Future.delayed(const Duration(milliseconds: 400));
+                    final userID =
+                        // ignore: use_build_context_synchronously
+                        context.read<AuthProvider>().userdata?.data?.Id;
+                    // ignore: use_build_context_synchronously
+                    context
+                        .read<CoreProvider>()
+                        .getReciepiesByUserID(context, userID);
 
-                  if (widget.isEdit!) {
-                    print(
-                        "////------------Updating Reciepy------------------//////");
-                    context.read<CoreProvider>().editReciepe(
-                        context, model, ingredients, onSuccess: () async {
-                      // val.initState();
-                      // val.initState();
-                      await Future.delayed(const Duration(milliseconds: 400));
-                      final userID =
-                          // ignore: use_build_context_synchronously
-                          context.read<AuthProvider>().userdata?.data?.Id;
-                      // ignore: use_build_context_synchronously
-                      context
-                          .read<CoreProvider>()
-                          .getReciepiesByUserID(context, userID);
+                    context.read<CoreProvider>().getHomeRecipies(context, '');
 
-                      context.read<CoreProvider>().getHomeRecipies(context, '');
-
-                      // ignore: use_build_context_synchronously
-                      AppNavigator.pop(context);
-                      // ignore: use_build_context_synchronously
+                    // ignore: use_build_context_synchronously
+                    AppNavigator.pop(context);
+                    // ignore: use_build_context_synchronously
+                    AppNavigator.pop(context);
+                  },
+                      editRecipeID: widget.recipeModel?.reciepieId,
+                      networksImages: networkImages);
+                } else {
+                  print(
+                      "Adding New Meal Plan  date ${widget.date}  mealType :${widget.mealType}  ");
+                  print("////------------Add Recipie------------------//////");
+                  context.read<CoreProvider>().addNewReciepe(
+                    context,
+                    () async {
+                      if (widget.isMealPlan) {
+                        context.read<CoreProvider>().getAllMealPalnsByType(
+                            context, widget.mealType, widget.date);
+                      } else {
+                        context.read<CoreProvider>().getReciepiesByUserID(
+                            context,
+                            context.read<AuthProvider>().userdata?.data?.Id ??
+                                '');
+                        context
+                            .read<CoreProvider>()
+                            .getHomeRecipies(context, '');
+                      }
                       AppNavigator.pop(context);
                     },
-                        editRecipeID: widget.recipeModel?.reciepieId,
-                        networksImages: networkImages);
-                  } else {
-                    print(
-                        "Adding New Meal Plan  date ${widget.date}  mealType :${widget.mealType}  ");
-                    print(
-                        "////------------Add Recipie------------------//////");
-                    context.read<CoreProvider>().addNewReciepe(
-                      context,
-                      () async {
-                        if (widget.isMealPlan) {
-                          context.read<CoreProvider>().getAllMealPalnsByType(
-                              context, widget.mealType, widget.date);
-                        } else {
-                          context.read<CoreProvider>().getReciepiesByUserID(
-                              context,
-                              context.read<AuthProvider>().userdata?.data?.Id ??
-                                  '');
-                          context
-                              .read<CoreProvider>()
-                              .getHomeRecipies(context, '');
-                        }
-                        AppNavigator.pop(context);
-                      },
-                      model,
-                      ingredients,
-                      isEdit: false,
-                      editRecipeID: widget.recipeModel?.reciepieId,
-                      type: widget.mealType != '' ? widget.mealType : 'No',
-                      date: widget.date ?? '',
-                      isMealPlan: widget.isMealPlan,
-                      networksImages: networkImages,
-                    );
-                  }
+                    model,
+                    ingredients,
+                    isEdit: false,
+                    editRecipeID: widget.recipeModel?.reciepieId,
+                    type: widget.mealType != '' ? widget.mealType : 'No',
+                    date: widget.date ?? '',
+                    isMealPlan: widget.isMealPlan,
+                    networksImages: networkImages,
+                  );
                 }
-              });
+              }
+              print("tatatatata");
+            },
+          );
         }),
       ),
       body: Padding(

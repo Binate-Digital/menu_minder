@@ -7,7 +7,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'app.dart';
 
-//Last update 21/aug/2024 (feedbacks done) !!!
+//Last update 21/aug/2024 (feedbacks done) !!!!
+//Create Meal Receipe work is undone.
 
 void main() async {
   await dotenv.load(fileName: ".env");
