@@ -55,11 +55,16 @@ class _WebScreenState extends State<WebScreen> {
           );
         } else if (val.loadContentState == States.success) {
           _controller?.loadRequest(Uri.parse(val.contentUrl));
+          print("val.contentUrl: ${val.contentUrl}");
           return WebViewWidget(controller: _controller!);
         }
 
         // ignore: prefer_const_constructors
-        return SizedBox();
+        return Container(
+          height: 100,
+          width: 100,
+          color: Colors.red,
+        );
       })),
     );
   }

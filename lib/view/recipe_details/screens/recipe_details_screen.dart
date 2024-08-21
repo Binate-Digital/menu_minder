@@ -51,14 +51,16 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       bottomNavigationBar: widget.bottomNavigationBar,
-      appBar: AppStyles.appBar(
-        "Recipe Details",
-        () {
-          AppNavigator.pop(context);
-        },
-        textSize: 18,
-        action: widget.action,
-      ),
+      // appBar: AppStyles.appBar(
+      //   "Recipe Details",
+      //   () {
+      //     AppNavigator.pop(context);
+      //   },
+      //   textSize: 18,
+      //   action: widget.action,
+
+      // ),
+      appBar: AppStyles.pinkAppBar(context, "Recipe Details"),
       body: Column(
         children: [
           Stack(
@@ -139,16 +141,23 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
                           ),
                         ),
                   SizedBox(height: 10),
-                  Positioned(
-                    bottom: 10,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        widget.mealData!.recipeImages?.length ?? 0,
-                        (index) => buildDotIndicator(index),
-                      ),
+                  // Positioned(
+                  //   bottom: 10,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: List.generate(
+                  //       widget.mealData!.recipeImages?.length ?? 0,
+                  //       (index) => buildDotIndicator(index),
+                  //     ),
+                  //   ),
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      widget.mealData!.recipeImages?.length ?? 0,
+                      (index) => buildDotIndicator(index),
                     ),
                   ),
                   Padding(

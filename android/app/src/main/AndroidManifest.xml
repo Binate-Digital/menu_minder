@@ -10,7 +10,7 @@
 
 
 
-    <application android:label="Menu Minder" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">
+    <application android:label="Menu Minder" android:name="${applicationName}" android:usesCleartextTraffic="true" android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBmaS0B0qwokES4a_CiFNVkVJGkimXkNsk"/>
 
         <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

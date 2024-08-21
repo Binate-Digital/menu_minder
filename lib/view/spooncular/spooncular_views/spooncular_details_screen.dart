@@ -95,9 +95,10 @@ class _SpoonCularRecipieDetailsScreenState
     return Scaffold(
       extendBodyBehindAppBar: true,
       bottomNavigationBar: widget.bottomNavigationBar,
-      appBar: AppStyles.appBar("Recipe Details", () {
-        AppNavigator.pop(context);
-      }, textSize: 18, action: widget.action),
+      // appBar: AppStyles.appBar("Recipe Details", () {
+      //   AppNavigator.pop(context);
+      // }, textSize: 18, action: widget.action),
+      appBar: AppStyles.pinkAppBar(context, "Recipe Details"),
       body: _sp.getRecipeType == 0
           ? Consumer<SpoonCularProvider>(builder: (context, val, _) {
               if (val.getRecipeDetailsState == States.loading) {
@@ -133,7 +134,8 @@ class _SpoonCularRecipieDetailsScreenState
                         Container(
                           height: MediaQuery.of(context).size.height * .12,
                           decoration: BoxDecoration(
-                              color: AppColor.COLOR_BLACK.withOpacity(.3)),
+                            color: AppColor.COLOR_BLACK.withOpacity(.3),
+                          ),
                         ),
                         // Positioned(
                         //   bottom: 20,
