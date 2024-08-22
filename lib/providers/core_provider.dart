@@ -883,6 +883,11 @@ class CoreProvider extends ChangeNotifier {
         'type': type,
         'date': date
       };
+      log({
+        'recipe_id': reciepieID,
+        'type': type,
+        'date': date
+      }.toString());
       Response? response = await _coreRepo.addMealPlan(data);
 
       try {
