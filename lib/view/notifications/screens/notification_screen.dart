@@ -6,6 +6,7 @@ import 'package:menu_minder/utils/dummy.dart';
 import 'package:menu_minder/utils/styles.dart';
 import 'package:menu_minder/providers/notifications_provider.dart';
 import 'package:menu_minder/view/inbox/widgets/inbox_container_widget.dart';
+import 'package:menu_minder/view/meal_plan/screens/meal_plan_detail_screen.dart';
 import 'package:menu_minder/view/my_polls/screens/my_polls_screen.dart';
 import 'package:menu_minder/view/notifications/custom_slidable.dart';
 import 'package:provider/provider.dart';

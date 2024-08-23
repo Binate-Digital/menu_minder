@@ -88,10 +88,12 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
                           if (i == 0) {
                             context.read<CoreProvider>().getAllMealPalnsByType(
                                 context, widget.mealType, widget.currentDate);
+                            print('uf');
                           } else {
                             context.read<CoreProvider>().getFamilySuggestions(
                                 context, widget.mealType,
                                 currentDate: widget.currentDate);
+                            print('else');
                           }
                         },
                         tabController: _tabController,
