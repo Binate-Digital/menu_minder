@@ -11,6 +11,7 @@ import 'package:menu_minder/utils/asset_paths.dart';
 import 'package:menu_minder/view/add_recipe/screens/update_meal_plan.dart';
 import 'package:menu_minder/view/meal_plan/screens/meal_plan_detail_screen.dart';
 import 'package:menu_minder/view/meal_plan/screens/suggesstion_list_screen.dart';
+import 'package:menu_minder/view/recipe_details/screens/recipe_details_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../common/bottom_sheet_option_widget.dart';
 import '../../../utils/styles.dart';
@@ -219,13 +220,21 @@ class MealPlansGridWidget extends StatelessWidget {
                   },
                   onTap: () {
                     if (isSuggesstionns) {
-                      print("Family Members " +
-                          mealSList[index].familyMembers.toString());
+                      print("Family Members ${mealSList[index].familyMembers}");
+
                       AppNavigator.push(
                           context,
-                          SuggesstionListScreen(
-                              mealType: mealType,
-                              mealPlanModel: mealSList[index]));
+                          RecipeDetailsScreen(
+                            isFromProfileDetails: false,
+                            mealData: mealSList[index].reciepieData,
+                            viewSuggestionsButton: true,
+                            mealPlanModel: mealSList[index],
+                          ));
+                      // AppNavigator.push(
+                      //     context,
+                      //     SuggesstionListScreen(
+                      //         mealType: mealType,
+                      //         mealPlanModel: mealSList[index]));
                     } else {
                       AppNavigator.push(
                           context,

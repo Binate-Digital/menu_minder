@@ -15,10 +15,10 @@ class AppStyles {
             color: AppColor.THEME_COLOR_PRIMARY1),
       );
   static appBar(String text, VoidCallback onleadingTap,
-          {double? textSize, List<Widget>? action}) =>
+          {double? textSize, List<Widget>? action, Color? backrgroudColor}) =>
       AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: backrgroudColor ?? AppColor.THEME_COLOR_PRIMARY1,
         systemOverlayStyle: SystemUiOverlayStyle.light
             .copyWith(statusBarColor: Colors.transparent),
         leading: IconButton(

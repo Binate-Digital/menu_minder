@@ -39,7 +39,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
         screenPadding: EdgeInsets.zero,
         appBar: AppStyles.appBar("", () {
           AppNavigator.pop(context);
-        }),
+        }, backrgroudColor: AppColor.TRANSPARENT_COLOR),
         child: Form(
           key: formKey,
           child: Column(

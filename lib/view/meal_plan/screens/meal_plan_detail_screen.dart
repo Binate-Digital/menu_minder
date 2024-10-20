@@ -80,7 +80,7 @@ class _MealPlanDetailScreenState extends State<MealPlanDetailScreen>
                       fit: BoxFit.cover,
                     ),
               Container(
-                height: MediaQuery.of(context).size.height * .12,
+                height: MediaQuery.of(context).size.height / 3.2,
                 decoration:
                     BoxDecoration(color: AppColor.COLOR_BLACK.withOpacity(.3)),
               ),

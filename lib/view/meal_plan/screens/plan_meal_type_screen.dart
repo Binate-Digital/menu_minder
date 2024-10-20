@@ -30,6 +30,8 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
+    _getAllReciepies();
     super.initState();
   }
 
@@ -43,7 +45,7 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
 
   @override
   Widget build(BuildContext context) {
-    _getAllReciepies();
+    // _getAllReciepies();
 
     // final controller = RefreshController();
 

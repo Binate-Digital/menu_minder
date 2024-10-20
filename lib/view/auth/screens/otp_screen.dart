@@ -69,7 +69,7 @@ class _OtpScreenState extends State<OtpScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppStyles.appBar("", () {
           AppNavigator.pushAndRemoveUntil(context, const SocialLoginScreen());
-        }),
+        }, backrgroudColor: AppColor.TRANSPARENT_COLOR),
         child: WillPopScope(
           onWillPop: () async {
             AppNavigator.pushAndRemoveUntil(context, const SocialLoginScreen());

@@ -257,7 +257,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           : AppStyles.appBar("Create Profile", () {
               AppNavigator.pushAndRemoveUntil(
                   context, const SocialLoginScreen());
-            }),
+            },
+              backrgroudColor:
+                  !widget.isEdit ? AppColor.TRANSPARENT_COLOR : null),
       child: WillPopScope(
         onWillPop: () async {
           if (widget.isEdit) {
@@ -444,9 +446,19 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: PrimaryButton(
                                       text: "Save Details",
                                       onTap: () async {
+                                        FocusScope.of(context).unfocus();
+
                                         if (_key.currentState!.validate()) {
                                           // if (phoneNumber != null) {
                                           // print("EMAIL $")
+
+                                          // final allPrefValidated =
+                                          //     _validatePrefrences();
+
+                                          // if (!allPrefValidated) {
+                                          //   return;
+                                          // }
+
                                           val.createProfile(
                                               context,
                                               CreateProfileModel(
@@ -484,6 +496,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                           //   AppMessage.showMessage(
                                           //       'Please Select Phone Number');
                                           // }
+                                        } else {
+                                          AppMessage.showMessage(
+                                              'Please fill all the required fields');
                                         }
                                       }),
                                 );
@@ -554,6 +569,15 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                         onTap: () {
                                           // validatePhone();
                                           if (_key.currentState!.validate()) {
+                                            FocusScope.of(context).unfocus();
+
+                                            // final allPrefValidated =
+                                            //     _validatePrefrences();
+
+                                            // if (!allPrefValidated) {
+                                            //   return;
+                                            // }
+
                                             val.createProfile(
                                                 context,
                                                 CreateProfileModel(
@@ -587,6 +611,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                   dietPeferences:
                                                       dietList.value,
                                                 ));
+                                          } else {
+                                            AppMessage.showMessage(
+                                                'Please fill all the required fields');
                                           }
                                         });
                               })),
@@ -604,6 +631,24 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         ),
       ),
     );
+  }
+
+  bool _validatePrefrences() {
+    if (foodList.value?.isEmpty == true) {
+      AppMessage.showMessage('Please select breakfast preferences');
+      return false;
+    } else if (lunchList.value?.isEmpty == true) {
+      AppMessage.showMessage('Please select lunch preferences');
+    } else if (dinnerList.value?.isEmpty == true) {
+      AppMessage.showMessage('Please select dinner preferences');
+      return false;
+    } else if (dietList.value?.isEmpty == true) {
+      AppMessage.showMessage('Please select diet preferences');
+      return false;
+    } else {
+      return true;
+    }
+    return false;
   }
 
   HeadingTextField _emailField() {
@@ -635,8 +680,14 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             widget.isEdit ? AppColor.TRANSPARENT_COLOR : AppColor.COLOR_BLACK);
   }
 
-  TypeAheadField<String> _dietPreffField(BuildContext context) {
-    return TypeAheadField<String>(
+  TypeAheadFormField<String> _dietPreffField(BuildContext context) {
+    return TypeAheadFormField<String>(
+      // validator: (value) {
+      //   if (dietList.value?.isEmpty == true) {
+      //     return 'Please select diet Preferences';
+      //   }
+      //   return null;
+      // },
       onSuggestionSelected: (suggestion) {
         // if (food.text.isNotEmpty) {
         //   foodList.value!.add(suggestion);
@@ -781,7 +832,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               widget.isEdit ? AppColor.COLOR_BLACK : AppColor.COLOR_WHITE,
         ),
         AppStyles.height8SizedBox(),
-        TypeAheadField<String>(
+        TypeAheadFormField<String>(
+          // validator: (value) {
+          //   if (dietList.value?.isEmpty == true) {
+          //     return 'Please select breakfast preferences';
+          //   }
+          //   return null;
+          // },
           onSuggestionSelected: (suggestion) {
             // if (food.text.isNotEmpty) {
             //   foodList.value!.add(suggestion);
@@ -920,7 +977,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               widget.isEdit ? AppColor.COLOR_BLACK : AppColor.COLOR_WHITE,
         ),
         AppStyles.height8SizedBox(),
-        TypeAheadField<String>(
+        TypeAheadFormField<String>(
+          // validator: (value) {
+          //   if (dietList.value?.isEmpty == true) {
+          //     return 'Please select lunch preferences';
+          //   }
+          //   return null;
+          // },
           onSuggestionSelected: (suggestion) {
             // if (food.text.isNotEmpty) {
             //   foodList.value!.add(suggestion);
@@ -1059,7 +1122,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               widget.isEdit ? AppColor.COLOR_BLACK : AppColor.COLOR_WHITE,
         ),
         AppStyles.height8SizedBox(),
-        TypeAheadField<String>(
+        TypeAheadFormField<String>(
+          // validator: (value) {
+          //   if (dietList.value?.isEmpty == true) {
+          //     return 'Please select dinner Preferences';
+          //   }
+          //   return null;
+          // },
           onSuggestionSelected: (suggestion) {
             // if (food.text.isNotEmpty) {
             //   foodList.value!.add(suggestion);

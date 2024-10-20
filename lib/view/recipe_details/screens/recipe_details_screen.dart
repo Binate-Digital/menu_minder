@@ -2,6 +2,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/primary_button.dart';
 import 'package:menu_minder/common/profile_banner_widget.dart';
 import 'package:menu_minder/utils/actions.dart';
@@ -13,6 +14,7 @@ import 'package:menu_minder/view/meal_plan/screens/data/get_all_meal_plan_model.
 import 'package:menu_minder/view/recipe_details/widgets/instructions_tab_widget.dart';
 import 'package:menu_minder/view/user_profile/screens/friends_profile_screen.dart';
 import '../../../common/custom_tabbar.dart';
+import '../../meal_plan/screens/suggesstion_list_screen.dart';
 import '../widgets/custom_carosal_indicator.dart';
 import '../widgets/ingredients_tab_widget.dart';
 import 'package:menu_minder/utils/uppercase_string_extension.dart';
@@ -21,12 +23,16 @@ class RecipeDetailsScreen extends StatefulWidget {
   Widget? bottomNavigationBar;
   List<Widget>? action;
   final RecipeModel? mealData;
+  final MealPlanModel? mealPlanModel;
+  final bool viewSuggestionsButton;
   final bool isFromProfileDetails;
   RecipeDetailsScreen(
       {Key? key,
       this.bottomNavigationBar,
+      this.mealPlanModel,
       this.action,
       this.mealData,
+      this.viewSuggestionsButton = false,
       this.isFromProfileDetails = false})
       : super(key: key);
 
@@ -60,7 +66,14 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
       //   action: widget.action,
 
       // ),
-      appBar: AppStyles.pinkAppBar(context, "Recipe Details"),
+      appBar: AppStyles.appBar(
+        // context,
+        "Recipe Details",
+        () {
+          AppNavigator.pop(context);
+        },
+        action: widget.action,
+      ),
       body: Column(
         children: [
           Stack(
@@ -91,11 +104,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
               //           fit: BoxFit.cover,
               //         ),
               //       ),
-              Container(
-                height: MediaQuery.of(context).size.height * .12,
-                decoration:
-                    BoxDecoration(color: AppColor.COLOR_BLACK.withOpacity(.3)),
-              ),
+
               // Positioned(
               //   bottom: 20,
               //   left: 0,
@@ -114,32 +123,45 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  widget.mealData != null &&
-                          widget.mealData!.recipeImages != null &&
-                          widget.mealData!.recipeImages!.isNotEmpty
-                      ? CustomCarouselSlider(
-                          onPageChanged: (index) {
-                            setState(() {
-                              currentImageIndex = index;
-                            });
-                          },
-                          imageUrls: widget.mealData!.recipeImages!,
-                        )
-                      // Center(
-                      //     child: ExtendedImage.network(
-                      //       dotenv.get('IMAGE_URL') +
-                      //           widget.mealData!.recipeImages!.first,
-                      //       height: 280,
-                      //     ),
-                      //   )
+                  Stack(
+                    children: [
+                      widget.mealData != null &&
+                              widget.mealData!.recipeImages != null &&
+                              widget.mealData!.recipeImages!.isNotEmpty
+                          ? SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: CustomCarouselSlider(
+                                onPageChanged: (index) {
+                                  setState(() {
+                                    currentImageIndex = index;
+                                  });
+                                },
+                                imageUrls: widget.mealData!.recipeImages!,
+                              ),
+                            )
+                          // Center(
+                          //     child: ExtendedImage.network(
+                          //       dotenv.get('IMAGE_URL') +
+                          //           widget.mealData!.recipeImages!.first,
+                          //       height: 280,
+                          //     ),
+                          //   )
 
-                      : Center(
-                          child: Image.asset(
-                            AssetPath.PHOTO_PLACE_HOLDER,
-                            height: MediaQuery.of(context).size.height / 3.2,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                          : Center(
+                              child: Image.asset(
+                                AssetPath.PHOTO_PLACE_HOLDER,
+                                height:
+                                    MediaQuery.of(context).size.height / 3.2,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 3.2,
+                        decoration: BoxDecoration(
+                            color: AppColor.COLOR_BLACK.withOpacity(.3)),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 10),
                   // Positioned(
                   //   bottom: 10,
@@ -175,21 +197,48 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
                                   widget.mealData?.title ?? '',
                                   fontWeight: FontWeight.bold),
                             ),
-                            widget.mealData?.myRecipe == 1
-                                ? PrimaryButton(
-                                    textPadding: const EdgeInsets.only(
-                                        left: 12, right: 12),
-                                    height: 35,
-                                    buttonTextSize: 12,
-                                    text: 'Share',
+                            widget.viewSuggestionsButton
+                                ? GestureDetector(
                                     onTap: () {
                                       AppNavigator.push(
                                           context,
-                                          ShareFamilyScreen(
-                                            recipeModel: widget.mealData!,
-                                          ));
-                                    })
-                                : const SizedBox()
+                                          SuggesstionListScreen(
+                                              mealType: widget.mealData?.type ??
+                                                  "breakfast",
+                                              mealPlanModel:
+                                                  widget.mealPlanModel!));
+                                    },
+                                    child: Container(
+                                      // height: 50,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 15),
+                                      // margin: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                          color: AppColor.THEME_COLOR_PRIMARY1,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: const CustomText(
+                                        text: "View Suggestions",
+                                        fontSize: 12,
+                                        fontColor: AppColor.COLOR_WHITE,
+                                      ),
+                                    ),
+                                  )
+                                : widget.mealData?.myRecipe == 1
+                                    ? PrimaryButton(
+                                        textPadding: const EdgeInsets.only(
+                                            left: 12, right: 12),
+                                        height: 35,
+                                        buttonTextSize: 12,
+                                        text: 'Share',
+                                        onTap: () {
+                                          AppNavigator.push(
+                                              context,
+                                              ShareFamilyScreen(
+                                                recipeModel: widget.mealData!,
+                                              ));
+                                        })
+                                    : const SizedBox()
                           ],
                         ),
                         AppStyles.height20SizedBox(),

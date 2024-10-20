@@ -59,6 +59,7 @@ class SpoonCularProvider extends ChangeNotifier {
 
   initSearching() {
     _isSearching = false;
+    // recipeType = 0;
   }
 
   ///RECIPIES
@@ -122,6 +123,7 @@ class SpoonCularProvider extends ChangeNotifier {
       );
 
       adminRecipes.clear();
+
       adminRecipesFromJson(response?.data).data.forEach((adRecipe) {
         if (adRecipe.preference.toLowerCase() == prefsType.toLowerCase()) {
           adminRecipes.add(adRecipe);
@@ -133,6 +135,8 @@ class SpoonCularProvider extends ChangeNotifier {
 
       _changeAdminRecipiesLoadingState(States.success);
 
+      _changeRecipiesWithDietState(States.success);
+
       print("admin recipes:: ${response?.data}");
       print("admin recipes length :: ${adminRecipes.length}");
 
@@ -142,6 +146,7 @@ class SpoonCularProvider extends ChangeNotifier {
     } catch (e) {
       print("admin recipes exception :: ${e.toString()}");
       _changeAdminRecipiesLoadingState(States.failure);
+      _changeRecipiesWithDietState(States.failure);
       // if (showLoader) {
       //   AppNavigator.pop(ctx);
       // }
@@ -187,6 +192,8 @@ class SpoonCularProvider extends ChangeNotifier {
 
         final randomFoodPref = foodPref[randomIndex];
         final randomDiet = dietPrefs[randomDietIndex];
+        adminRecipes.clear();
+        _searchResultsSpooncular = null;
 
         print("RANDOM INDEX $randomIndex");
 
@@ -195,6 +202,7 @@ class SpoonCularProvider extends ChangeNotifier {
           'diet': randomDiet.toLowerCase(),
           'query': randomFoodPref.toLowerCase()
         };
+
         Response? response = await _coreRepo.spoonCularSearch(params);
 
         _searchResultsSpooncular =
@@ -208,7 +216,9 @@ class SpoonCularProvider extends ChangeNotifier {
         }
         // onSuccess?.call();
       } else {
-        _changeRecipiesWithDietState(States.failure);
+        adminRecipes.clear();
+        _searchResultsSpooncular = null;
+        _changeRecipiesWithDietState(States.loading);
         //Admin
         getAdminRecipe(context, showLoader: true, prefsType: "Breakfast");
       }

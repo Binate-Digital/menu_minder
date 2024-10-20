@@ -93,12 +93,19 @@ class _SpoonCularRecipieDetailsScreenState
     // print(
     //     "IMAGE: https://webservices.menuminderusa.com:3000/${widget.adminRecipeData!.recipeImages.first}");
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       bottomNavigationBar: widget.bottomNavigationBar,
       // appBar: AppStyles.appBar("Recipe Details", () {
       //   AppNavigator.pop(context);
       // }, textSize: 18, action: widget.action),
-      appBar: AppStyles.pinkAppBar(context, "Recipe Details"),
+      appBar: AppStyles.appBar(
+        // context,
+        "Recipe Details",
+        () {
+          AppNavigator.pop(context);
+        },
+        action: widget.action,
+      ),
       body: _sp.getRecipeType == 0
           ? Consumer<SpoonCularProvider>(builder: (context, val, _) {
               if (val.getRecipeDetailsState == States.loading) {
@@ -131,12 +138,12 @@ class _SpoonCularRecipieDetailsScreenState
                         //           fit: BoxFit.cover,
                         //         ),
                         //       ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * .12,
-                          decoration: BoxDecoration(
-                            color: AppColor.COLOR_BLACK.withOpacity(.3),
-                          ),
-                        ),
+                        // Container(
+                        //   height: MediaQuery.of(context).size.height * .2,
+                        //   decoration: BoxDecoration(
+                        //     color: AppColor.COLOR_BLACK.withOpacity(.3),
+                        //   ),
+                        // ),
                         // Positioned(
                         //   bottom: 20,
                         //   left: 0,
@@ -538,50 +545,66 @@ class _SpoonCularRecipieDetailsScreenState
             })
           : Column(
               children: [
-                Stack(
-                  // alignment: Alignment.center,
-                  // fit: StackFit.loose,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * .12,
-                      decoration: BoxDecoration(
-                        color: AppColor.COLOR_BLACK.withOpacity(.3),
-                      ),
-                    ),
-                  ],
-                ),
+                // Stack(
+                //   // alignment: Alignment.center,
+                //   // fit: StackFit.loose,
+                //   children: [
+                //     // Container(
+                //     //   height: MediaQuery.of(context).size.height * .12,
+                //     //   decoration: BoxDecoration(
+                //     //     color: AppColor.COLOR_BLACK.withOpacity(.3),
+                //     //   ),
+                //     // ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        widget.adminRecipeData != null &&
-                                widget.adminRecipeData!.recipeImages.isNotEmpty
-                            ? Container(
-                                // color: Colors.red,
-                                width: double.infinity,
-                                child: Center(
-                                  child: MyCustomExtendedImage(
-                                    imageUrl:
-                                        "https://webservices.menuminderusa.com:3000/${widget.adminRecipeData!.recipeImages.first}",
-                                  ),
-                                ),
-                              )
-                            // Center(
-                            //     child: ExtendedImage.network(
-                            //       dotenv.get('IMAGE_URL') +
-                            //           widget.mealData!.recipeImages!.first,
-                            //       height: 280,
-                            //     ),
-                            //   )
+                        Stack(
+                          children: [
+                            widget.adminRecipeData != null &&
+                                    widget.adminRecipeData!.recipeImages
+                                        .isNotEmpty
+                                ? Container(
+                                    margin: const EdgeInsets.only(top: 2),
+                                    // color: Colors.red,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height /
+                                        3.2,
 
-                            : Center(
-                                child: Image.asset(
-                                  AssetPath.PHOTO_PLACE_HOLDER,
-                                  height:
-                                      MediaQuery.of(context).size.height / 3.5,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                    child: MyCustomExtendedImage(
+                                      imageUrl:
+                                          "https://webservices.menuminderusa.com:3000/${widget.adminRecipeData!.recipeImages.first}",
+                                    ),
+                                  )
+                                // Center(
+                                //     child: ExtendedImage.network(
+                                //       dotenv.get('IMAGE_URL') +
+                                //           widget.mealData!.recipeImages!.first,
+                                //       height: 280,
+                                //     ),
+                                //   )
+
+                                : Center(
+                                    child: Image.asset(
+                                      AssetPath.PHOTO_PLACE_HOLDER,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3.2,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                            Container(
+                              height: MediaQuery.of(context).size.height / 3.2,
+                              decoration: BoxDecoration(
+                                  color: AppColor.COLOR_BLACK.withOpacity(.3)),
+                            ),
+                          ],
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               top: AppDimen.SCREEN_PADDING,
