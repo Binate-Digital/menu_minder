@@ -10,6 +10,7 @@ import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/food_container_widget.dart';
 import 'package:menu_minder/utils/config.dart';
 import 'package:menu_minder/utils/toast.dart';
+import 'package:menu_minder/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'package:menu_minder/common/custom_loading_bar.dart';
@@ -75,6 +76,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   List<KIngredeint> allIngredients = [];
 
   _buildController(KIngredeint ingredeint) {
+    print(ingredeint.dropdownValue);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Row(
@@ -128,11 +130,16 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 backgroundColor: Colors.grey.shade100,
                 hint: 'Unit',
                 iconSize: 24,
-                selected_value: ingredeint.dropdownValue,
-                items: AppConfig.mesaureMents,
+                selected_value:
+                    AppConfig.mesaureMents.contains(ingredeint.dropdownValue)
+                        ? ingredeint.dropdownValue
+                        : null, // Ensure null if the value is not found
+                items: AppConfig.mesaureMents
+                    .toSet()
+                    .toList(), // Ensure no duplicates
                 onValueChanged: (t) {
                   setState(() {
-                    ingredeint.dropdownValue = t;
+                    ingredeint.dropdownValue = t; // Handle null case
                   });
                 },
               ),
@@ -187,7 +194,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           ? widget.recipeModel!.servingSize.toString()
           : '';
 
-      selectedPrefrence = widget.recipeModel?.prefrence;
+      selectedPrefrence = widget.recipeModel?.prefrence != null
+          ? Utils.capitalize(widget.recipeModel!.prefrence!)
+          : "Breakfast";
 
       widget.recipeModel?.ingredients?.forEach((element) {
         TextEditingController key =
@@ -201,6 +210,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
         String? dropdownV = element.values.first.toString().contains('|')
             ? element.values.first.toString().split('|').last
             : null;
+
+        if (!AppConfig.mesaureMents.contains(dropdownV)) {
+          dropdownV = null;
+        }
 
         allIngredients.add(KIngredeint(
             itemController: key,

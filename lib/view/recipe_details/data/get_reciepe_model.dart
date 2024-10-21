@@ -4,8 +4,9 @@ class GetReciepiesList {
   int? status;
   String? message;
   List<RecipeModel>? data;
+  List<RecipeModel>? adminRecipies;
 
-  GetReciepiesList({this.status, this.message, this.data});
+  GetReciepiesList({this.status, this.message, this.data, this.adminRecipies});
 
   GetReciepiesList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -15,6 +16,15 @@ class GetReciepiesList {
       json['data'].forEach((v) {
         data!.add(RecipeModel.fromJson(v));
       });
+    }
+
+    if (json['adminRecipe'] != null) {
+      adminRecipies = <RecipeModel>[];
+      json['adminRecipe'].forEach((v) {
+        data!.add(RecipeModel.fromJson(v));
+      });
+    } else {
+      adminRecipies = [];
     }
   }
 

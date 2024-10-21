@@ -91,7 +91,11 @@ class _CreateNewPollScreenState extends State<CreateNewPollScreen> {
         final provcid = context.read<CoreProvider>();
 
         setState(() {
-          userRecipies = provcid.getMyRecipies?.data ?? [];
+          userRecipies = [
+            ...provcid.getMyRecipies?.data ?? [],
+            ...provcid.getMyRecipies?.adminRecipies ?? []
+          ];
+
           userRecipies.shuffle();
           print(userRecipies.length);
         });

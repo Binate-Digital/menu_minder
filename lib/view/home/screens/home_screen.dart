@@ -170,8 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   searchController: searchController,
                                   receipies: val.searchedRecipies,
                                   onTap: () {
-                                    AppNavigator.push(
-                                        context, RecipeDetailsScreen());
+                                    // AppNavigator.push(
+                                    //     context, RecipeDetailsScreen());
                                   },
                                 )
                           : Visibility(
@@ -184,7 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       receipies: val.homeRecipies?.data ?? [],
                                       onTap: () {
                                         AppNavigator.push(
-                                            context, RecipeDetailsScreen());
+                                            context,
+                                            RecipeDetailsScreen(
+                                              action: [],
+                                            ));
                                       },
                                     )
                                   : const Padding(

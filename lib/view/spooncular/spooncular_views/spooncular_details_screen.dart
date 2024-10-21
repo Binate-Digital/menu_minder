@@ -719,7 +719,7 @@ class _SpoonCularRecipieDetailsScreenState
                                                               networkImages)
                                                           : jsonEncode(
                                                               networkImages),
-                                                  is_spooncular: 0,
+                                                  is_spooncular: 1,
                                                   ingredients: mergedMap,
                                                   type: 'Reciepe');
 
