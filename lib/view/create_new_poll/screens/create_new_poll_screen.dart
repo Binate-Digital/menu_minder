@@ -93,7 +93,7 @@ class _CreateNewPollScreenState extends State<CreateNewPollScreen> {
         setState(() {
           userRecipies = [
             ...provcid.getMyRecipies?.data ?? [],
-            ...provcid.getMyRecipies?.adminRecipies ?? []
+            // ...provcid.getMyRecipies?.adminRecipies ?? []
           ];
 
           userRecipies.shuffle();

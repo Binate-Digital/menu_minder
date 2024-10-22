@@ -146,8 +146,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  createProfile(
-      BuildContext context, CreateProfileModel? createProfileModel) async {
+  createProfile(BuildContext context, CreateProfileModel? createProfileModel,
+      {bool isCreate = true}) async {
     try {
       // print(createProfileModel?.toJson().toString());
       _createProfileChangeState(States.loading);
@@ -172,10 +172,32 @@ class AuthProvider extends ChangeNotifier {
             token: response.data["data"]["user_authentication"]);
         SharedPreference().setUser(user: response.toString());
         _userdata = UserModel.fromJson(response.data);
-        _createProfileChangeState(States.success);
+
+        if (isCreate) {
+          _updateAdminRecipies();
+        } else {
+          _createProfileChangeState(States.success);
+          // Navigator.pop(context);
+        }
       } catch (e) {
         _createProfileChangeState(States.failure);
         // Utils.showToast(message: response.statusMessage);
+      }
+    } on DioException catch (_) {
+      _createProfileChangeState(States.failure);
+    }
+  }
+
+  _updateAdminRecipies() async {
+    try {
+      _addFamilyChangeState(States.loading);
+
+      Response? response = await _authRepo.addAdminRecipes({});
+
+      if (response?.statusCode == 200) {
+        _createProfileChangeState(States.success);
+      } else {
+        _createProfileChangeState(States.failure);
       }
     } on DioException catch (_) {
       _createProfileChangeState(States.failure);

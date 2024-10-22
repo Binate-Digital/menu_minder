@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:menu_minder/view/auth/bloc/models/social_query.dart';
 
-
 abstract class IAuthentication {
   Future<Response?> loginIAuthentication(Map<String, dynamic>? loginModel);
   Future<Response?> otpVerificationIAuthentication(
@@ -23,4 +22,5 @@ abstract class IAuthentication {
 
   Future<Response?> loaddAllNotifcations(Map data);
   Future<Response?> changeNotificationStatus(Map<String, dynamic>? data);
+  Future<Response?> addAdminRecipes(Map<String, dynamic>? data);
 }

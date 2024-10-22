@@ -491,7 +491,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                       dinnerList.value,
                                                   refrealCode: refreal.text,
                                                   dietPeferences:
-                                                      dietList.value));
+                                                      dietList.value),
+                                              isCreate: false);
                                           // } else {
                                           //   AppMessage.showMessage(
                                           //       'Please Select Phone Number');
@@ -610,7 +611,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                       lunchList.value,
                                                   dietPeferences:
                                                       dietList.value,
-                                                ));
+                                                ),
+                                                isCreate: true);
                                           } else {
                                             AppMessage.showMessage(
                                                 'Please fill all the required fields');

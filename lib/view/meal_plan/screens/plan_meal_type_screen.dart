@@ -45,10 +45,7 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // _getAllReciepies();
-
-    // final controller = RefreshController();
-
+    
     return Scaffold(
       appBar: AppStyles.pinkAppBar(context, widget.mealType, hasBack: true,
           onleadingTap: () {
