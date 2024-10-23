@@ -102,7 +102,6 @@ class AuthRepo implements IAuthentication {
       await DioClient().getRequest(
         context: StaticData.navigatorKey.currentContext,
         isHeaderRequire: true,
-        // queryParameters: deleteAccount,
         endPoint: dotenv.get('ADD_ADMIN_RECIPIES'),
       );
 }

@@ -308,7 +308,10 @@ class _SpoonCularRecipieDetailsScreenState
                                                                   networkImages)
                                                               : jsonEncode(
                                                                   networkImages),
-                                                      is_spooncular: 1,
+                                                      is_spooncular:
+                                                          _sp.getRecipeType == 0
+                                                              ? 1
+                                                              : 0,
                                                       ingredients: mergedMap,
                                                       type: 'Reciepe');
 
@@ -719,7 +722,10 @@ class _SpoonCularRecipieDetailsScreenState
                                                               networkImages)
                                                           : jsonEncode(
                                                               networkImages),
-                                                  is_spooncular: 1,
+                                                  is_spooncular:
+                                                      _sp.getRecipeType == 0
+                                                          ? 1
+                                                          : 0,
                                                   ingredients: mergedMap,
                                                   type: 'Reciepe');
 

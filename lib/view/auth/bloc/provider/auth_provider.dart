@@ -172,7 +172,7 @@ class AuthProvider extends ChangeNotifier {
             token: response.data["data"]["user_authentication"]);
         SharedPreference().setUser(user: response.toString());
         _userdata = UserModel.fromJson(response.data);
-
+        // _updateAdminRecipies();
         if (isCreate) {
           _updateAdminRecipies();
         } else {

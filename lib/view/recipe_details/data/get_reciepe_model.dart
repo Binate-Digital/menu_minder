@@ -18,14 +18,14 @@ class GetReciepiesList {
       });
     }
 
-    if (json['adminRecipe'] != null) {
-      adminRecipies = <RecipeModel>[];
-      json['adminRecipe'].forEach((v) {
-        data!.add(RecipeModel.fromJson(v));
-      });
-    } else {
-      adminRecipies = [];
-    }
+    // if (json['adminRecipe'] != null) {
+    //   adminRecipies = <RecipeModel>[];
+    //   json['adminRecipe'].forEach((v) {
+    //     data!.add(RecipeModel.fromJson(v));
+    //   });
+    // } else {
+    //   adminRecipies = [];
+    // }
   }
 
   Map<String, dynamic> toJson() {
