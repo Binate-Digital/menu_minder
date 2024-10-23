@@ -41,6 +41,9 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
     //         context.read<AuthProvider>().userdata?.data?.breakfastPrerence);
 
     _loadRecipeType("breakfast");
+    print("RECIPE TYPE" +
+        context.read<SpoonCularProvider>().getRecipeType.toString());
+
     // });
 
     searchController.addListener(() {

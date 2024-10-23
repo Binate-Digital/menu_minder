@@ -59,7 +59,7 @@ class SpoonCularProvider extends ChangeNotifier {
 
   initSearching() {
     _isSearching = false;
-    // recipeType = 0;
+    recipeType = 0;
   }
 
   ///RECIPIES

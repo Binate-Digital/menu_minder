@@ -325,6 +325,20 @@ class _SpoonCularRecipieDetailsScreenState
                                                               context);
                                                           AppNavigator.pop(
                                                               context);
+                                                              
+
+                                                          // context
+                                                          //     .read<
+                                                          //         CoreProvider>()
+                                                          //     .getReciepiesByUserID(
+                                                          //         context,
+                                                          //         context
+                                                          //                 .read<
+                                                          //                     AuthProvider>()
+                                                          //                 .userdata
+                                                          //                 ?.data
+                                                          //                 ?.Id ??
+                                                          //             '');
                                                         },
                                                         model,
                                                         ingredients,

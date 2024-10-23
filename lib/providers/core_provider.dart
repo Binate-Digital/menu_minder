@@ -100,7 +100,7 @@ class CoreProvider extends ChangeNotifier {
     _loadContentState = States.init;
     _addReceipeSate = States.init;
     _getAllReciepesState = States.init;
-    _getMyRecipiesState = States.init;
+    // _getMyRecipiesState = States.init;
     _getGroceryListState = States.init;
     _getMyPoleLoadState = States.init;
     _getHomeReciepiesState = States.init;
@@ -631,6 +631,8 @@ class CoreProvider extends ChangeNotifier {
         onSuccess?.call();
 
         Utils.showToast(message: 'Recipe added to profile successfully');
+
+        _changeMyReciepiesState(States.loading); //--- (STEP 5) --
         // ignore: use_build_context_synchronously
         getReciepiesByUserID(
             context, context.read<AuthProvider>().userdata!.data!.Id!);
@@ -883,11 +885,7 @@ class CoreProvider extends ChangeNotifier {
         'type': type,
         'date': date
       };
-      log({
-        'recipe_id': reciepieID,
-        'type': type,
-        'date': date
-      }.toString());
+      log({'recipe_id': reciepieID, 'type': type, 'date': date}.toString());
       Response? response = await _coreRepo.addMealPlan(data);
 
       try {
