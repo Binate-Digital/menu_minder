@@ -67,7 +67,7 @@ class CoreRepo implements ICoreModule {
         isHeaderRequire: true,
         context: StaticData.navigatorKey.currentContext,
         queryParameters: {'type': type, 'date': date},
-        endPoint: dotenv.get('GET_MEAL_PLAN_RECEIPES'),
+        endPoint: dotenv.get('GET_MEAL_PLAN_SUGGESTIONS'),
       );
 
   @override
@@ -131,7 +131,7 @@ class CoreRepo implements ICoreModule {
         isHeaderRequire: true,
         context: StaticData.navigatorKey.currentContext,
         queryParameters: {'type': type, 'date': currentDate},
-        endPoint: dotenv.get('GET_MEAL_PLAN_SUGGESTIONS'),
+        endPoint: dotenv.get('GET_MEAL_PLAN_RECEIPES'),
       );
 
   @override

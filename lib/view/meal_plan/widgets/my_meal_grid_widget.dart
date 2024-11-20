@@ -197,6 +197,7 @@ class MealPlansGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(mealSList.first.familyMembers.toString());
     return GridView.builder(
         itemCount: mealSList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

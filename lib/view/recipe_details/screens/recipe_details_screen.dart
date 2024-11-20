@@ -54,6 +54,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.mealPlanModel?.familyMembers.toString());
     return Scaffold(
       extendBodyBehindAppBar: true,
       bottomNavigationBar: widget.bottomNavigationBar,

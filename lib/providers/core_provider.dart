@@ -305,7 +305,7 @@ class CoreProvider extends ChangeNotifier {
       try {
         print("Data Loaded Successfully");
         _familySuggesstionsRes = GetAllMealPlans.fromJson(response?.data);
-        print("MEAL PLANS Suggestions ${_familySuggesstionsRes!.data!.length}");
+        // print("MEAL PLANS Suggestions ${_familySuggesstionsRes!.data!.length}");
         _changeGetFamilySuggestionState(States.success);
 
         // initState();
@@ -959,14 +959,16 @@ class CoreProvider extends ChangeNotifier {
       notifyListeners();
       setProgressBar(context);
       Response? response = await _coreRepo.getMutualRecipes(userID, pollID);
+      cancelProgressBar(context);
 
       try {
         mutualRecipes = GetReciepiesList.fromJson(response?.data);
-        cancelProgressBar(context);
+
         onSuccess?.call();
         notifyListeners();
       } catch (e) {
-        cancelProgressBar(context);
+        print(e.toString());
+        // cancelProgressBar(context);
         Utils.showToast(message: NetworkStrings.SOMETHING_WENT_WRONG);
       }
     } on DioException catch (_) {

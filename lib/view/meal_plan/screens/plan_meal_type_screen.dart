@@ -45,7 +45,6 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppStyles.pinkAppBar(context, widget.mealType, hasBack: true,
           onleadingTap: () {
@@ -58,7 +57,7 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
             if (_tabController?.index == 0) {
               await context.read<CoreProvider>().getAllMealPalnsByType(
                   context, widget.mealType, widget.currentDate);
-              print("Getting Meal Plans By Type");
+              // print("Getting Meal Plans By Type");
             } else {
               await context.read<CoreProvider>().getFamilySuggestions(
                   context, widget.mealType,
@@ -84,6 +83,7 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
                       length: 2,
                       child: CustomTabbar(
                         onTabTapped: (i) {
+                          print(i);
                           if (i == 0) {
                             context.read<CoreProvider>().getAllMealPalnsByType(
                                 context, widget.mealType, widget.currentDate);
@@ -113,7 +113,7 @@ class _PlanMealTypeScreenState extends State<PlanMealTypeScreen>
                               ),
                             );
                           } else if (val.getAllReceipeState == States.success) {
-                            print("Suucess PLan");
+                            // print("Suucess PLan");
                             return Column(
                               children: [
                                 Flexible(
