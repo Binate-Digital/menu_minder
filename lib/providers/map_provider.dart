@@ -62,7 +62,7 @@ class MapProvider extends ChangeNotifier {
       BuildContext context, double latitude, double longitude) async {
     final queryParams = {
       'keyword': 'cuisine',
-      'radius': 32186,
+      'radius': 25000, // 25 kilometers in meters
       'type': 'restaurant',
       'location': '$latitude,$longitude',
       'key': MapConstants.mapKey
