@@ -71,6 +71,16 @@ class AppNavigator {
     return data;
   }
 
+  static Future<dynamic> pushReplacementAndReturn(
+      BuildContext context, Widget widget) async {
+    var data =
+        await Navigator.push(context, CupertinoPageRoute(builder: (context) {
+      return widget;
+    }));
+
+    return data;
+  }
+
   ///-------------------- Named -------------------- ///
   static void pushNamed(BuildContext context, String route,
       [Object? arguments]) {

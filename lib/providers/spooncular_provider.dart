@@ -153,6 +153,39 @@ class SpoonCularProvider extends ChangeNotifier {
     }
   }
 
+  States _randomAdminRecipieState = States.init;
+  States get getRandomAdminRecipieState => _randomAdminRecipieState;
+
+  void _changeRandomAdminRecipieLoadingState(States state) {
+    _randomAdminRecipieState = state;
+    notifyListeners();
+  }
+
+  AdminRecipe? _adminRecipe;
+  AdminRecipe? get getRandomAdminRecipe => _adminRecipe;
+  Future<void> getRandomAdminRecipeSuggestion() async {
+    try {
+      _adminRecipe = null;
+      _changeRandomAdminRecipieLoadingState(States.loading);
+      Response? response = await DioClient().getRequest(
+        isHeaderRequire: true,
+        context: StaticData.navigatorKey.currentContext,
+        endPoint: 'get-admin-recipe',
+      );
+      if (response?.statusCode == 200) {
+        adminRecipes = adminRecipesFromJson(response?.data).data;
+        final randomIndex = Random().nextInt(adminRecipes.length);
+        final randomRecipe = adminRecipes[randomIndex];
+        _adminRecipe = randomRecipe;
+        _changeRandomAdminRecipieLoadingState(States.success);
+      } else {
+        _changeRandomAdminRecipieLoadingState(States.failure);
+      }
+    } catch (e) {
+      _changeRandomAdminRecipieLoadingState(States.failure);
+    }
+  }
+
   ///POLLS
   recipiesWithDiet(BuildContext context,
       {int index = 0,

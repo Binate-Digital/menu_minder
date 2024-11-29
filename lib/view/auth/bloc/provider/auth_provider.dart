@@ -86,8 +86,8 @@ class AuthProvider extends ChangeNotifier {
   login(LoginModel? loginModel) async {
     try {
       _loginChangeState(States.loading);
-      final firebaseToken = await FirebaseMessagingService().getToken();
-      loginModel?.device_token = firebaseToken;
+      // final firebaseToken = await FirebaseMessagingService().getToken();
+      // loginModel?.device_token = firebaseToken;
       print("Device Token ${loginModel?.toJson()}");
 
       Response? response =

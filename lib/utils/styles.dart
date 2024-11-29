@@ -43,6 +43,7 @@ class AppStyles {
           Widget? leading,
           bool isRegistration = false,
           bool isFromCreateProfile = false,
+          double fontSize = 18,
           bool? hasBack = true,
           bool? isRounded = true}) =>
       PreferredSize(
@@ -59,7 +60,7 @@ class AppStyles {
               title: Text(
                 text,
                 style:
-                    const TextStyle(color: AppColor.COLOR_WHITE, fontSize: 18),
+                    TextStyle(color: AppColor.COLOR_WHITE, fontSize: fontSize),
               ),
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.only(

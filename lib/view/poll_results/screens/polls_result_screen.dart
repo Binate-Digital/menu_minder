@@ -587,18 +587,19 @@ class AgreedPolls extends StatelessWidget {
               hasBack: true);
         } else {
           Future.delayed(const Duration(milliseconds: 50), () async {
-            final String? restaurantNAme = await AppNavigator.pushAndReturn(
-                context,
-                const NearbyRestrauntScreen(
-                  showDoneButtom: true,
-                ));
+            final String? restaurantNAme =
+                await AppNavigator.pushReplacementAndReturn(
+                    context,
+                    const NearbyRestrauntScreen(
+                      showDoneButtom: true,
+                    ));
 
             if (restaurantNAme != null) {
               _coreProvider!.acceptRejectSuggestion(
                 StaticData.navigatorKey.currentContext!,
                 voters,
                 suggestionStatus: "reject",
-                another_suggestion: "$restaurantNAme (Restaurant)",
+                another_suggestion: restaurantNAme,
                 onSuccess: () {
                   AppNavigator.pop(context);
                 },

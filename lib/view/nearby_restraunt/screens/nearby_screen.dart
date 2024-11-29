@@ -3,11 +3,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:menu_minder/common/custom_loading_bar.dart';
 import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/primary_button.dart';
-import 'package:menu_minder/providers/core_provider.dart';
+import 'package:menu_minder/providers/spooncular_provider.dart';
 import 'package:menu_minder/services/location_service.dart';
 import 'package:menu_minder/utils/actions.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/view/map/screens/map_screen.dart';
+import 'package:menu_minder/view/meal_plan/screens/data/get_all_meal_plan_model.dart';
+import 'package:menu_minder/view/nearby_restraunt/screens/random_recipie_suggestion.dart';
 import 'package:menu_minder/view/restraunt_info/screens/restraunt_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +29,7 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       handlePermissions();
+      context.read<SpoonCularProvider>().getRandomAdminRecipeSuggestion();
     });
     super.initState();
   }
@@ -48,20 +51,23 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
   }
 
   MapProvider? _coreProvider;
+  RecipeModel? suggestedRecipe;
 
   @override
   Widget build(BuildContext context) {
     _coreProvider = context.watch<MapProvider>();
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppStyles.pinkAppBar(context, "Nearby Restaurant",
+      appBar: AppStyles.pinkAppBar(
+          context, "Nearby Restaurant \n Or Suggest Recipe",
+          fontSize: 15,
           trailing: widget.showDoneButtom
               ? Padding(
                   padding: const EdgeInsets.only(top: 8, right: 10),
                   child: GestureDetector(
                     onTap: () {
                       AppNavigator.popWithData(context,
-                          _coreProvider?.currentSelectedRestaurant?.name);
+                          "${_coreProvider?.currentSelectedRestaurant?.name} (Restaurant)");
                     },
                     child: Row(
                       children: const [
@@ -79,7 +85,7 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
               : const SizedBox()),
       body: Consumer<MapProvider>(builder: (context, val, _) {
         if (val.getLocationState == LocationState.loading) {
-          return Center(child: CustomLoadingBarWidget());
+          return const Center(child: CustomLoadingBarWidget());
         } else {
           return val.getLocationState == LocationState.enabled
               ? Stack(
@@ -88,6 +94,13 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
                     MapScreen(
                       markers: val.markers,
                     ),
+                    widget.showDoneButtom
+                        ? const Positioned(
+                            top: kToolbarHeight + 60,
+                            right: 0,
+                            left: 0,
+                            child: RandomRecipeSuggestionWidget())
+                        : const SizedBox(),
                     val.currentSelectedRestaurant != null
                         ? InkWell(
                             onTap: () async {
@@ -124,7 +137,7 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
                                   AppDimen.SCREEN_PADDING,
                                   0,
                                   AppDimen.SCREEN_PADDING,
-                                  100),
+                                  50),
                               width: double.infinity,
                               padding: const EdgeInsets.all(12),
                               height: 130,
@@ -187,7 +200,7 @@ class _NearbyRestrauntScreenState extends State<NearbyRestrauntScreen> {
                               ),
                             ),
                           )
-                        : const SizedBox()
+                        : const SizedBox(),
                   ],
                 )
               : Column(
