@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:menu_minder/common/custom_extended_image_with_loading.dart';
 import 'package:menu_minder/common/custom_loading_bar.dart';
+import 'package:menu_minder/common/custom_tabbar.dart';
 import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/decision_container_widget.dart';
 import 'package:menu_minder/providers/core_provider.dart';
@@ -14,6 +16,8 @@ import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/home/widgets/home_suggestions.dart';
 import 'package:menu_minder/view/nearby_restraunt/screens/nearby_screen.dart';
 import 'package:menu_minder/view/poll_results/screens/data/poll_result_data.dart';
+import 'package:menu_minder/view/recipe_details/widgets/ingredients_tab_widget.dart';
+import 'package:menu_minder/view/recipe_details/widgets/instructions_tab_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/profile_with_name_and_desc_widget.dart';
@@ -32,9 +36,12 @@ class PollResultScreenRecieverSide extends StatefulWidget {
 }
 
 class _PollResultScreenRecieverSideState
-    extends State<PollResultScreenRecieverSide> {
+    extends State<PollResultScreenRecieverSide> with TickerProviderStateMixin {
+  TabController? _tabController;
+
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.pollID != null) {
         context.read<CoreProvider>().getPoleResults(context, widget.pollID!);
@@ -73,55 +80,178 @@ class _PollResultScreenRecieverSideState
                     weight: FontWeight.bold,
                   ),
                   AppStyles.height12SizedBox(),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 80,
-                        width: 80,
-                        child: pollInfo?.recipeModel?.recipeImages != null &&
-                                pollInfo!.recipeModel!.recipeImages!.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: MyCustomExtendedImage(
-                                  imageUrl: pollInfo
-                                          .recipeModel!.recipeImages![0]
-                                          .startsWith('http')
-                                      ? pollInfo.recipeModel!.recipeImages![0]
-                                      : dotenv.get('IMAGE_URL') +
-                                          pollInfo
-                                              .recipeModel!.recipeImages![0],
-                                ),
-                              )
-                            : Center(
-                                child: Image.asset(
-                                  AssetPath.PHOTO_PLACE_HOLDER,
-                                  fit: BoxFit.cover,
-                                  scale: 2,
-                                ),
+                  pollInfo?.button?[0].voters?[0].finalRecipe == null
+                      ? Row(
+                          children: [
+                            SizedBox(
+                              height: 80,
+                              width: 80,
+                              child: pollInfo?.recipeModel?.recipeImages !=
+                                          null &&
+                                      pollInfo!
+                                          .recipeModel!.recipeImages!.isNotEmpty
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: MyCustomExtendedImage(
+                                        imageUrl: pollInfo
+                                                .recipeModel!.recipeImages![0]
+                                                .startsWith('http')
+                                            ? pollInfo
+                                                .recipeModel!.recipeImages![0]
+                                            : dotenv.get('IMAGE_URL') +
+                                                pollInfo.recipeModel!
+                                                    .recipeImages![0],
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Image.asset(
+                                        AssetPath.PHOTO_PLACE_HOLDER,
+                                        fit: BoxFit.cover,
+                                        scale: 2,
+                                      ),
+                                    ),
+                            ),
+                            AppStyles.height12SizedBox(width: 10, height: 0),
+                            Expanded(
+                                child: CustomText(
+                              textAlign: TextAlign.start,
+                              text: pollInfo?.recipeModel?.title ?? '',
+                              maxLines: 3,
+                              weight: FontWeight.w500,
+                            ))
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            SizedBox(
+                              height: 80,
+                              width: 80,
+                              child: pollInfo?.recipeModel?.recipeImages !=
+                                          null &&
+                                      pollInfo!
+                                          .recipeModel!.recipeImages!.isNotEmpty
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: MyCustomExtendedImage(
+                                          imageUrl: pollInfo
+                                                  .button![0]
+                                                  .voters![0]
+                                                  .finalRecipe!
+                                                  .image!
+                                                  .startsWith('http')
+                                              ? pollInfo.button![0].voters![0]
+                                                      .finalRecipe!.image ??
+                                                  ''
+                                              : '${dotenv.get('IMAGE_URL')}${pollInfo.button![0].voters![0].finalRecipe!.image}'),
+                                    )
+                                  : Center(
+                                      child: Image.asset(
+                                        AssetPath.PHOTO_PLACE_HOLDER,
+                                        fit: BoxFit.cover,
+                                        scale: 2,
+                                      ),
+                                    ),
+                            ),
+                            AppStyles.height12SizedBox(width: 10, height: 0),
+                            Expanded(
+                                child: CustomText(
+                              textAlign: TextAlign.start,
+                              text: pollInfo?.button?[0].voters?[0].finalRecipe
+                                      ?.title ??
+                                  '',
+                              maxLines: 3,
+                              weight: FontWeight.w500,
+                            ))
+                          ],
+                        ),
+                  (pollInfo?.button?[0].voters?[0].finalRecipe == null)
+                      ? Wrap(
+                          children: List.generate(
+                            val.singlePoleResult?.data?[0].button?.length ?? 0,
+                            (index) => PollVotesWidget(
+                              heading: val.singlePoleResult?.data?[0]
+                                      .button?[index].text ??
+                                  '',
+                              quantity: val.singlePoleResult?.data?[0]
+                                      .button?[index].voters?.length ??
+                                  0,
+                              button:
+                                  val.singlePoleResult?.data?[0].button![index],
+                            ),
+                          ),
+                        )
+                      :
+                  Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  color: AppColor.CONTAINER_GREY,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppStyles.subHeadingStyle('Description',
+                                      fontWeight: FontWeight.normal),
+                                  AppStyles.height4SizedBox(),
+                                  HtmlWidget(pollInfo?.button![0].voters![0]
+                                          .finalRecipe!.summary ??
+                                      ''),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  // widget.mealData?.servingSize != null
+                                  //     ? AppStyles.contentStyle(
+                                  //     'Serving Size: ${widget.mealData?.servingSize} Persons',
+                                  //     fontSize: 15)
+                                  //     : const SizedBox(),
+                                  // widget.mealData?.prefrence != null
+                                  //     ? AppStyles.contentStyle(
+                                  //     'Recipe Prefrence: ${widget.mealData?.prefrence?.capitalizeFirstLetter()}',
+                                  //     fontSize: 15)
+                                  //     : const SizedBox()
+                                ],
                               ),
-                      ),
-                      AppStyles.height12SizedBox(width: 10, height: 0),
-                      Expanded(
-                          child: CustomText(
-                        textAlign: TextAlign.start,
-                        text: pollInfo?.recipeModel?.title ?? '',
-                        maxLines: 3,
-                        weight: FontWeight.w500,
-                      ))
-                    ],
-                  ),
-                  ...List.generate(
-                    val.singlePoleResult?.data?[0].button?.length ?? 0,
-                    (index) => PollVotesWidget(
-                      heading:
-                          val.singlePoleResult?.data?[0].button?[index].text ??
-                              '',
-                      quantity: val.singlePoleResult?.data?[0].button?[index]
-                              .voters?.length ??
-                          0,
-                      button: val.singlePoleResult?.data?[0].button![index],
-                    ),
-                  ),
+                            ),
+                            AppStyles.height16SizedBox(),
+                            DefaultTabController(
+                              length: 2,
+                              child: CustomTabbar(
+                                tabController: _tabController,
+                                tabNames: const ["Ingredients", "Instructions"],
+                              ),
+                            ),
+                            AppStyles.height8SizedBox(),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 1.7,
+                              child: TabBarView(
+                                  controller: _tabController,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  children: [
+                                    IngredientsTab(
+                                      ingredients:   pollInfo?.button![0].voters![0].finalRecipe!.extendedIngredients,
+                                      isSuggestion: true,
+                                    ),
+                                    HtmlWidget(
+                                      //  instructions:
+                                      pollInfo?.button![0].voters![0]
+                                              .finalRecipe!.instructions ??
+                                          "",
+                                    )
+                                  ]),
+                            )
+                          ],
+                        ),
+                  // Wrap(children:List.generate(
+                  //     pollInfo?.button?[0].voters?[0].finalRecipe?.extendedIngredients?.length ?? 0,
+                  //         (index) => Padding(
+                  //           padding: const EdgeInsets.symmetric(vertical: 5),
+                  //           child: CustomText(text:
+                  //           'Step $index: ${pollInfo?.button?[0].voters?[0].finalRecipe?.extendedIngredients?[index].original} ' ,maxLines: 10,textAlign: TextAlign.start),
+                  //         )
+                  // ),) ,
                 ],
               );
             } else if (val.getPollResultState == States.failure) {

@@ -6,6 +6,7 @@ import 'package:menu_minder/providers/spooncular_provider.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
+import 'package:menu_minder/view/spooncular/data/spooncular_random_reciepies_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeSuggestionsSpoonCular extends StatelessWidget {
@@ -14,7 +15,7 @@ class HomeSuggestionsSpoonCular extends StatelessWidget {
       this.onTap,
       required this.onDeclineTap,
       this.showDeclineButton = false});
-  final Function(String recipieID)? onTap;
+  final Function(Recipes recipie)? onTap;
 
   final Function()? onDeclineTap;
   final bool showDeclineButton;
@@ -53,7 +54,8 @@ class HomeSuggestionsSpoonCular extends StatelessWidget {
                   final recipie = val.getRandomRecipies?.recipes?[index];
                   return GestureDetector(
                     onTap: () {
-                      onTap?.call(recipie!.title ?? '');
+                      // onTap?.call(val.getRandomRecipies?.recipes[index]);
+                      onTap?.call(val.getRandomRecipies!.recipes![index]);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,

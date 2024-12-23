@@ -830,7 +830,7 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                         topRight: Radius.circular(10.0))),
                 child: Column(
                   children: <Widget>[
-                    radioBtn("Recipe From Spoonacular", 0, (val) async {
+                    radioBtn("Recipes", 0, (val) async {
                       _spoonCularProvider!.recipeType = val;
                       // setState(() {
                       //   _groupValue = val!;
@@ -839,7 +839,7 @@ class _SpecificRecipesWithDietState extends State<SpecificRecipesWithDiet> {
                       _loadRecipeType(
                           selectedPrefrence?.toLowerCase() ?? "breakfast");
                     }),
-                    radioBtn("Recipe From Admin", 1, (val) async {
+                    radioBtn("Premium Recipes By Chefs", 1, (val) async {
                       _spoonCularProvider!.recipeType = val;
                       // setState(() {
                       //   _groupValue = val!;

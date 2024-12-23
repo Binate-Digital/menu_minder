@@ -132,7 +132,7 @@ class Recipes {
         diets =
             (json['diets'] as List?)?.map((dynamic e) => e as String).toList(),
         occasions = json['occasions'] as List?,
-        instructions = json['instructions'] as String?,
+        instructions = (json['instructions']??json['instruction']) as String?,
         analyzedInstructions = (json['analyzedInstructions'] as List?)
             ?.map((dynamic e) =>
                 AnalyzedInstructions.fromJson(e as Map<String, dynamic>))

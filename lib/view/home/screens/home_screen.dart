@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ?.data?.Id
                                                     ? PrimaryButton(
                                                         text:
-                                                            "View Poll Result",
+                                                            "View Poll Result ",
                                                         onTap: () {
                                                           AppNavigator.push(
                                                               context,
@@ -278,9 +278,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               polvote.userID!.Id!,
                                                                               polvote.recipeModel!.reciepieId!,
                                                                               onSuccess: () async {
+                                                                                /// YEH
                                                                                 await Future.delayed(const Duration(milliseconds: 400));
+                                                                                log("**** 1");
 
                                                                                 if (val.mutualRecipes?.data != null && val.mutualRecipes!.data!.isNotEmpty) {
+                                                                                  log("**** 2");
                                                                                   AppDialog.showDialogs(
                                                                                       HomeSuggestions(
                                                                                         showDeclineButton: false,
@@ -309,31 +312,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                           );
                                                                                         },
                                                                                         onTap: (recipieID) {
-                                                                                          print("GIVING VOTEE $recipieID");
+                                                                                          print("GIVING VOTEE: $recipieID");
 
-                                                                                          context.read<CoreProvider>().giveVote(
-                                                                                            StaticData.navigatorKey.currentContext!,
-                                                                                            receipieName: recipieID,
-                                                                                            buttonID: polvote.button![index].sId!,
-                                                                                            pollID: polvote.sId!,
-                                                                                            buttonData: polvote.button![index],
-                                                                                            onSuccess: () {
-                                                                                              AppNavigator.pop(context);
-                                                                                              // if (e.text!
-                                                                                              //         .toLowerCase() ==
-                                                                                              //     'disagree') {
-                                                                                              //   AppDialog.showDialogs(
-                                                                                              //       SuggestionListWidget(),
-                                                                                              //       'Suggestions',
-                                                                                              //       context);
-                                                                                            },
-                                                                                          );
+                                                                                          // context.read<CoreProvider>().giveVote(
+                                                                                          //   StaticData.navigatorKey.currentContext!,
+                                                                                          //   receipieName: recipieID,
+                                                                                          //   buttonID: polvote.button![index].sId!,
+                                                                                          //   pollID: polvote.sId!,
+                                                                                          //   buttonData: polvote.button![index],
+                                                                                          //   recipeObject: recipieID,
+                                                                                          //   onSuccess: () {
+                                                                                          //     AppNavigator.pop(context);
+                                                                                          //     // if (e.text!
+                                                                                          //     //         .toLowerCase() ==
+                                                                                          //     //     'disagree') {
+                                                                                          //     //   AppDialog.showDialogs(
+                                                                                          //     //       SuggestionListWidget(),
+                                                                                          //     //       'Suggestions',
+                                                                                          //     //       context);
+                                                                                          //   },
+                                                                                          // );
                                                                                         },
                                                                                       ),
                                                                                       'Suggestions',
                                                                                       StaticData.navigatorKey.currentContext!,
                                                                                       hasBack: true);
                                                                                 } else {
+                                                                                  log("**** 3");
+
                                                                                   /// AGAR KOII MUTUALLY SHARED NHII HAI
                                                                                   ///
                                                                                   // ignore: use_build_context_synchronously
@@ -348,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                     onSuccess: () {
                                                                                       // AppNavigator.pop(context);
                                                                                       if (context.read<SpoonCularProvider>().getSpooncularRecipesWithDiet != null && context.read<SpoonCularProvider>().getSpooncularRecipesWithDiet!.results!.isNotEmpty) {
+                                                                                        log("**** 4");
                                                                                         AppDialog.showDialogs(
                                                                                             HomeSuggestionsSpoonCularWithPrefs(
                                                                                               onDeclineTap: () {
@@ -366,11 +373,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                                 );
                                                                                               },
                                                                                               onTap: (recipieID) {
-                                                                                                print("GIVING VOTEE $recipieID");
+                                                                                                print("GIVING VOTEE ma data: ${recipieID.toJson()}");
 
                                                                                                 context.read<CoreProvider>().giveVote(
                                                                                                   context,
-                                                                                                  receipieName: recipieID,
+                                                                                                  //  receipieName: recipieID,
+                                                                                                  recipeObject: recipieID,
                                                                                                   buttonID: polvote.button![index].sId!,
                                                                                                   pollID: polvote.sId!,
                                                                                                   buttonData: polvote.button![index],
@@ -391,6 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                             context,
                                                                                             hasBack: true);
                                                                                       } else {
+                                                                                        log("**** 5");
                                                                                         context.read<SpoonCularProvider>().getAllRandomReceipes(context);
 
                                                                                         AppDialog.showDialogs(
@@ -412,10 +421,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                                 );
                                                                                               },
                                                                                               onTap: (recipieID) {
-                                                                                                print("GIVING VOTEE $recipieID");
+                                                                                                print("full object ${recipieID.toJson()}");
                                                                                                 context.read<CoreProvider>().giveVote(
                                                                                                   context,
-                                                                                                  receipieName: recipieID,
+                                                                                                  // receipieName: recipieID,
+                                                                                                  recipeObject: recipieID,
                                                                                                   buttonID: polvote.button![index].sId!,
                                                                                                   pollID: polvote.sId!,
                                                                                                   buttonData: polvote.button![index],
@@ -610,6 +620,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             //   );
                                                                             // }
                                                                           } else {
+                                                                            log("**** 6");
                                                                             context.read<CoreProvider>().giveVote(
                                                                               StaticData.navigatorKey.currentContext!,
                                                                               receipieName: polvote.recipeModel!.title!,

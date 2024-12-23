@@ -264,6 +264,7 @@ class HomeVoteWidget extends StatelessWidget {
           ),
 
           AppStyles.height12SizedBox(),
+        pollData!.button![0].votes!.isEmpty ?
           Row(
             children: [
               SizedBox(
@@ -298,7 +299,41 @@ class HomeVoteWidget extends StatelessWidget {
                 weight: FontWeight.w500,
               ))
             ],
-          ),
+          )
+              :   Row(
+            children: [
+              SizedBox(
+                height: 80,
+                width: 80,
+                child:   pollData?.button?[0].votes?[0].finalRecipe?.image != null &&
+                    pollData!.button![0].votes![0].finalRecipe!.image!.isNotEmpty
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: MyCustomExtendedImage(
+                    imageUrl:  pollData!.button![0].votes![0].finalRecipe!.image
+                        !.startsWith('http')
+                        ?  pollData!.button![0].votes![0].finalRecipe!.image ?? ''
+                        : '${dotenv.get('IMAGE_URL')}${pollData!.button![0].votes![0].finalRecipe!.image}' ,
+                  ),
+                )
+                    : Center(
+                  child: Image.asset(
+                    AssetPath.PHOTO_PLACE_HOLDER,
+                    fit: BoxFit.cover,
+                    scale: 2,
+                  ),
+                ),
+              ),
+              AppStyles.height12SizedBox(width: 10, height: 0),
+              Expanded(
+                  child: CustomText(
+                    textAlign: TextAlign.start,
+                    maxLines: 3,
+                    text: pollData!.button![0].votes![0].finalRecipe?.title ?? '',
+                    weight: FontWeight.w500,
+                  ))
+            ],
+          ) ,
 
           AppStyles.height12SizedBox(),
           AppStyles.contentStyle('Description',
@@ -364,8 +399,8 @@ class HomeVoteWidget extends StatelessWidget {
                                     child: DecisionContainer(
                                         containerColor: AppColor.COLOR_GREY4,
                                         bgColor: selectedIndex == index
-                                            ? AppColor.THEME_COLOR_SECONDARY
-                                            : AppColor.COLOR_GREY4,
+                                            ? AppColor.COLOR_BLACK
+                                            : AppColor.COLOR_GREEN1,
                                         child: AppStyles.contentStyle(
                                             LOREM_UTLRA_SMALL,
                                             fontSize: 14)),

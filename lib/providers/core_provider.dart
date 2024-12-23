@@ -12,6 +12,7 @@ import 'package:menu_minder/view/meal_plan/screens/data/friend_profile_model.dar
 import 'package:menu_minder/view/meal_plan/screens/data/get_all_meal_plan_model.dart';
 import 'package:menu_minder/view/my_polls/data/my_poll_response_model.dart';
 import 'package:menu_minder/view/notifications/data/get_notification_model.dart';
+import 'package:menu_minder/view/spooncular/data/spooncular_random_reciepies_model.dart';
 import 'package:menu_minder/view/subscription/screens/subscription_screen.dart';
 import 'package:provider/provider.dart';
 import '../utils/enums.dart';
@@ -960,6 +961,7 @@ class CoreProvider extends ChangeNotifier {
       setProgressBar(context);
       Response? response = await _coreRepo.getMutualRecipes(userID, pollID);
       cancelProgressBar(context);
+      /// YEH
 
       try {
         mutualRecipes = GetReciepiesList.fromJson(response?.data);
@@ -1403,6 +1405,7 @@ class CoreProvider extends ChangeNotifier {
     required String buttonID,
     required String pollID,
     required Button buttonData,
+    Recipes? recipeObject,
     String? receipieName,
     // required String suggestionID,
   }) async {
@@ -1410,8 +1413,10 @@ class CoreProvider extends ChangeNotifier {
       final data = {
         "pole_id": pollID,
         "button_id": buttonID,
-        "suggestion": receipieName
+        "suggestion": receipieName,
+        "final_recipe": recipeObject?.toJson(),
       };
+      log("***** ${data}");
       setProgressBar(context);
 
       Response? response = await _coreRepo.giveVote(data);

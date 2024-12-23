@@ -82,6 +82,7 @@ class MultipleVotingsContainer extends StatelessWidget {
         ),
 
         AppStyles.height12SizedBox(),
+        allPolData.button![0].votes!.isEmpty ?
         Row(
           children: [
             SizedBox(
@@ -115,6 +116,40 @@ class MultipleVotingsContainer extends StatelessWidget {
               maxLines: 3,
               weight: FontWeight.w500,
             ))
+          ],
+        )
+            :  Row(
+          children: [
+            SizedBox(
+              height: 80,
+              width: 80,
+              child:
+              (allPolData.button?[0].votes?[0].finalRecipe?.image?? '').isNotEmpty
+                  ?
+                  ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: MyCustomExtendedImage(
+                  imageUrl: (allPolData.button?[0].votes?[0].finalRecipe?.image??'').startsWith('http')
+                      ? allPolData.button![0].votes![0].finalRecipe!.image ?? ''
+                      : '${dotenv.get('IMAGE_URL')}${allPolData.button![0].votes![0].finalRecipe!.image}',
+                ),
+              )
+                  : Center(
+                child: Image.asset(
+                  AssetPath.PHOTO_PLACE_HOLDER,
+                  fit: BoxFit.cover,
+                  scale: 2,
+                ),
+              ),
+            ),
+            AppStyles.height12SizedBox(width: 10, height: 0),
+            Expanded(
+                child: CustomText(
+                  textAlign: TextAlign.start,
+                  text: allPolData.button?[0].votes?[0].finalRecipe?.title ?? '',
+                  maxLines: 3,
+                  weight: FontWeight.w500,
+                ))
           ],
         ),
 

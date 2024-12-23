@@ -47,7 +47,7 @@ class SpoonCularProvider extends ChangeNotifier {
       _searchResultsSpooncular;
 
   List<Recipes?> filteredRecipies = [];
-  List<RecipeSearchResult?> filteredRecipiesPref = [];
+  List<Recipes?> filteredRecipiesPref = [];
   List<AdminRecipe> adminRecipes = [];
   List<AdminRecipe> filteredAdminRecipes = [];
 

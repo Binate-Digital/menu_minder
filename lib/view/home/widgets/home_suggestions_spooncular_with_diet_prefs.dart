@@ -1,19 +1,29 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:menu_minder/common/custom_loading_bar.dart';
 import 'package:menu_minder/common/custom_text.dart';
 import 'package:menu_minder/common/primary_button.dart';
+import 'package:menu_minder/providers/core_provider.dart';
 import 'package:menu_minder/providers/spooncular_provider.dart';
 import 'package:menu_minder/utils/app_constants.dart';
 import 'package:menu_minder/utils/enums.dart';
 import 'package:menu_minder/utils/styles.dart';
 import 'package:provider/provider.dart';
 
-class HomeSuggestionsSpoonCularWithPrefs extends StatelessWidget {
+import '../../spooncular/data/spooncular_random_reciepies_model.dart';
+
+class HomeSuggestionsSpoonCularWithPrefs extends StatefulWidget {
   const HomeSuggestionsSpoonCularWithPrefs(
       {super.key, this.onTap, required this.onDeclineTap});
-  final Function(String recipieID)? onTap;
+  final Function(Recipes recipieID)? onTap;
   final Function()? onDeclineTap;
 
+  @override
+  State<HomeSuggestionsSpoonCularWithPrefs> createState() => _HomeSuggestionsSpoonCularWithPrefsState();
+}
+
+class _HomeSuggestionsSpoonCularWithPrefsState extends State<HomeSuggestionsSpoonCularWithPrefs> {
   @override
   Widget build(BuildContext context) {
     return Consumer<SpoonCularProvider>(builder: (context, val, _) {
@@ -45,11 +55,22 @@ class HomeSuggestionsSpoonCularWithPrefs extends StatelessWidget {
                         ? 2
                         : val.getSpooncularRecipesWithDiet!.results!.length,
                     (index) {
-                  final recipie =
-                      val.getSpooncularRecipesWithDiet?.results?[index];
+                  final recipie = val.getSpooncularRecipesWithDiet?.results?[index];
                   return GestureDetector(
-                    onTap: () {
-                      onTap?.call(recipie!.title ?? '');
+                    onTap: () async{
+                //      log("1st ${recipie?.toJson()}");
+                      final String recipeId = val.getSpooncularRecipesWithDiet!.results![index].id.toString() ?? '';
+                      log("id  ${recipeId}");
+                      await context.read<SpoonCularProvider>().getSingleRecipeDetail(context, recipeId, () {
+                        Recipes recipie =
+                        context.read<SpoonCularProvider>().singleRecipieDetail!;
+                        log("Success Called " + recipie.toJson().toString());
+                        setState(() {});
+                        widget.onTap!.call(recipie);
+                      });
+
+                     //  onTap?.call(val.getSpooncularRecipesWithDiet!.results![index]);
+
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
