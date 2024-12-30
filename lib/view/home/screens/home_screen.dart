@@ -154,8 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       // val.isSearching
                       //     ? const SizedBox()
                       //     : const LocationWidget(),
-                      AppStyles.height16SizedBox(),
-                      val.isSearching ? const SizedBox() : const HomeBanner(),
+                      // AppStyles.height16SizedBox(),
+                      // val.isSearching ? const SizedBox() : const HomeBanner(),
                       AppStyles.height16SizedBox(),
                       AppStyles.headingStyle(
                           "Home Recipes - Your Household cookbook"),

@@ -18,7 +18,8 @@ class NetworkStrings {
       "ca-app-pub-5760460145213220/6412515390";
 
   static const String BANNER_ADD_ID_ANDROID_TEST =
-      "ca-app-pub-3940256099942544/6300978111";
+  "ca-app-pub-5760460145213220/2073325145";
+      // "ca-app-pub-3940256099942544/6300978111";
 
   static const String BANNER_ADD_ID_IOS =
       "ca-app-pub-5760460145213220/1264130490";

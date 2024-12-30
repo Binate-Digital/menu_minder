@@ -114,8 +114,9 @@ class RandomRecipeSuggestionWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          InkWell(
+          InkWell(  // Cheeseburger and Fries Casserole
             onTap: () {
+              print("${adminRecipe.toJson()}");
               AppNavigator.popWithData(
                   StaticData.navigatorKey.currentContext!, adminRecipe.title);
             },

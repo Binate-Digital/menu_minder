@@ -202,6 +202,7 @@ class Votes {
   String? buttonId;
   String? createdAt;
   String? updatedAt;
+  String? another_suggestion;
   FinalRecipe? finalRecipe;
   int? iV;
 
@@ -213,6 +214,7 @@ class Votes {
       this.createdAt,
       this.updatedAt,
         this.finalRecipe,
+        this.another_suggestion,
       this.iV});
 
   Votes.fromJson(Map<String, dynamic> json) {
@@ -222,6 +224,7 @@ class Votes {
     buttonId = json['button_id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    another_suggestion = json['another_suggestion'];
     finalRecipe = json['final_recipe'] != null
         ? new FinalRecipe.fromJson(json['final_recipe'])
         : null;
@@ -235,6 +238,7 @@ class Votes {
     data['pole_id'] = poleId;
     data['button_id'] = buttonId;
     data['createdAt'] = createdAt;
+    data['another_suggestion'] = another_suggestion;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
     if (this.finalRecipe != null) {

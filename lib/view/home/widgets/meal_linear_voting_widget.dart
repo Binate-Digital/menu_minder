@@ -325,11 +325,18 @@ class HomeVoteWidget extends StatelessWidget {
                 ),
               ),
               AppStyles.height12SizedBox(width: 10, height: 0),
+              pollData!.button![0].votes![0].another_suggestion == null ?
               Expanded(
                   child: CustomText(
                     textAlign: TextAlign.start,
                     maxLines: 3,
                     text: pollData!.button![0].votes![0].finalRecipe?.title ?? '',
+                    weight: FontWeight.w500,
+                  )) :   Expanded(
+                  child: CustomText(
+                    textAlign: TextAlign.start,
+                    maxLines: 3,
+                    text: pollData!.button![0].votes![0].another_suggestion ?? '',
                     weight: FontWeight.w500,
                   ))
             ],
