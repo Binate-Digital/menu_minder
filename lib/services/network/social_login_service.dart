@@ -29,9 +29,8 @@ class SocialLoginService {
     );
 
     if (credential != null) {
-      return null;
-    } else {
       return credential;
+    } else {return null;
     }
   }
 

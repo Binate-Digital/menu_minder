@@ -101,7 +101,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             } else {
                               AppNavigator.pushAndRemoveUntil(
                                   context,
-                                  const CreateProfileScreen(
+                                   CreateProfileScreen(
                                     isEdit: false,
                                   ));
                             }

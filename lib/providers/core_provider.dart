@@ -113,13 +113,16 @@ class CoreProvider extends ChangeNotifier {
 
   //------------BLCOKED USERS States ---------------//
   States _getAllBlockedUsersState = States.init;
+
   States get getAllBlockedUsersState => _getAllBlockedUsersState;
 
   States _getFamilyListStates = States.init;
+
   States get getFamilyListState => _getFamilyListStates;
 
   ///=======Load Content State========\\\\
   States _loadContentState = States.init;
+
   States get loadContentState => _loadContentState;
 
   ////-------------CHANGE NOTIFICATION STATUS--------------\\\\\\\
@@ -142,6 +145,7 @@ class CoreProvider extends ChangeNotifier {
   ////------------------Get Blocked Users List---------------\\\
 
   GetBlockedUsers? _blockedUsers;
+
   GetBlockedUsers? get blockedUsers => _blockedUsers;
 
   getBlockedUsersList() async {
@@ -271,6 +275,7 @@ class CoreProvider extends ChangeNotifier {
 
   ///=======Load Content State========\\\\
   States _getAllReciepesState = States.init;
+
   States get getAllReceipeState => _getAllReciepesState;
 
   _changeSetAllReciepeState(States state) {
@@ -280,6 +285,7 @@ class CoreProvider extends ChangeNotifier {
 
   ///=======Load Content State========\\\\
   States _getFamilySuggestionsState = States.init;
+
   States get getFamilySuggestionsState => _getFamilySuggestionsState;
 
   _changeGetFamilySuggestionState(States state) {
@@ -323,6 +329,7 @@ class CoreProvider extends ChangeNotifier {
   ////------------------Get Family Members Suggesstions---------------\\\
 
   GetAllMealPlans? _familySuggesstionsRes;
+
   GetAllMealPlans? get familySuggesstionsRes => _familySuggesstionsRes;
 
   getAllMealPalnsByType(BuildContext context, String type, String? date) async {
@@ -348,12 +355,15 @@ class CoreProvider extends ChangeNotifier {
   ////------------------My Recipies---------------\\\
 
   GetReciepiesList? _myRecipiesResponse;
+
   GetReciepiesList? get getMyRecipies => _myRecipiesResponse;
 
   States _getMyRecipiesState = States.init;
+
   States get getMyReciepiesState => _getMyRecipiesState;
 
   RecipeModel? _selectedPollRecipie;
+
   RecipeModel? get selectedPollRecipie => _selectedPollRecipie;
 
   changeSelectedPollRecipie(RecipeModel recipeModel, {bool isNotify = true}) {
@@ -402,14 +412,17 @@ class CoreProvider extends ChangeNotifier {
 
   ////------------------HOME Recipies---------------\\\
   GetReciepiesList? _homeRecipes;
+
   GetReciepiesList? get homeRecipies => _homeRecipes;
 
   List<RecipeModel> searchedRecipies = [];
 
   States _getHomeReciepiesState = States.init;
+
   States get getHomeReciepeSate => _getHomeReciepiesState;
 
   States _homePollState = States.init;
+
   States get getHomePoleLoadState => _homePollState;
 
   _changeHomeReciepeSate(States state) {
@@ -426,12 +439,12 @@ class CoreProvider extends ChangeNotifier {
 
   getHomeRecipies(BuildContext context, String type,
       {bool isRefresh = false, Function()? onPollLoaded}) async {
-    try {
+    //try {
       _changeHomeReciepeSate(States.loading); //--- (STEP 5) ---//
 
       Response? response = await _coreRepo.homeRecipies();
 
-      try {
+    //  try {
         // if (response?.data['subscribed']) {
         //   AppNavigator.pushAndRemoveUntil(
         //       context, SubscriptionScreen(isTrial: false));
@@ -458,15 +471,15 @@ class CoreProvider extends ChangeNotifier {
         // controller?.refreshCompleted();
 
         // initState();
-      } catch (e) {
-        // Utils.showToast(message: response!.statusMessage);
-        // AppMessage.showMessage(response?.data['message'] ?? '');
-        initState();
-      }
-    } on DioException catch (_) {
-      _changeHomeReciepeSate(States.failure);
-      initState();
-    }
+      // } catch (e) {
+      //   // Utils.showToast(message: response!.statusMessage);
+      //   // AppMessage.showMessage(response?.data['message'] ?? '');
+      //   initState();
+      // }
+    // } on DioException catch (_) {
+    //   _changeHomeReciepeSate(States.failure);
+    //   initState();
+    // }
   }
 
   // getAllRandomReceipes(BuildContext context) async {
@@ -492,6 +505,7 @@ class CoreProvider extends ChangeNotifier {
   _changeRandomRecipiesLoadingState(States states) {}
 
   AllPoles? _getAllPoles;
+
   AllPoles? get allPoles => _getAllPoles;
 
   getFamilyPoles(BuildContext context, String type,
@@ -515,6 +529,7 @@ class CoreProvider extends ChangeNotifier {
 
   ///=======Load Content State========\\\\
   States _addReceipeSate = States.init;
+
   States get addReceipeSate => _addReceipeSate;
 
   _changeaddReceipeSate(States state) {
@@ -904,6 +919,7 @@ class CoreProvider extends ChangeNotifier {
   }
 
   FriendData? _userModelData;
+
   FriendData? get friendProfile => _userModelData;
 
   //////-----------------------Load Frined Profile---------------------\\\\\\\\\
@@ -930,6 +946,7 @@ class CoreProvider extends ChangeNotifier {
   }
 
   GetReciepiesList? freindsReciepies;
+
   loadFriendRecipies(BuildContext context, String userID,
       {Function()? onSuccess}) async {
     try {
@@ -953,6 +970,7 @@ class CoreProvider extends ChangeNotifier {
   }
 
   GetReciepiesList? mutualRecipes;
+
   loadMutualRecipes(BuildContext context, String userID, String pollID,
       {Function()? onSuccess}) async {
     try {
@@ -961,6 +979,7 @@ class CoreProvider extends ChangeNotifier {
       setProgressBar(context);
       Response? response = await _coreRepo.getMutualRecipes(userID, pollID);
       cancelProgressBar(context);
+
       /// YEH
 
       try {
@@ -979,6 +998,7 @@ class CoreProvider extends ChangeNotifier {
   }
 
   GetReciepiesList? myAllReciepies;
+
   loadMyRecipies(BuildContext context, String userID,
       {Function()? onSuccess}) async {
     try {
@@ -1027,6 +1047,7 @@ class CoreProvider extends ChangeNotifier {
 
   ///--------------Get Family --------------\\\\
   FamilyList? _familyList;
+
   FamilyList? get familyList => _familyList;
 
   getFamliyMembers({Function()? onSucecess}) async {
@@ -1056,6 +1077,7 @@ class CoreProvider extends ChangeNotifier {
   ///------------------GROCERY------------------\\\
 
   GroceryListModel? _groceryListRes;
+
   GroceryListModel? get getGroceryyList => _groceryListRes;
 
   getGroceryList() async {
@@ -1185,9 +1207,11 @@ class CoreProvider extends ChangeNotifier {
 
   //------------MyPoll States ---------------//
   States _getMyPoleLoadState = States.init;
+
   States get getMyPoleLoadState => _getMyPoleLoadState;
 
   MyPollsRes? _myPolls;
+
   MyPollsRes? get getMyPolles => _myPolls;
 
   ///POLLS
@@ -1213,33 +1237,36 @@ class CoreProvider extends ChangeNotifier {
 
   //------------View Voters  ---------------//
   States _pollResultState = States.init;
+
   States get getPollResultState => _pollResultState;
 
   SinglePollResult? _singlePollResult;
+
   SinglePollResult? get singlePoleResult => _singlePollResult;
 
   ///POLLS
   getPoleResults(BuildContext context, String pollID) async {
-    try {
+    //try {
       _changeViewVotersState(States.loading); //--- (STEP 5) ---//
       Response? response = await _coreRepo.viewVoters(pollID);
 
-      try {
+      //try {
         _singlePollResult = SinglePollResult.fromJson(response?.data);
         _changeViewVotersState(States.success);
-      } catch (e) {
-        Utils.showToast(message: NetworkStrings.SOMETHING_WENT_WRONG);
-        // Utils.showToast(message: response!.statusMessage);
-        // AppMessage.showMessage(response?.data['message'] ?? '');
-        // initState();
-      }
-    } on DioException catch (_) {
-      _changeViewVotersState(States.failure);
-      initState();
-    }
+      // } catch (e) {
+      //   Utils.showToast(message: NetworkStrings.SOMETHING_WENT_WRONG);
+      //   // Utils.showToast(message: response!.statusMessage);
+      //   // AppMessage.showMessage(response?.data['message'] ?? '');
+      //   // initState();
+      // }
+    // } on DioException catch (_) {
+    //   _changeViewVotersState(States.failure);
+    //   initState();
+    // }
   }
 
   States _createPollLoadingState = States.init;
+
   States get createPollState => _createPollLoadingState;
 
   createPoll(Map<String, dynamic> data, Function()? onSuccess,
@@ -1308,20 +1335,27 @@ class CoreProvider extends ChangeNotifier {
     }
   }
 
-  acceptRejectSuggestion(BuildContext context, Voters voters,
-      {Function()? onSuccess,
-      String? suggestionStatus,
-      String? another_suggestion}) async {
+  acceptRejectSuggestion(
+    BuildContext context,
+    Voters voters, {
+    Function()? onSuccess,
+    String? suggestionStatus,
+    dynamic another_suggestion,
+  }) async {
     try {
       setProgressBar(context);
 
       print(suggestionStatus);
-      final data = {
+      Map<String,dynamic> data = {
         'vote_id': voters.sId,
         'suggestion_status': suggestionStatus,
       };
 
       if (another_suggestion != null) {
+
+        print("another_suggestion into core provider");
+        print(another_suggestion.runtimeType);
+        print(another_suggestion);
         data['another_suggestion'] = another_suggestion;
       }
       Response? response = await _coreRepo.acceptORRejectSuggestion(data);
@@ -1459,9 +1493,11 @@ class CoreProvider extends ChangeNotifier {
 
   //------------Grocery States ---------------//
   States _getGroceryListState = States.init;
+
   States get getGroceryListState => _getGroceryListState;
 
   States _createGroceryState = States.init;
+
   States get createGroceryState => _createGroceryState;
 
   _changeGroceryListState(States states) {

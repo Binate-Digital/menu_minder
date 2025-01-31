@@ -237,6 +237,7 @@ class HomeVoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   //print("data print: ${pollData!.button![1].votes![1].anotherSuggestion?.title}");
     return DecisionContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,6 +303,7 @@ class HomeVoteWidget extends StatelessWidget {
           )
               :   Row(
             children: [
+              pollData!.button![0].votes![0].anotherSuggestion == null ?
               SizedBox(
                 height: 80,
                 width: 80,
@@ -323,20 +325,38 @@ class HomeVoteWidget extends StatelessWidget {
                     scale: 2,
                   ),
                 ),
+              ) :  SizedBox(
+                height: 80,
+                width: 80,
+                child:  pollData!.button![0].votes![0].anotherSuggestion?.recipeImages != null
+                    ? ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: MyCustomExtendedImage(
+                    imageUrl: '${dotenv.get('IMAGE_URL')}${ pollData!.button![0].votes![0].anotherSuggestion?.recipeImages?.first}' ,
+                  ),
+                )
+                    : Center(
+                  child: Image.asset(
+                    AssetPath.PHOTO_PLACE_HOLDER,
+                    fit: BoxFit.cover,
+                    scale: 2,
+                  ),
+                ),
               ),
               AppStyles.height12SizedBox(width: 10, height: 0),
-              pollData!.button![0].votes![0].another_suggestion == null ?
+              pollData!.button![0].votes![0].anotherSuggestion == null ?
               Expanded(
                   child: CustomText(
                     textAlign: TextAlign.start,
                     maxLines: 3,
                     text: pollData!.button![0].votes![0].finalRecipe?.title ?? '',
                     weight: FontWeight.w500,
-                  )) :   Expanded(
+                  ))
+                  :   Expanded(
                   child: CustomText(
                     textAlign: TextAlign.start,
                     maxLines: 3,
-                    text: pollData!.button![0].votes![0].another_suggestion ?? '',
+                    text: pollData!.button![0].votes![0].anotherSuggestion?.title ?? '',
                     weight: FontWeight.w500,
                   ))
             ],

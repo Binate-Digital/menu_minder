@@ -321,6 +321,7 @@ class AuthProvider extends ChangeNotifier {
           userDeviceType: Platform.isAndroid ? "Android" : "Ios",
           userEmail: user.email,
           userSocialType: 'apple',
+          name: user.givenName,
         ));
         profile.value!.email = user.email;
 

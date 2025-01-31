@@ -75,8 +75,11 @@ class _PollResultScreenRecieverSideState
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomText(
-                    text: 'Poll Info',
+                  CustomText(
+                    text: pollInfo?.button?[0].voters?[0].anotherSuggestion ==
+                            null
+                        ? 'Poll Info'
+                        : "Poll Concluded",
                     weight: FontWeight.bold,
                   ),
                   AppStyles.height12SizedBox(),
@@ -121,49 +124,108 @@ class _PollResultScreenRecieverSideState
                             ))
                           ],
                         )
-                      : Row(
-                          children: [
-                            SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: pollInfo?.recipeModel?.recipeImages !=
-                                          null &&
-                                      pollInfo!
-                                          .recipeModel!.recipeImages!.isNotEmpty
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: MyCustomExtendedImage(
-                                          imageUrl: pollInfo
-                                                  .button![0]
-                                                  .voters![0]
-                                                  .finalRecipe!
-                                                  .image!
-                                                  .startsWith('http')
-                                              ? pollInfo.button![0].voters![0]
-                                                      .finalRecipe!.image ??
-                                                  ''
-                                              : '${dotenv.get('IMAGE_URL')}${pollInfo.button![0].voters![0].finalRecipe!.image}'),
-                                    )
-                                  : Center(
-                                      child: Image.asset(
-                                        AssetPath.PHOTO_PLACE_HOLDER,
-                                        fit: BoxFit.cover,
-                                        scale: 2,
-                                      ),
-                                    ),
+                      : pollInfo?.button?[0].voters?[0].anotherSuggestion ==
+                              null
+                          ? Row(
+                              children: [
+                                SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: pollInfo?.button![0].voters![0]
+                                                  .finalRecipe!.image !=
+                                              null &&
+                                          pollInfo!.button![0].voters![0]
+                                              .finalRecipe!.image!.isNotEmpty
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          child: MyCustomExtendedImage(
+                                              imageUrl: pollInfo
+                                                      .button![0]
+                                                      .voters![0]
+                                                      .finalRecipe!
+                                                      .image!
+                                                      .startsWith('http')
+                                                  ? pollInfo
+                                                          .button![0]
+                                                          .voters![0]
+                                                          .finalRecipe!
+                                                          .image ??
+                                                      ''
+                                                  : '${dotenv.get('IMAGE_URL')}${pollInfo.button![0].voters![0].finalRecipe!.image}'),
+                                        )
+                                      : Center(
+                                          child: Image.asset(
+                                            AssetPath.PHOTO_PLACE_HOLDER,
+                                            fit: BoxFit.cover,
+                                            scale: 2,
+                                          ),
+                                        ),
+                                ),
+                                AppStyles.height12SizedBox(
+                                    width: 10, height: 0),
+                                Expanded(
+                                    child: CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: pollInfo?.button?[0].voters?[0]
+                                          .finalRecipe?.title ??
+                                      '',
+                                  maxLines: 3,
+                                  weight: FontWeight.w500,
+                                ))
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: pollInfo
+                                              ?.button![0]
+                                              .voters![0]
+                                              .anotherSuggestion!
+                                              .recipeImages !=
+                                          null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          child: MyCustomExtendedImage(
+                                              imageUrl:
+                                                  '${dotenv.get('IMAGE_URL')}${pollInfo?.button![0].voters![0].anotherSuggestion!.recipeImages?.first}'),
+                                        )
+                                      : Center(
+                                          child: Image.asset(
+                                            AssetPath.PHOTO_PLACE_HOLDER,
+                                            fit: BoxFit.cover,
+                                            scale: 2,
+                                          ),
+                                        ),
+                                ),
+                                AppStyles.height12SizedBox(
+                                    width: 10, height: 0),
+                                pollInfo?.button?[0].voters?[0]
+                                            .anotherSuggestion ==
+                                        null
+                                    ? Expanded(
+                                        child: CustomText(
+                                        textAlign: TextAlign.start,
+                                        text: pollInfo?.button?[0].voters?[0]
+                                                .finalRecipe?.title ??
+                                            '',
+                                        maxLines: 3,
+                                        weight: FontWeight.w500,
+                                      ))
+                                    : Expanded(
+                                        child: CustomText(
+                                        textAlign: TextAlign.start,
+                                        text: pollInfo?.button?[0].voters?[0]
+                                                .anotherSuggestion?.title ??
+                                            '',
+                                        maxLines: 3,
+                                        weight: FontWeight.w500,
+                                      ))
+                              ],
                             ),
-                            AppStyles.height12SizedBox(width: 10, height: 0),
-                            Expanded(
-                                child: CustomText(
-                              textAlign: TextAlign.start,
-                              text: pollInfo?.button?[0].voters?[0].finalRecipe
-                                      ?.title ??
-                                  '',
-                              maxLines: 3,
-                              weight: FontWeight.w500,
-                            ))
-                          ],
-                        ),
                   (pollInfo?.button?[0].voters?[0].finalRecipe == null)
                       ? Wrap(
                           children: List.generate(
@@ -180,8 +242,7 @@ class _PollResultScreenRecieverSideState
                             ),
                           ),
                         )
-                      :
-                  Column(
+                      : Column(
                           children: [
                             const SizedBox(height: 14),
                             Container(
@@ -196,9 +257,23 @@ class _PollResultScreenRecieverSideState
                                   AppStyles.subHeadingStyle('Description',
                                       fontWeight: FontWeight.normal),
                                   AppStyles.height4SizedBox(),
-                                  HtmlWidget(pollInfo?.button![0].voters![0]
-                                          .finalRecipe!.summary ??
-                                      ''),
+                                  pollInfo?.button?[0].voters?[0]
+                                              .anotherSuggestion ==
+                                          null
+                                      ? HtmlWidget(pollInfo
+                                              ?.button![0]
+                                              .voters![0]
+                                              .finalRecipe!
+                                              .summary ??
+                                          '')
+                                      : HtmlWidget(val
+                                              .singlePoleResult
+                                              ?.data?[0]
+                                              .button![0]
+                                              .voters![0]
+                                              .anotherSuggestion!
+                                              .discription ??
+                                          ''),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -230,16 +305,138 @@ class _PollResultScreenRecieverSideState
                                   controller: _tabController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: [
-                                    IngredientsTab(
-                                      ingredients:   pollInfo?.button![0].voters![0].finalRecipe!.extendedIngredients,
-                                      isSuggestion: true,
-                                    ),
-                                    HtmlWidget(
-                                      //  instructions:
-                                      pollInfo?.button![0].voters![0]
-                                              .finalRecipe!.instructions ??
-                                          "",
-                                    )
+                                    pollInfo?.button?[0].voters?[0]
+                                                .anotherSuggestion ==
+                                            null
+                                        ? IngredientsTab(
+                                            ingredients: pollInfo
+                                                ?.button![0]
+                                                .voters![0]
+                                                .finalRecipe!
+                                                .extendedIngredients,
+                                            isSuggestion: true,
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              //for (int i = 0; i < (val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?.length ?? 0); i++)
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Flexible(
+                                                          child:
+                                                              ListView.builder(
+                                                            shrinkWrap: true,
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            itemCount: val
+                                                                    .singlePoleResult
+                                                                    ?.data?[0]
+                                                                    .button?[0]
+                                                                    .voters?[0]
+                                                                    .anotherSuggestion
+                                                                    ?.adminIngredients
+                                                                    ?.length ??
+                                                                0,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              final ingredient = val
+                                                                  .singlePoleResult
+                                                                  ?.data?[0]
+                                                                  .button?[0]
+                                                                  .voters?[0]
+                                                                  .anotherSuggestion
+                                                                  ?.adminIngredients?[index];
+                                                              print(
+                                                                  'before Building ingredient at index $index'); // Debug log
+                                                              // if (ingredient is Map<String, dynamic>) {
+                                                              print(
+                                                                  'after Building ingredient at index $index');
+                                                              final key =
+                                                                  ingredient
+                                                                      ?.keys
+                                                                      .first;
+                                                              final value =
+                                                                  ingredient
+                                                                      ?.values
+                                                                      .first;
+                                                              return Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    const Icon(
+                                                                      Icons
+                                                                          .circle,
+                                                                      color: AppColor
+                                                                          .THEME_COLOR_SECONDARY,
+                                                                      size: 10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            8),
+                                                                    CustomText(
+                                                                      lineSpacing:
+                                                                          1.2,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start,
+                                                                      text:
+                                                                          "$key: $value",
+                                                                      maxLines:
+                                                                          3,
+                                                                      fontSize:
+                                                                          10,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                              // }
+                                                              return const SizedBox
+                                                                  .shrink();
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                    pollInfo?.button?[0].voters?[0]
+                                                .anotherSuggestion ==
+                                            null
+                                        ? HtmlWidget(
+                                            //  instructions:
+                                            pollInfo
+                                                    ?.button![0]
+                                                    .voters![0]
+                                                    .finalRecipe!
+                                                    .instructions ??
+                                                "",
+                                          )
+                                        : HtmlWidget(
+                                            //  instructions:
+                                            pollInfo
+                                                    ?.button![0]
+                                                    .voters![0]
+                                                    .anotherSuggestion!
+                                                    .instruction ??
+                                                "",
+                                          )
                                   ]),
                             )
                           ],
@@ -345,7 +542,7 @@ class PollVotesWidget extends StatelessWidget {
                           _getCurrentSuggestionStatus(
                               context: context,
                               suggesstionStatus:
-                                  buttons.anotherSuggestion ?? '',
+                                  buttons.anotherSuggestion?.title ?? "",
                               voters: buttons),
                         ],
                       ),
@@ -452,7 +649,7 @@ class PollVotesWidget extends StatelessWidget {
               hasBack: true);
         } else {
           Future.delayed(const Duration(milliseconds: 50), () async {
-            final String? restaurantNAme = await AppNavigator.pushAndReturn(
+            final dynamic restaurantNAme = await AppNavigator.pushAndReturn(
                 context, const NearbyRestrauntScreen());
 
             if (restaurantNAme != null) {

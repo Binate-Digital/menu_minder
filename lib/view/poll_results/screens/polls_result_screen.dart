@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/profile_with_name_and_desc_widget.dart';
 import '../../../services/network/firebase_messaging_service.dart';
+import '../../spooncular/data/admin_recipes.dart';
 import '../../spooncular/spooncular_views/random_recipies_view.dart';
 
 class PollResultScreen extends StatefulWidget {
@@ -56,13 +57,13 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppDimen.SCREEN_PADDING),
-        child: PrimaryButton(
+        child: context.read<CoreProvider>().singlePoleResult?.data?[0].button?[0].voters?[0].finalRecipe == null ? PrimaryButton(
             // text: "View Nearby Restaurant",
             text: "View Random Recipes",
             onTap: () {
               AppNavigator.push(context, const RandomRecipiesScreen());
               // AppNavigator.push(context, const NearbyRestrauntScreen());
-            }),
+            }) : SizedBox.shrink(),
       ),
       appBar: AppStyles.pinkAppBar(context, "Poll Results"),
       body: Padding(
@@ -78,6 +79,7 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
 
                 Column(
                 children: [
+
                   ...List.generate(
                     val.singlePoleResult?.data?[0].button?.length ?? 0,
                     (index) => AgreedPolls(
@@ -94,12 +96,21 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
               )
                     :
               Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    CustomText(
+                      text:   val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion ==
+                          null
+                          ? 'Poll Info'
+                          : "Poll Concluded",
+                      weight: FontWeight.bold,
+                    ),
+                const SizedBox(height: 12),
 
                 Row(
                   children: [
+                    val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null ?
                     SizedBox(
                       height: 80,
                       width: 80,
@@ -125,19 +136,48 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                           scale: 2,
                         ),
                       ),
+                    ) :  SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.recipeImages != null
+                          ? GestureDetector(
+                        onTap: (){
+
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: MyCustomExtendedImage(
+                              imageUrl:'${dotenv.get('IMAGE_URL')}${val.singlePoleResult!.data?[0].button![0].voters![0].anotherSuggestion?.recipeImages?.first}'
+                          ),
+                        ),
+                      )
+                          : Center(
+                        child: Image.asset(
+                          AssetPath.PHOTO_PLACE_HOLDER,
+                          fit: BoxFit.cover,
+                          scale: 2,
+                        ),
+                      ),
                     ),
                     AppStyles.height12SizedBox(width: 10, height: 0),
+                    val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null ?
                     Expanded(
                         child: CustomText(
                           textAlign: TextAlign.start,
                           text: val.singlePoleResult!.data?[0].button?[0].voters?[0].finalRecipe?.title ?? '',
                           maxLines: 3,
                           weight: FontWeight.w500,
+                        )) :  Expanded(
+                        child: CustomText(
+                          textAlign: TextAlign.start,
+                          text: val.singlePoleResult!.data?[0].button?[0].voters?[0].anotherSuggestion?.title ?? '',
+                          maxLines: 3,
+                          weight: FontWeight.w500,
                         ))
                   ],
                 ),
                 const SizedBox(height: 14),
-                val.singlePoleResult!.data?[0].button?[0].text?.toLowerCase() == 'disagree'
+                val.singlePoleResult!.data?[0].button?[0].text?.toLowerCase() == 'disagree' && val.singlePoleResult!.data![0].button![0].voters![0].anotherSuggestion == null
                     ?
                 _getCurrentSuggestionStatus(
                     context: context,
@@ -160,8 +200,11 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                       AppStyles.subHeadingStyle('Description',
                           fontWeight: FontWeight.normal),
                       AppStyles.height4SizedBox(),
+                      val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null ?
                       HtmlWidget(  val.singlePoleResult?.data?[0].button![0].voters![0]
                           .finalRecipe!.summary ??
+                          '') :  HtmlWidget(  val.singlePoleResult?.data?[0].button![0].voters![0]
+                          .anotherSuggestion!.discription ??
                           ''),
                       const SizedBox(
                         height: 10,
@@ -188,24 +231,190 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                   ),
                 ),
                 AppStyles.height8SizedBox(),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.7,
-                  child: TabBarView(
-                      controller: _tabController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        IngredientsTab(
-                          ingredients:     val.singlePoleResult?.data?[0].button![0].voters![0].finalRecipe!.extendedIngredients,
-                          isSuggestion: true,
-                        ),
-                        HtmlWidget(
-                          //  instructions:
-                          val.singlePoleResult?.data?[0].button![0].voters![0]
-                              .finalRecipe!.instructions ??
-                              "",
-                        )
-                      ]),
-                ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.7,
+                      child: TabBarView(
+                        controller: _tabController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null
+                              ? IngredientsTab(
+                            ingredients: val.singlePoleResult?.data?[0].button![0].voters![0].finalRecipe!.extendedIngredients,
+                            isSuggestion: true,
+                          )
+                              :
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //for (int i = 0; i < (val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?.length ?? 0); i++)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+
+                                          Flexible(
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemCount: val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?.length ?? 0,
+                                              itemBuilder: (context, index) {
+                                                final ingredient = val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?[index];
+                                                print('before Building ingredient at index $index'); // Debug log
+                                               // if (ingredient is Map<String, dynamic>) {
+                                                  print('after Building ingredient at index $index');
+                                                  final key = ingredient?.keys.first;
+                                                  final value = ingredient?.values.first;
+                                                  return Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.circle,
+                                                          color: AppColor.THEME_COLOR_SECONDARY,
+                                                          size: 10,
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        CustomText(
+                                                          lineSpacing: 1.2,
+                                                          textAlign: TextAlign.start,
+                                                          text: "$key: $value",
+                                                          maxLines: 3,
+                                                          fontSize: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                               // }
+                                                return const SizedBox.shrink();
+                                              },
+                                            ),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                          val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null
+                              ? HtmlWidget(
+                            val.singlePoleResult?.data?[0].button![0].voters![0].finalRecipe!.instructions ?? "",
+                          )
+                              : HtmlWidget(
+                            val.singlePoleResult?.data?[0].button![0].voters![0].anotherSuggestion!.instruction ?? "",
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // SizedBox(
+                //   height: MediaQuery.of(context).size.height / 1.7,
+                //   child: TabBarView(
+                //       controller: _tabController,
+                //       physics: const NeverScrollableScrollPhysics(),
+                //       children: [
+                //         val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null ?
+                //         IngredientsTab(
+                //           ingredients:     val.singlePoleResult?.data?[0].button![0].voters![0].finalRecipe!.extendedIngredients,
+                //           isSuggestion: true,
+                //         ) :  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                //           for (int i = 0;
+                //           i < (val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?.length ?? 0);
+                //           i++)
+                //             Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Expanded(
+                //                   child: Row(
+                //                     crossAxisAlignment: CrossAxisAlignment.center,
+                //                     // mainAxisAlignment: MainAxisAlignment.start,
+                //                     children: [
+                //                       const Icon(
+                //                         Icons.circle,
+                //                         color: AppColor.THEME_COLOR_SECONDARY,
+                //                         size: 10,
+                //                       ),
+                //                       const SizedBox(
+                //                         width: 10,
+                //                       ),
+                //                       SizedBox(
+                //                         height: 100,
+                //                         child: ListView.builder(
+                //                           shrinkWrap: true,
+                //                           itemCount: val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?.length ?? 0,
+                //                           itemBuilder: (context, index) {
+                //
+                //                             final ingredient = val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients?[index];
+                //                             if (ingredient is Map<String, dynamic>) {
+                //                               final key = ingredient?.keys.first;
+                //                               final value = ingredient?.values.first;
+                //                               return CustomText(
+                //                                 lineSpacing: 1.2,
+                //                                 textAlign: TextAlign.start,
+                //                                 text: "$key: $value",
+                //                                 maxLines: 3,
+                //                               );
+                //                             }
+                //                             return SizedBox.shrink(); // Handle non-map data
+                //                           },
+                //                         ),
+                //                       )
+                //
+                //                       // Expanded(
+                //                       //   child: CustomText(
+                //                       //     lineSpacing: 1.2,
+                //                       //     textAlign: TextAlign.start,
+                //                       //     text: val.singlePoleResult?.data?[0].button?[0].voters?[0].anotherSuggestion?.adminIngredients![0],
+                //                       //     maxLines: 3,
+                //                       //   ),
+                //                       // ),
+                //
+                //                       // AppStyles.subHeadingStyle(
+                //                       //     ingredients![i].keys.first,
+                //                       //     fontWeight: FontWeight.normal),
+                //                     ],
+                //                   ),
+                //                 ),
+                //                 // Padding(
+                //                 //   padding: const EdgeInsets.all(8.0),
+                //                 //   child: AppStyles.contentStyle(
+                //                 //       ingredients![i].amount.toString(),
+                //                 //       color: AppColor.THEME_COLOR_SECONDARY,
+                //                 //       fontWeight: FontWeight.normal),
+                //                 // ),
+                //                 // Padding(
+                //                 //   padding: const EdgeInsets.all(8.0),
+                //                 //   child: AppStyles.contentStyle(
+                //                 //       ingredients![i].unit,
+                //                 //       color: AppColor.THEME_COLOR_SECONDARY,
+                //                 //       fontWeight: FontWeight.normal),
+                //                 // ),
+                //               ],
+                //             )
+                //         ]),
+                //
+                //         // IngredientsTab(
+                //         //   ingredients:     val.singlePoleResult?.data?[0].button![0].voters![0].anotherSuggestion!.adminIngredients,
+                //         //   isSuggestion: true,
+                //         // ),
+                //         val.singlePoleResult?.data?[0].button?[0].voters![0].anotherSuggestion == null ?
+                //         HtmlWidget(
+                //           //  instructions:
+                //           val.singlePoleResult?.data?[0].button![0].voters![0]
+                //               .finalRecipe!.instructions ??
+                //               "",
+                //         ) :  HtmlWidget(
+                //           //  instructions:
+                //           val.singlePoleResult?.data?[0].button![0].voters![0]
+                //               .anotherSuggestion!.instruction ??
+                //               "",
+                //         )
+                //       ]),
+                // ),
 
               ]);
             } else if (val.getPollResultState == States.failure) {
@@ -395,7 +604,7 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.THEME_COLOR_SECONDARY),
                             AppStyles.headingStyle(
-                                voters.anotherSuggestion ?? '',
+                                voters.anotherSuggestion?.title ?? '',
                                 textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w400),
                           ],
@@ -490,6 +699,7 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                   //   },
                   // );
 
+                  print("recipieID abcd abcd");
                   print(recipieID);
 
                   // AppNavigator.pop(context);
@@ -511,14 +721,19 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
               hasBack: true);
         } else {
           Future.delayed(const Duration(milliseconds: 50), () async {
-            final String? restaurantNAme =
+            final dynamic restaurantNAme =
             await AppNavigator.pushReplacementAndReturn(
                 context,
                 const NearbyRestrauntScreen(
                   showDoneButtom: true,
                 ));
 
-            if (restaurantNAme != null) {
+            print("HuzaifaRecipe before if ${restaurantNAme.toJson()}");
+
+
+            if (restaurantNAme!=null) {
+
+
               _coreProvider!.acceptRejectSuggestion(
                 StaticData.navigatorKey.currentContext!,
                 voters,
@@ -528,6 +743,8 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
                   AppNavigator.pop(context);
                 },
               );
+              print("HuzaifaRecipe before after if ends ${restaurantNAme.toJson()}");
+
             }
           });
 
@@ -1026,7 +1243,7 @@ class AgreedPolls extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.THEME_COLOR_SECONDARY),
                             AppStyles.headingStyle(
-                                voters.anotherSuggestion ?? '',
+                                voters.anotherSuggestion?.title ?? '',
                                 textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w400),
                           ],
@@ -1120,7 +1337,7 @@ class AgreedPolls extends StatelessWidget {
                   //     //       context);
                   //   },
                   // );
-
+                  print("recipieID abcd abcd");
                   print(recipieID);
 
                   // AppNavigator.pop(context);

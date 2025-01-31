@@ -42,6 +42,7 @@ class PollData {
   String? title;
   String? startTime;
   String? endTime;
+  String? recipeTitle;
   List<FamilyMembers>? familyMembers;
   List<Button>? button;
   int? isDelete;
@@ -63,6 +64,8 @@ class PollData {
       this.isDelete,
       this.createdAt,
       this.updatedAt,
+        this.recipeTitle,
+
       this.iV});
 
   PollData.fromJson(Map<String, dynamic> json, bool myPoll) {
@@ -99,6 +102,8 @@ class PollData {
     isDelete = json['is_delete'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+
+    recipeTitle=json['recipe_id']['title'];
     iV = json['__v'];
   }
 
@@ -118,6 +123,7 @@ class PollData {
     data['is_delete'] = isDelete;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['recipe_id']['title'] = recipeTitle;
     data['__v'] = iV;
     return data;
   }
@@ -202,7 +208,8 @@ class Votes {
   String? buttonId;
   String? createdAt;
   String? updatedAt;
-  String? another_suggestion;
+  AnotherSuggestion? anotherSuggestion;
+  //String? another_suggestion;
   FinalRecipe? finalRecipe;
   int? iV;
 
@@ -214,7 +221,7 @@ class Votes {
       this.createdAt,
       this.updatedAt,
         this.finalRecipe,
-        this.another_suggestion,
+        this.anotherSuggestion,
       this.iV});
 
   Votes.fromJson(Map<String, dynamic> json) {
@@ -224,7 +231,9 @@ class Votes {
     buttonId = json['button_id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    another_suggestion = json['another_suggestion'];
+    anotherSuggestion = json['another_suggestion'] != null
+        ? new AnotherSuggestion.fromJson(json['another_suggestion'])
+        : null;
     finalRecipe = json['final_recipe'] != null
         ? new FinalRecipe.fromJson(json['final_recipe'])
         : null;
@@ -238,9 +247,12 @@ class Votes {
     data['pole_id'] = poleId;
     data['button_id'] = buttonId;
     data['createdAt'] = createdAt;
-    data['another_suggestion'] = another_suggestion;
+   // data['another_suggestion'] = another_suggestion;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
+    if (this.anotherSuggestion != null) {
+      data['another_suggestion'] = this.anotherSuggestion!.toJson();
+    }
     if (this.finalRecipe != null) {
       data['final_recipe'] = this.finalRecipe!.toJson();
     }
@@ -248,6 +260,141 @@ class Votes {
   }
 
 
+}
+
+class AnotherSuggestion {
+  String? sId;
+  String? title;
+  int? servingSize;
+  List<String>? recipeImages;
+  String? discription;
+  String? type;
+  String? preference;
+  List<AdminIngredients>? adminIngredients;
+  String? instruction;
+  int? isDelete;
+  int? isSpooncular;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? description;
+
+  AnotherSuggestion(
+      {this.sId,
+        this.title,
+        this.servingSize,
+        this.recipeImages,
+        this.discription,
+        this.type,
+        this.preference,
+        this.adminIngredients,
+        this.instruction,
+        this.isDelete,
+        this.isSpooncular,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.description});
+
+  AnotherSuggestion.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    servingSize = json['serving_size'];
+    recipeImages = json['recipe_images'].cast<String>();
+    discription = json['discription'];
+    type = json['type'];
+    preference = json['preference'];
+    if (json['ingredients'] != null) {
+      adminIngredients = <AdminIngredients>[];
+      json['ingredients'].forEach((v) {
+        adminIngredients!.add(new AdminIngredients.fromJson(v));
+      });
+    }
+    instruction = json['instruction'];
+    isDelete = json['is_delete'];
+    isSpooncular = json['is_spooncular'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['serving_size'] = this.servingSize;
+    data['recipe_images'] = this.recipeImages;
+    data['discription'] = this.discription;
+    data['type'] = this.type;
+    data['preference'] = this.preference;
+    if (this.adminIngredients != null) {
+      data['ingredients'] = this.adminIngredients!.map((v) => v.toJson()).toList();
+    }
+    data['instruction'] = this.instruction;
+    data['is_delete'] = this.isDelete;
+    data['is_spooncular'] = this.isSpooncular;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['description'] = this.description;
+    return data;
+  }
+}
+
+class AdminIngredients {
+  String? fusilliPasta;
+  String? swissChard;
+  String? unsaltedButter;
+  String? allPurposeFlour;
+  String? evaporatedMilk;
+  String? onionPowder;
+  String? kosherSalt;
+  String? crushedRedPepper;
+  String? partSkimMozzarellaCheeseShredded;
+  String? parmesanCheeseGrated;
+
+  AdminIngredients(
+      {this.fusilliPasta,
+        this.swissChard,
+        this.unsaltedButter,
+        this.allPurposeFlour,
+        this.evaporatedMilk,
+        this.onionPowder,
+        this.kosherSalt,
+        this.crushedRedPepper,
+        this.partSkimMozzarellaCheeseShredded,
+        this.parmesanCheeseGrated});
+
+  AdminIngredients.fromJson(Map<String, dynamic> json) {
+    fusilliPasta = json['fusilli pasta'];
+    swissChard = json['Swiss chard'];
+    unsaltedButter = json['unsalted butter'];
+    allPurposeFlour = json['all-purpose flour'];
+    evaporatedMilk = json['evaporated milk'];
+    onionPowder = json['onion powder'];
+    kosherSalt = json['kosher salt'];
+    crushedRedPepper = json['crushed red pepper'];
+    partSkimMozzarellaCheeseShredded =
+    json['part-skim mozzarella cheese, shredded'];
+    parmesanCheeseGrated = json['Parmesan cheese, grated'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['fusilli pasta'] = this.fusilliPasta;
+    data['Swiss chard'] = this.swissChard;
+    data['unsalted butter'] = this.unsaltedButter;
+    data['all-purpose flour'] = this.allPurposeFlour;
+    data['evaporated milk'] = this.evaporatedMilk;
+    data['onion powder'] = this.onionPowder;
+    data['kosher salt'] = this.kosherSalt;
+    data['crushed red pepper'] = this.crushedRedPepper;
+    data['part-skim mozzarella cheese, shredded'] =
+        this.partSkimMozzarellaCheeseShredded;
+    data['Parmesan cheese, grated'] = this.parmesanCheeseGrated;
+    return data;
+  }
 }
 
 
@@ -634,3 +781,7 @@ class Ingredients {
     return data;
   }
 }
+
+
+
+/// ----------------------------- key updated for another suggestion

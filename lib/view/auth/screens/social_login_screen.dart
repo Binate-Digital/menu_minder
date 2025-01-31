@@ -99,7 +99,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
                         } else {
                           AppNavigator.pushAndRemoveUntil(
                               context,
-                              const CreateProfileScreen(
+                               CreateProfileScreen(
                                 isEdit: false,
                               ));
                         }
@@ -142,8 +142,9 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
                           } else {
                             AppNavigator.pushAndRemoveUntil(
                                 context,
-                                const CreateProfileScreen(
+                                 CreateProfileScreen(
                                   isEdit: false,
+                                   name: _userProvider?.data?.userName ?? "",
                                 ));
 
                             val.initState();
@@ -166,6 +167,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
                           : PrimaryButton(
                               text: "Sign in with Apple",
                               onTap: () {
+                                print("apple");
                                 context.read<AuthProvider>().signInWithApple();
                               },
                               imagePath: AssetPath.APPLE,

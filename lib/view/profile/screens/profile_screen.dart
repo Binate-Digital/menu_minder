@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             leftButtonTap: () {
               AppNavigator.push(
                   context,
-                  const CreateProfileScreen(
+                   CreateProfileScreen(
                     isEdit: true,
                   ));
             },

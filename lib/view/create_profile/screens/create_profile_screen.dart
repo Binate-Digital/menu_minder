@@ -28,7 +28,8 @@ import '../widgets/upload_image_widget.dart';
 
 class CreateProfileScreen extends StatefulWidget {
   final bool isEdit;
-  const CreateProfileScreen({super.key, required this.isEdit});
+  String? name;
+   CreateProfileScreen({super.key, required this.isEdit,this.name});
 
   @override
   State<CreateProfileScreen> createState() => _CreateProfileScreenState();
@@ -152,6 +153,10 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   void initState() {
     _authProvider = context.read<AuthProvider>();
     email.text = _authProvider?.userdata?.data?.userEmail ?? "";
+
+    if(widget.isEdit==false){
+      fullName.text = _authProvider?.userdata?.data?.userName ?? "";
+    }
 
     if (_authProvider?.userdata?.data?.userSocialType == "phone") {
       print("Social Login With Phone Number");
@@ -307,8 +312,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   // _authProvider?.userdata?.data?.userSocialType == "phone"
                   //     ? const SizedBox()
                   //     :
-
-                  _emailField(),
+                  _authProvider?.userdata?.data?.userSocialType != "apple" ||   _authProvider?.userdata?.data?.userSocialType != "google"?
+                  _emailField() : SizedBox.shrink(),
                   AppStyles.height16SizedBox(),
 
                   //     :

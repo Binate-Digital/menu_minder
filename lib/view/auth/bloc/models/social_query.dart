@@ -18,6 +18,7 @@ class SocialQueryModel {
   String? userDeviceType;
   String? userDeviceToken;
   String? countryCode;
+  String? name;
 
   String? userEmail;
   String? userPhone;
@@ -30,6 +31,7 @@ class SocialQueryModel {
     this.userDeviceToken,
     this.userEmail,
     this.userPhone,
+    this.name,
   });
   SocialQueryModel.fromJson(Map<String, dynamic> json) {
     userSocialtoken = json['user_social_token']?.toString();
@@ -39,6 +41,7 @@ class SocialQueryModel {
     countryCode = json['user_country_code']?.toString();
     userEmail = json['user_email']?.toString();
     userPhone = json['user_phone']?.toString();
+    name = json['name']?.toString();
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -49,6 +52,7 @@ class SocialQueryModel {
     data['user_country_code'] = countryCode;
     data['user_email'] = userEmail;
     data['user_phone'] = userPhone;
+    data['name'] = name;
     return data;
   }
 }

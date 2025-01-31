@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:menu_minder/common/custom_text.dart';
@@ -116,9 +118,10 @@ class RandomRecipeSuggestionWidget extends StatelessWidget {
           const SizedBox(height: 10),
           InkWell(  // Cheeseburger and Fries Casserole
             onTap: () {
+              print("admin recipe");
               print("${adminRecipe.toJson()}");
               AppNavigator.popWithData(
-                  StaticData.navigatorKey.currentContext!, adminRecipe.title);
+                  StaticData.navigatorKey.currentContext!, adminRecipe);
             },
             child: Container(
               padding: const EdgeInsets.all(10),

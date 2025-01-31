@@ -137,7 +137,8 @@ class Voters {
   String? updatedAt;
   String? suggestion;
   String? suggestionStatus;
-  String? anotherSuggestion;
+  AnotherSuggestion? anotherSuggestion;
+ // String? anotherSuggestion;
   FinalRecipe? finalRecipe;
   int? iV;
   UserData? userData;
@@ -159,11 +160,14 @@ class Voters {
     userId = json['user_id'];
     poleId = json['pole_id'];
     buttonId = json['button_id'];
-    anotherSuggestion = json['another_suggestion'];
+   // anotherSuggestion = json['another_suggestion'];
     suggestionStatus = json['suggestion_status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     suggestion = json['suggestion'];
+    anotherSuggestion = json['another_suggestion'] != null
+        ? new AnotherSuggestion.fromJson(json['another_suggestion'])
+        : null;
     finalRecipe = json['final_recipe'] != null
         ? new FinalRecipe.fromJson(json['final_recipe'])
         : null;
@@ -181,12 +185,150 @@ class Voters {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
+    if (this.anotherSuggestion != null) {
+      data['another_suggestion'] = this.anotherSuggestion!.toJson();
+    }
     if (this.finalRecipe != null) {
       data['final_recipe'] = this.finalRecipe!.toJson();
     }
     if (userData != null) {
       data['user_data'] = userData!.toJson();
     }
+    return data;
+  }
+}
+
+class AnotherSuggestion {
+  String? sId;
+  String? title;
+  int? servingSize;
+  List<String>? recipeImages;
+  String? discription;
+  String? type;
+  String? preference;
+  List<Map<String, String>>? adminIngredients;
+  String? instruction;
+  int? isDelete;
+  int? isSpooncular;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? description;
+
+  AnotherSuggestion(
+      {this.sId,
+        this.title,
+        this.servingSize,
+        this.recipeImages,
+        this.discription,
+        this.type,
+        this.preference,
+        this.adminIngredients,
+        this.instruction,
+        this.isDelete,
+        this.isSpooncular,
+        this.createdAt,
+        this.updatedAt,
+        this.iV,
+        this.description});
+
+  AnotherSuggestion.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    title = json['title'];
+    servingSize = json['serving_size'];
+    recipeImages = json['recipe_images'].cast<String>();
+    discription = json['discription'];
+    type = json['type'];
+    preference = json['preference'];
+    if (json['ingredients'] != null) {
+      adminIngredients = [];
+      json['ingredients'].forEach((v) {
+        adminIngredients!.add(Map<String, String>.from(v));
+      });
+    }
+    instruction = json['instruction'];
+    isDelete = json['is_delete'];
+    isSpooncular = json['is_spooncular'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    description = json['description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['title'] = this.title;
+    data['serving_size'] = this.servingSize;
+    data['recipe_images'] = this.recipeImages;
+    data['discription'] = this.discription;
+    data['type'] = this.type;
+    data['preference'] = this.preference;
+    if (adminIngredients != null) {
+      data['ingredients'] = adminIngredients!.map((v) => v).toList();
+    }
+    data['instruction'] = this.instruction;
+    data['is_delete'] = this.isDelete;
+    data['is_spooncular'] = this.isSpooncular;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['description'] = this.description;
+    return data;
+  }
+}
+
+class AdminIngredients {
+  String? fusilliPasta;
+  String? swissChard;
+  String? unsaltedButter;
+  String? allPurposeFlour;
+  String? evaporatedMilk;
+  String? onionPowder;
+  String? kosherSalt;
+  String? crushedRedPepper;
+  String? partSkimMozzarellaCheeseShredded;
+  String? parmesanCheeseGrated;
+
+  AdminIngredients(
+      {this.fusilliPasta,
+        this.swissChard,
+        this.unsaltedButter,
+        this.allPurposeFlour,
+        this.evaporatedMilk,
+        this.onionPowder,
+        this.kosherSalt,
+        this.crushedRedPepper,
+        this.partSkimMozzarellaCheeseShredded,
+        this.parmesanCheeseGrated});
+
+  AdminIngredients.fromJson(Map<String, dynamic> json) {
+    fusilliPasta = json['fusilli pasta'];
+    swissChard = json['Swiss chard'];
+    unsaltedButter = json['unsalted butter'];
+    allPurposeFlour = json['all-purpose flour'];
+    evaporatedMilk = json['evaporated milk'];
+    onionPowder = json['onion powder'];
+    kosherSalt = json['kosher salt'];
+    crushedRedPepper = json['crushed red pepper'];
+    partSkimMozzarellaCheeseShredded =
+    json['part-skim mozzarella cheese, shredded'];
+    parmesanCheeseGrated = json['Parmesan cheese, grated'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['fusilli pasta'] = this.fusilliPasta;
+    data['Swiss chard'] = this.swissChard;
+    data['unsalted butter'] = this.unsaltedButter;
+    data['all-purpose flour'] = this.allPurposeFlour;
+    data['evaporated milk'] = this.evaporatedMilk;
+    data['onion powder'] = this.onionPowder;
+    data['kosher salt'] = this.kosherSalt;
+    data['crushed red pepper'] = this.crushedRedPepper;
+    data['part-skim mozzarella cheese, shredded'] =
+        this.partSkimMozzarellaCheeseShredded;
+    data['Parmesan cheese, grated'] = this.parmesanCheeseGrated;
     return data;
   }
 }
