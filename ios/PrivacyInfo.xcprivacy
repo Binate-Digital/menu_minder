@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dict>
+   <key>NSPrivacyManifestVersion</key>
+   <string>1.0</string>
+
+   <key>NSPrivacyCollectedDataTypes</key>
+   <array>
+      <dict>
+         <key>NSPrivacyCollectedDataType</key>
+         <string>Authentication Data</string>
+         <key>NSPrivacyCollectedDataUsage</key>
+         <string>App Functionality</string>
+      </dict>
+   </array>
+
+   <key>NSPrivacyThirdPartySDKs</key>
+   <array>
+      <dict>
+         <key>NSPrivacyThirdPartySDKName</key>
+         <string>AppAuth</string>
+         <key>NSPrivacyThirdPartySDKPurpose</key>
+         <array>
+            <string>Authentication</string>
+         </array>
+      </dict>
+      <dict>
+         <key>NSPrivacyThirdPartySDKName</key>
+         <string>FBLPromises</string>
+         <key>NSPrivacyThirdPartySDKPurpose</key>
+         <array>
+            <string>App Functionality</string>
+         </array>
+      </dict>
+   </array>
+</dict>
