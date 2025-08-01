@@ -23,22 +23,23 @@ class CustomSlidableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      actionPane: const SlidableScrollActionPane(),
-      actionExtentRatio: 0.22,
       enabled: isenable ?? true,
-      secondaryActions: [
-        IconSlideAction(
-          color: Colors.transparent,
-          iconWidget: _deleteIcon(customIcon: customIcon),
-          onTap: onTap,
-        ),
-        if (secondIcon != null)
-          IconSlideAction(
-            color: Colors.transparent,
-            iconWidget: _deleteIcon(customIcon: secondIcon),
-            onTap: onSecondTap,
-          )
-      ],
+      endActionPane: ActionPane(
+        dragDismissible:false,
+        extentRatio: 0.22,
+        motion: ScrollMotion(),
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: _deleteIcon(customIcon: customIcon),
+          ),
+          if (secondIcon != null)
+            GestureDetector(
+              onTap: onSecondTap,
+              child: _deleteIcon(customIcon: secondIcon),
+            ),
+        ],
+      ),
       child: child,
     );
   }

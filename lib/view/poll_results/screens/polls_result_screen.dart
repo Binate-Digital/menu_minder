@@ -54,16 +54,19 @@ class _PollResultScreenState extends State<PollResultScreen> with TickerProvider
   @override
   Widget build(BuildContext context) {
     _coreProvider = context.watch<CoreProvider>();
+    final button = context.read<CoreProvider>().singlePoleResult?.data?[0].button?[0];
+    final shouldShowButton = button?.voters?.isEmpty ?? true ||
+        button?.voters?[0].finalRecipe == null;
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppDimen.SCREEN_PADDING),
-        child: context.read<CoreProvider>().singlePoleResult?.data?[0].button?[0].voters?[0].finalRecipe == null ? PrimaryButton(
-            // text: "View Nearby Restaurant",
+        child:shouldShowButton
+            ? PrimaryButton(
             text: "View Random Recipes",
             onTap: () {
               AppNavigator.push(context, const RandomRecipiesScreen());
-              // AppNavigator.push(context, const NearbyRestrauntScreen());
-            }) : SizedBox.shrink(),
+            })
+            : SizedBox.shrink()
       ),
       appBar: AppStyles.pinkAppBar(context, "Poll Results"),
       body: Padding(

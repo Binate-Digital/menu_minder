@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'app.dart';
+import 'firebase_options.dart';
 
 //Last update 21/aug/2024 (feedbacks done) !!!!
 //Create Meal Receipe work is undone.
@@ -13,9 +14,10 @@ import 'app.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  MobileAds.instance.initialize();
-  // HttpOverrides.global = MyHttpOverrides();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  MobileAds.instance.initialize();
+  HttpOverrides.global = MyHttpOverrides();
   await SystemChrome.setPreferredOrientations(
     [
       DeviceOrientation.portraitUp,

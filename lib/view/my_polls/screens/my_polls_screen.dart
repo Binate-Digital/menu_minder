@@ -115,7 +115,7 @@ class _MyPollsScreenState extends State<MyPollsScreen> {
                               AppNavigator.push(
                                   context,
                                   PollResultScreen(
-                                    pollID: val.getMyPolles!.data![index].sId,
+                                    pollID: val.getMyPolles?.data?[index].sId??'',
                                   ));
                             }),
                       ),

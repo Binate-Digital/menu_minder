@@ -28,60 +28,61 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  avatar_glow: ^2.0.2
-  carousel_slider: ^4.2.1
+  avatar_glow: ^3.0.1
+  carousel_slider: ^5.0.0
   circular_countdown_timer: ^0.2.3
   connectivity: ^3.0.6
   country_code_picker: ^3.0.0
   cupertino_icons: ^1.0.2
-  custom_refresh_indicator: ^3.0.0
+  custom_refresh_indicator: ^4.0.1
   dio: ^5.2.1+1
   dotted_border: ^2.0.0+3
   expandable_text: ^2.3.0
-  extended_image: ^7.0.2
-  extended_masked_text: ^2.3.1
+  extended_image: ^10.0.0
+  extended_masked_text: ^3.0.1
   fancy_shimmer_image: ^2.0.3
-  firebase_auth: ^4.3.0
-  firebase_core: ^2.8.0
-  firebase_messaging: ^14.7.10
+  firebase_auth: ^5.5.2
+  firebase_core: ^3.13.0
+  firebase_messaging: ^15.2.5
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
-  flutter_local_notifications: ^9.5.3+1
+  flutter_local_notifications: ^19.1.0
   flutter_rating_bar: ^4.0.1
-  flutter_slidable: ^0.6.0
-  flutter_typeahead: ^4.7.0
-  flutter_widget_from_html: ^0.14.11
+  flutter_slidable: ^4.0.0
+  flutter_typeahead: ^4.8.0
+  flutter_widget_from_html: ^0.16.0
   fluttertoast: ^8.2.2
-  geocoding: ^2.1.1
-  geolocator: ^9.0.2
+  geocoding: ^3.0.0
+  geolocator: ^14.0.0
   glassmorphism: ^3.0.0
   google_maps_flutter: null
   google_sign_in: ^6.0.2
-  image_cropper: ^4.0.1
+  image_cropper: ^9.1.0
   image_picker: ^1.0.2
-  intl: ^0.18.1
+  intl: ^0.20.2
   keyboard_actions: ^4.1.0
   mask_text_input_formatter: ^2.5.0
   pin_code_fields: ^8.0.1
   provider: ^6.0.5
   pull_to_refresh: ^2.0.0
   responsive_framework: null
-  share_plus: ^7.1.0
+  share_plus: ^10.1.4
   shared_preferences: ^2.0.10
-  sign_in_with_apple: ^4.3.0
-  socket_io_client: ^2.0.0-beta.4-nullsafety.0
-  syncfusion_flutter_charts: ^20.3.47
+  sign_in_with_apple: ^7.0.1
+  socket_io_client: ^3.1.1
+  syncfusion_flutter_charts: ^29.1.37+1
   table_calendar: ^3.0.9
   # video_compress: ^3.1.2
   video_thumbnail: ^0.5.3
   webview_flutter: null
-  google_mobile_ads: ^4.0.0
-  in_app_purchase: 3.1.9
+  google_mobile_ads: ^6.0.0
+  in_app_purchase: ^3.2.1
   dropdown_button2: ^2.0.0
+  wakelock_plus: 1.2.11  # Known stable version
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
 

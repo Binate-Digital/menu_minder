@@ -29,7 +29,7 @@ class Recipes {
   final int? preparationMinutes;
   final int? cookingMinutes;
   final int? aggregateLikes;
-  final int? healthScore;
+  // final int? healthScore;
   final String? creditsText;
   final String? license;
   final String? sourceName;
@@ -68,7 +68,7 @@ class Recipes {
     this.preparationMinutes,
     this.cookingMinutes,
     this.aggregateLikes,
-    this.healthScore,
+    // this.healthScore,
     this.creditsText,
     this.license,
     this.sourceName,
@@ -108,7 +108,7 @@ class Recipes {
         preparationMinutes = json['preparationMinutes'] as int?,
         cookingMinutes = json['cookingMinutes'] as int?,
         aggregateLikes = json['aggregateLikes'] as int?,
-        healthScore = json['healthScore'] as int?,
+        // healthScore = json['healthScore'] as int?,
         creditsText = json['creditsText'] as String?,
         license = json['license'] as String?,
         sourceName = json['sourceName'] as String?,
@@ -156,7 +156,7 @@ class Recipes {
         'preparationMinutes': preparationMinutes,
         'cookingMinutes': cookingMinutes,
         'aggregateLikes': aggregateLikes,
-        'healthScore': healthScore,
+        // 'healthScore': healthScore,
         'creditsText': creditsText,
         'license': license,
         'sourceName': sourceName,

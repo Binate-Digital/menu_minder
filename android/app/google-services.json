@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "366924226852",
     "project_id": "menu-minder-f9262",
-    "storage_bucket": "menu-minder-f9262.appspot.com"
+    "storage_bucket": "menu-minder-f9262.firebasestorage.app"
   },
   "client": [
     {
@@ -30,11 +30,35 @@
           }
         },
         {
+          "client_id": "366924226852-hhl650chmgjb7v1sa3eu8u0eqc7gmfqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "2fe8f38462abb4372a23e8371e792b2b42fc54eb"
+          }
+        },
+        {
+          "client_id": "366924226852-hsc48jg4n60uro94u8rla2tipb8jv5hq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "08ba25fbdbf82e35f5af66583fb88ae3cfc2c532"
+          }
+        },
+        {
           "client_id": "366924226852-mn6382ve71udcnkotuvtp4e6nank0686.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.appsnado.menuminder",
             "certificate_hash": "8422e9fb6c38c6dda79ddcceb17343e27c2da427"
+          }
+        },
+        {
+          "client_id": "366924226852-sc05tagtujkgv1kkj5r841uk80gg1puh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appsnado.menuminder",
+            "certificate_hash": "bd20dc8e87a5438892194ec2c6690d2c4884f6c0"
           }
         },
         {

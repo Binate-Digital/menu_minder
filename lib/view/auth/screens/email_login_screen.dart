@@ -97,7 +97,9 @@ class EmailLoginScreen extends StatelessWidget {
                                         email: emailController.text,
                                         device_type: Platform.isIOS
                                             ? 'Ios'
-                                            : 'Android'));
+                                            : 'Android',
+                                      device_token: 'abc'
+                                    ));
                                     // profile.value!.email = emailController.text.toString();
                                   }
                                 });
