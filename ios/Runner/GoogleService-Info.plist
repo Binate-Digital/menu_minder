@@ -14,10 +14,6 @@
 	<string>366924226852</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0.1</string>
-    <key>CFBundleVersion</key>
-    <string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.appsnado.menuminder</string>
 	<key>PROJECT_ID</key>
