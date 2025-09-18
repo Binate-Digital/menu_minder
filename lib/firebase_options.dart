@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '366924226852-utuvdocc0ks1mrkbovtff3bq1c63ojrh.apps.googleusercontent.com',
     iosBundleId: 'com.appsnado.menuminder',
   );
+
 }
