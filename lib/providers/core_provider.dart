@@ -454,18 +454,18 @@ class CoreProvider extends ChangeNotifier {
         _homeRecipes = GetReciepiesList.fromJson(response?.data);
         _changeHomeReciepeSate(States.success);
 
-        if (response?.data['subscribe'] == 0) {
-          subscribed = response?.data['subscribe'];
-          AppNavigator.pushAndRemoveUntil(
-              context,
-              SubscriptionScreen(
-                isTrial: false,
-                showLogout: true,
-              ));
-        } else {
+        // if (response?.data['subscribe'] == 0) {
+        //   subscribed = response?.data['subscribe'];
+        //   AppNavigator.pushAndRemoveUntil(
+        //       context,
+        //       SubscriptionScreen(
+        //         isTrial: false,
+        //         showLogout: true,
+        //       ));
+        // } else {
           subscribed = 1;
           getFamilyPoles(context, type, onPollLoaded: onPollLoaded);
-        }
+        // }
         // getFamilyPoles(context, type);
 
         // controller?.refreshCompleted();

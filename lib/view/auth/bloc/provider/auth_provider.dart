@@ -164,6 +164,9 @@ class AuthProvider extends ChangeNotifier {
             ? createProfileModel.userImage!
             : null;
       }
+
+      print("huzaifaMap");
+      print(map);
       Response? response = await _authRepo.createProfileIAuthentication(
           context, dio.FormData.fromMap(map));
       print(response!.data["data"]["user_authentication"].toString());
