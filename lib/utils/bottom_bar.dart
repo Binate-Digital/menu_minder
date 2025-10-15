@@ -39,12 +39,10 @@ class _HomePageState extends State<BottomBar> {
   @override
   void initState() {
     _pages = [
-      HomeScreen(
-        pollID: widget.pollID,
-      ),
+      HomeScreen(pollID: widget.pollID),
       MealPlanScreen(),
       GroceryListScreen(),
-      ProfileScreen()
+      ProfileScreen(),
     ];
 
     // _pages.add(const HomeScreen());
@@ -58,99 +56,106 @@ class _HomePageState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: bottomIndex,
-        builder: (context, val, _) {
-          return Scaffold(
-            drawer: const UserDrawer(),
-            key: drawrKey,
-            body: WillPopScope(
-              onWillPop: () async {
-                if (drawrKey.currentState!.isDrawerOpen) {
-                  drawrKey.currentState!.closeDrawer();
-                } else {
-                  AppDialog.showDialogs(
-                      Column(
+      valueListenable: bottomIndex,
+      builder: (context, val, _) {
+        return Scaffold(
+          drawer: const UserDrawer(),
+          key: drawrKey,
+          body: WillPopScope(
+            onWillPop: () async {
+              if (drawrKey.currentState!.isDrawerOpen) {
+                drawrKey.currentState!.closeDrawer();
+              } else {
+                AppDialog.showDialogs(
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 48,
+                        ),
+                        child: AppStyles.headingStyle(
+                          "Are you sure you want to exit?",
+                          textAlign: TextAlign.center,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 48),
-                            child: AppStyles.headingStyle(
-                                "Are you sure you want to exit?",
-                                textAlign: TextAlign.center,
-                                fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: PrimaryButton(
+                              text: "No",
+                              buttonColor: Colors.grey.shade600,
+                              onTap: () {
+                                AppNavigator.pop(context);
+                              },
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: PrimaryButton(
-                                      text: "No",
-                                      buttonColor: Colors.grey.shade600,
-                                      onTap: () {
-                                        AppNavigator.pop(context);
-                                      })),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: PrimaryButton(
-                                      text: "Yes",
-                                      buttonColor: AppColor.COLOR_RED1,
-                                      onTap: () {
-                                        exit(0);
-                                      })),
-                            ],
-                          )
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: PrimaryButton(
+                              text: "Yes",
+                              buttonColor: AppColor.COLOR_RED1,
+                              onTap: () {
+                                exit(0);
+                              },
+                            ),
+                          ),
                         ],
                       ),
-                      "Exit",
-                      context);
-                }
-                return false;
-              },
-              child: SafeArea(
-                  child: Container(
-                margin: val != 3
-                    ? const EdgeInsets.only(
-                        left: AppDimen.SCREEN_PADDING,
-                        right: AppDimen.SCREEN_PADDING,
-                        top: AppDimen.SCREEN_PADDING)
-                    : EdgeInsets.zero,
+                    ],
+                  ),
+                  "Exit",
+                  context,
+                );
+              }
+              return false;
+            },
+            child: SafeArea(
+              child: Container(
+                margin:
+                    val != 3
+                        ? const EdgeInsets.only(
+                          left: AppDimen.SCREEN_PADDING,
+                          right: AppDimen.SCREEN_PADDING,
+                          top: AppDimen.SCREEN_PADDING,
+                        )
+                        : EdgeInsets.zero,
                 child: _pages[val],
-              )),
+              ),
             ),
-            resizeToAvoidBottomInset: true,
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            appBar: AppStyles.pinkAppBar(
-              context,
-              val == 0
-                  ? "Home"
-                  : val == 1
-                      ? "My Meal Plan"
-                      : val == 2
-                          ? "Grocery List"
-                          : "My Profile",
-              isRounded: val != 3,
-              hasBack: false,
-              onleadingTap: () {
-                drawrKey.currentState!.openDrawer();
-              },
-              trailing: Row(children: [
+          ),
+          resizeToAvoidBottomInset: true,
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          appBar: AppStyles.pinkAppBar(
+            context,
+            val == 0
+                ? "Home"
+                : val == 1
+                ? "My Meal Plan"
+                : val == 2
+                ? "Grocery List"
+                : "My Profile",
+            isRounded: val != 3,
+            hasBack: false,
+            onleadingTap: () {
+              drawrKey.currentState!.openDrawer();
+            },
+            trailing: Row(
+              children: [
                 InkWell(
                   onTap: () {
                     AppNavigator.pushNamed(
-                        StaticData.navigatorKey.currentContext!,
-                        AppRouteName.inBoxScreen);
+                      StaticData.navigatorKey.currentContext!,
+                      AppRouteName.inBoxScreen,
+                    );
                     // AppNavigator.push(context, const InboxScreen());
                   },
-                  child: Image.asset(
-                    AssetPath.MSG,
-                    scale: 4,
-                  ),
+                  child: Image.asset(AssetPath.MSG, scale: 4),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10),
+
                 // val == 2
                 //     ? InkWell(
                 //         onTap: () {
@@ -256,63 +261,60 @@ class _HomePageState extends State<BottomBar> {
                 //         ),
                 //       )
                 //     :
-
                 InkWell(
                   onTap: () {
                     AppNavigator.push(
-                        context,
-                        const NotificationsScreen(
-                          isFromNotifications: false,
-                        ));
+                      context,
+                      const NotificationsScreen(isFromNotifications: false),
+                    );
                   },
-                  child: Image.asset(
-                    AssetPath.NOTIFICATIONS,
-                    scale: 4,
-                  ),
+                  child: Image.asset(AssetPath.NOTIFICATIONS, scale: 4),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
-              ]),
+                const SizedBox(width: 20),
+              ],
             ),
-            bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
-              notchMargin: -12.0,
-              clipBehavior: Clip.hardEdge,
-              child: Container(
-                decoration: const BoxDecoration(
-                    color: AppColor.TRANSPARENT_COLOR, border: null),
-                child: BottomNavigationBar(
-                    elevation: 0,
+          ),
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: -12.0,
+            clipBehavior: Clip.hardEdge,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: AppColor.TRANSPARENT_COLOR,
+                border: null,
+              ),
+              child: BottomNavigationBar(
+                elevation: 0,
 
-                    // selectedFontSize: 0,
-                    unselectedItemColor: Colors.grey,
-                    unselectedFontSize: 11,
-                    selectedFontSize: 11,
-                    currentIndex: val,
-                    backgroundColor: AppColor.COLOR_TRANSPARENT,
-                    selectedItemColor: AppColor.THEME_COLOR_PRIMARY1,
-                    type: BottomNavigationBarType.fixed,
-                    onTap: (index) {
-                      bottomIndex.value = index;
-                      // searchController.clear();
-                      context.read<CoreProvider>().initSearch();
-                      context.read<CoreProvider>().searchedRecipies.clear();
-                      setState(() {});
-                    },
-                    items: [
-                      bottomBarIcon(AssetPath.HOME, "Home", 0, val),
-                      bottomBarIcon(AssetPath.MEAL, "Meal Plan", 1, val),
-                      bottomBarIcon(AssetPath.GROCERY, "Grocery List", 2, val),
-                      bottomBarIcon(AssetPath.PROFILE, "Profile", 3, val),
-                    ]),
+                // selectedFontSize: 0,
+                unselectedItemColor: Colors.grey,
+                unselectedFontSize: 11,
+                selectedFontSize: 11,
+                currentIndex: val,
+                backgroundColor: AppColor.COLOR_TRANSPARENT,
+                selectedItemColor: AppColor.THEME_COLOR_PRIMARY1,
+                type: BottomNavigationBarType.fixed,
+                onTap: (index) {
+                  bottomIndex.value = index;
+                  // searchController.clear();
+                  context.read<CoreProvider>().initSearch();
+                  context.read<CoreProvider>().searchedRecipies.clear();
+                  setState(() {});
+                },
+                items: [
+                  bottomBarIcon(AssetPath.HOME, "Home", 0, val),
+                  bottomBarIcon(AssetPath.MEAL, "Meal Plan", 1, val),
+                  bottomBarIcon(AssetPath.GROCERY, "Grocery List", 2, val),
+                  bottomBarIcon(AssetPath.PROFILE, "Profile", 3, val),
+                ],
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.miniCenterDocked,
-            floatingActionButton: MediaQuery.of(context).viewInsets.bottom ==
-                    0.0
-                ? Padding(
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton:
+              MediaQuery.of(context).viewInsets.bottom == 0.0
+                  ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10.0),
@@ -322,124 +324,138 @@ class _HomePageState extends State<BottomBar> {
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 0.1,
-                            color:
-                                AppColor.THEME_COLOR_PRIMARY1.withOpacity(0.2),
-                          )
+                            color: AppColor.THEME_COLOR_PRIMARY1.withOpacity(
+                              0.2,
+                            ),
+                          ),
                         ],
                       ),
                       child: Transform.scale(
                         scale: 1.0,
                         child: FloatingActionButton(
-                            heroTag: null,
-                            backgroundColor: AppColor.THEME_COLOR_PRIMARY1,
-                            child: const Icon(Icons.add),
-                            onPressed: () {
-                              AppDialog.modalBottomSheet(
-                                  context: context,
-                                  child: Column(
-                                    children: [
-                                      BottomSheetOptions(
-                                        heading: "Create Recipe",
-                                        imagePath: AssetPath.CREATE_RECIPE,
-                                        onTap: () {
-                                          AppNavigator.pop(context);
-                                          // Future.delayed(const Duration(
-                                          //         milliseconds: 200))
-                                          //     .then((value) => optionsDialog());
+                          heroTag: null,
+                          backgroundColor: AppColor.THEME_COLOR_PRIMARY1,
+                          child: const Icon(Icons.add),
+                          onPressed: () {
+                            AppDialog.modalBottomSheet(
+                              context: context,
+                              child: Column(
+                                children: [
+                                  BottomSheetOptions(
+                                    heading: "Create Recipe",
+                                    imagePath: AssetPath.CREATE_RECIPE,
+                                    onTap: () {
+                                      AppNavigator.pop(context);
+                                      // Future.delayed(const Duration(
+                                      //         milliseconds: 200))
+                                      //     .then((value) => optionsDialog());
 
-                                          AppNavigator.push(
-                                              context,
-                                              const AddRecipeScreen(
-                                                mealType: '',
-                                                isEdit: false,
-                                                isMealPlan: false,
-                                              ));
-                                        },
-                                      ),
-                                      BottomSheetOptions(
-                                          onTap: () {
-                                            AppNavigator.pop(context);
-                                            Future.delayed(const Duration(
-                                                    milliseconds: 100))
-                                                .then((value) => AppNavigator.push(
-                                                    context,
-                                                    const CreateGroceryListScreen(
-                                                      isEdit: false,
-                                                    )));
-                                          },
-                                          bottomDivider: false,
-                                          heading: "Create Grocery List",
-                                          imagePath: AssetPath.CREATE_RECIPE),
-                                    ],
-                                  ));
-                            }),
+                                      AppNavigator.push(
+                                        context,
+                                        const AddRecipeScreen(
+                                          mealType: '',
+                                          isEdit: false,
+                                          isMealPlan: false,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  BottomSheetOptions(
+                                    onTap: () {
+                                      AppNavigator.pop(context);
+                                      Future.delayed(
+                                        const Duration(milliseconds: 100),
+                                      ).then(
+                                        (value) => AppNavigator.push(
+                                          context,
+                                          const CreateGroceryListScreen(
+                                            isEdit: false,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    bottomDivider: false,
+                                    heading: "Create Grocery List",
+                                    imagePath: AssetPath.CREATE_RECIPE,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   )
-                : null,
-          );
-        });
+                  : null,
+        );
+      },
+    );
   }
 
   optionsDialog() => AppDialog.plainDialog(
-        context,
-        Column(
-          children: [
-            PrimaryButton(
-                text: "Add Manual Recipe",
-                onTap: () {
-                  AppNavigator.pop(context);
-                  Future.delayed(const Duration(milliseconds: 200))
-                      .then((value) => AppNavigator.push(
-                          context,
-                          const AddRecipeScreen(
-                            mealType: '',
-                          )));
-                }),
-            AppStyles.height8SizedBox(),
-            PrimaryButton(
-                text: "Add Dynamic Recipe",
-                onTap: () {
-                  AppNavigator.pop(context);
-                  Future.delayed(const Duration(milliseconds: 200))
-                      .then((value) => AppNavigator.push(
-                          context,
-                          const AddRecipeScreen(
-                            mealType: '',
-                          )));
-                }),
-          ],
+    context,
+    Column(
+      children: [
+        PrimaryButton(
+          text: "Add Manual Recipe",
+          onTap: () {
+            AppNavigator.pop(context);
+            Future.delayed(const Duration(milliseconds: 200)).then(
+              (value) => AppNavigator.push(
+                context,
+                const AddRecipeScreen(mealType: ''),
+              ),
+            );
+          },
         ),
-      );
+        AppStyles.height8SizedBox(),
+        PrimaryButton(
+          text: "Add Dynamic Recipe",
+          onTap: () {
+            AppNavigator.pop(context);
+            Future.delayed(const Duration(milliseconds: 200)).then(
+              (value) => AppNavigator.push(
+                context,
+                const AddRecipeScreen(mealType: ''),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+  );
 
   BottomNavigationBarItem bottomBarIcon(
-      final String image, final String label, int index, int updatedIndex) {
+    final String image,
+    final String label,
+    int index,
+    int updatedIndex,
+  ) {
     return BottomNavigationBarItem(
-        icon: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              AssetPath.HANGER,
-              scale: 4,
-              color: index == updatedIndex
-                  ? AppColor.THEME_COLOR_PRIMARY1
-                  : Colors.transparent,
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Image.asset(
-              image,
-              height: 18,
-              color: index == updatedIndex
-                  ? AppColor.THEME_COLOR_PRIMARY1
-                  : Colors.grey,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-          ],
-        ),
-        label: label);
+      icon: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            AssetPath.HANGER,
+            scale: 4.5,
+            color:
+                index == updatedIndex
+                    ? AppColor.THEME_COLOR_PRIMARY1
+                    : Colors.transparent,
+          ),
+          const SizedBox(height: 2),
+          Image.asset(
+            image,
+            height: 18,
+            color:
+                index == updatedIndex
+                    ? AppColor.THEME_COLOR_PRIMARY1
+                    : Colors.grey,
+          ),
+          SizedBox(height: 2),
+        ],
+      ),
+      label: label,
+    );
   }
 }

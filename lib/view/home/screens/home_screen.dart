@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:menu_minder/common/custom_loading_bar.dart';
 import 'package:menu_minder/common/custom_text.dart';

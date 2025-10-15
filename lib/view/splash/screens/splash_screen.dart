@@ -21,8 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _authProvider = context.read<AuthProvider>();
     // LocationService().getCurrentPosition();
-    Future.delayed(const Duration(seconds: 2))
-        .then((value) => _checkCurrentUserMethod());
+    Future.delayed(
+      const Duration(seconds: 2),
+    ).then((value) => _checkCurrentUserMethod());
   }
 
   @override
@@ -32,15 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
         backgroundColor: AppColor.TRANSPARENT_COLOR,
-        systemOverlayStyle: SystemUiOverlayStyle.light
-            .copyWith(statusBarColor: Colors.transparent),
+        systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+        ),
       ),
       body: SizedBox(
-          width: double.infinity,
-          child: Image.asset(
-            AssetPath.SPLASH_BG,
-            fit: BoxFit.fill,
-          )),
+        width: double.infinity,
+        child: Image.asset(AssetPath.SPLASH_BG, fit: BoxFit.fill),
+      ),
     );
   }
 

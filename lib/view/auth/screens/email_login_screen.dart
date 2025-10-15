@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:menu_minder/common/transparent_container.dart';
+import 'package:menu_minder/services/network/firebase_messaging_service.dart';
 import 'package:menu_minder/utils/dummy.dart';
 import 'package:menu_minder/utils/utils.dart';
 import 'package:menu_minder/view/auth/bloc/models/login_model.dart';
@@ -89,7 +90,7 @@ class EmailLoginScreen extends StatelessWidget {
                               )
                             : PrimaryButton(
                                 text: "Continue",
-                                onTap: () {
+                                onTap: () async {
                                   isEmail = true;
                                   if (formKey.currentState!.validate()) {
                                     profile.value!.email = emailController.text;
@@ -98,7 +99,7 @@ class EmailLoginScreen extends StatelessWidget {
                                         device_type: Platform.isIOS
                                             ? 'Ios'
                                             : 'Android',
-                                      device_token: 'abc'
+                                      device_token: await FirebaseMessagingService().getToken()
                                     ));
                                     // profile.value!.email = emailController.text.toString();
                                   }

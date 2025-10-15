@@ -11,6 +11,7 @@ import 'package:menu_minder/utils/route_observer.dart';
 import 'package:menu_minder/utils/routes.dart';
 import 'package:menu_minder/view/auth/bloc/provider/auth_provider.dart';
 import 'package:menu_minder/view/auth/bloc/repository/auth_repo.dart';
+import 'package:menu_minder/view/create_profile/screens/create_profile_screen.dart';
 import 'package:menu_minder/view/map/repository/map_repo.dart';
 import 'package:menu_minder/view/splash/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -24,21 +25,16 @@ class BaseWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) =>
-              AuthProvider(AuthRepo(), LoginWithPhoneService.instance),
+          create:
+              (context) =>
+                  AuthProvider(AuthRepo(), LoginWithPhoneService.instance),
         ),
         ChangeNotifierProvider(
           create: (context) => NotificationProvider(AuthRepo(), CoreRepo()),
         ),
-        ChangeNotifierProvider(
-          create: (context) => CoreProvider(CoreRepo()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => MapProvider(MapRepo()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ChatProvider(CoreRepo()),
-        ),
+        ChangeNotifierProvider(create: (context) => CoreProvider(CoreRepo())),
+        ChangeNotifierProvider(create: (context) => MapProvider(MapRepo())),
+        ChangeNotifierProvider(create: (context) => ChatProvider(CoreRepo())),
         ChangeNotifierProvider(
           create: (context) => SpoonCularProvider(CoreRepo()),
         ),
@@ -49,20 +45,22 @@ class BaseWidget extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
         navigatorObservers: [AppNavObserver()],
-        builder: (context, child) => ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: [
-            const Breakpoint(start: 0, end: 600, name: MOBILE),
-            const Breakpoint(start: 451, end: 800, name: TABLET),
-            const Breakpoint(start: 801, end: 1920, name: DESKTOP),
-            const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-          ],
-        ),
+        builder:
+            (context, child) => ResponsiveBreakpoints.builder(
+              child: child!,
+              breakpoints: [
+                const Breakpoint(start: 0, end: 600, name: MOBILE),
+                const Breakpoint(start: 451, end: 800, name: TABLET),
+                const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
+              ],
+            ),
         scrollBehavior: CustomScrollBehavior(),
         theme: ThemeData(
-            primarySwatch: Colors.deepOrange,
-            fontFamily: 'Poppins',
-            scaffoldBackgroundColor: Colors.white),
+          primarySwatch: Colors.deepOrange,
+          fontFamily: 'Poppins',
+          scaffoldBackgroundColor: Colors.white,
+        ),
         home: const App(),
       ),
     );
@@ -81,7 +79,10 @@ class App extends StatelessWidget {
 class CustomScrollBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
     return child;
   }
 }
